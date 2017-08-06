@@ -6,6 +6,7 @@
 
 //KGJV test
 #define ENABLE3DINTROSCREEN
+
 //////////////////////////////////////////////////////////////////////////////
 //
 // Intro Screen
@@ -584,7 +585,12 @@ public:
 		pnsIntroScreen->AddMember("bgImage",   (Value*)(m_pwrapImage = new WrapImage(Image::GetEmpty())));
 		m_pthing = NULL;
 #endif
+
+#ifdef USEAZ
         TRef<INameSpace> pns = pmodeler->GetNameSpace("introscreen");
+#else
+		TRef<INameSpace> pns = pmodeler->GetNameSpace("introscreen_fz");
+#endif
         CastTo(m_ppane, pns->FindMember("screen"));
         CastTo(m_pbuttonPlayLan,    pns->FindMember("playLanButtonPane"));
         CastTo(m_pbuttonPlayInt,    pns->FindMember("playIntButtonPane"));
@@ -736,17 +742,17 @@ public:
 			};
 			Orientation ors[] = {
 				Orientation (Vector (0.0f, -1.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f)),
-				Orientation (Vector (0.0f, 0.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f)),
+				Orientation (Vector (0.1f, 0.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f)),
 				Orientation (Vector (0.0f, 1.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f)),
-				Orientation (Vector (0.0f, 0.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f)),
-				Orientation (Vector (0.0f, 0.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f)),
-				Orientation (Vector (0.0f, 0.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f)),
+				Orientation (Vector (0.1f, 0.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f)),
+				Orientation (Vector (0.1f, 0.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f)),
+				Orientation (Vector (0.1f, 0.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f)),
 				Orientation (Vector (0.0f, 1.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f)),
 				Orientation (Vector (0.0f, 1.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f)),
 				Orientation (Vector (0.0f, 1.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f)),
-				Orientation (Vector (0.0f, 0.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f)),
+				Orientation (Vector (0.1f, 0.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f)),
 				Orientation (Vector (0.0f, 1.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f)),
-				Orientation (Vector (0.0f, 0.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f))
+				Orientation (Vector (0.1f, 0.0f, 0.0f), Vector (0.0f, 0.0f, 1.0f))
 			};
 			srand(GetTickCount() + (int)time(NULL)); //imago 10/14, apparently this call in ZLib is out of scope.
 			int sel = randomInt(0, 11);
