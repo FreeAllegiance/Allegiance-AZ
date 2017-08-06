@@ -166,7 +166,7 @@ inline int randomInt(int min, int max)
 
 inline float SmoothInterpolant(float value)
 {
-    return 0.5f - 0.5f * cos(pi * value);
+    return 0.5f - 0.5f * (float) cos(pi * value);
 }
 
 template<class Type>

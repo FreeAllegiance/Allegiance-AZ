@@ -10,8 +10,8 @@
 #define ALLEGIANCE_REGISTRY_KEY_ROOT   L"Software\\Microsoft\\Microsoft Games\\Allegiance\\1.2"
 #define ALLEGIANCE_REGISTRY_KEY_ROOTA   L"Software\\Microsoft\\Microsoft Games\\Allegiance\\1.2"
 #else
-#define ALLEGIANCE_REGISTRY_KEY_ROOT   L"Software\\Microsoft\\Microsoft Games\\Allegiance\\1.3"
-#define ALLEGIANCE_REGISTRY_KEY_ROOTA   "Software\\Microsoft\\Microsoft Games\\Allegiance\\1.3"
+#define ALLEGIANCE_REGISTRY_KEY_ROOT   L"Software\\Microsoft\\Microsoft Games\\Allegiance\\1.4"
+#define ALLEGIANCE_REGISTRY_KEY_ROOTA   "Software\\Microsoft\\Microsoft Games\\Allegiance\\1.4"
 #endif
 #endif
 

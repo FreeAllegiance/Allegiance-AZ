@@ -323,7 +323,7 @@ public:
           // Set registry's MoveInProgress to zero, meaning move is complete
           HKEY hKey;
           DWORD dwValue = 0;
-          if (ERROR_SUCCESS == ::RegOpenKeyEx(HKEY_LOCAL_MACHINE, ALLEGIANCE_REGISTRY_KEY_ROOT, 0, KEY_WRITE, &hKey))
+          if (ERROR_SUCCESS == ::RegOpenKeyEx(HKEY_LOCAL_MACHINE, (LPCWSTR) ALLEGIANCE_REGISTRY_KEY_ROOT, 0, KEY_WRITE, &hKey))
           {
             ::RegSetValueExA(hKey, "MoveInProgress", NULL, REG_DWORD, (unsigned char*)&dwValue, sizeof(DWORD));
           }

@@ -30,8 +30,8 @@ public:
 
     Quaternion(const Vector& vec, float angle)
     {
-        m_a   = cos(angle / 2);
-        m_vec = vec.Normalize() * sin(angle / 2);
+        m_a   = (float) cos(angle / 2);
+        m_vec = vec.Normalize() * (float) sin(angle / 2);
     }
 
     Quaternion(const Quaternion& quat) :

@@ -49,7 +49,7 @@ char * GetArtPath(bool isBetaMode)
 
     BOOL bResult = FALSE;
 
-    if (ERROR_SUCCESS == ::RegOpenKeyEx(HKEY_LOCAL_MACHINE, ALLEGIANCE_REGISTRY_KEY_ROOT, 0, KEY_READ, &hKey))
+    if (ERROR_SUCCESS == ::RegOpenKeyEx(HKEY_LOCAL_MACHINE, (LPCWSTR) ALLEGIANCE_REGISTRY_KEY_ROOT, 0, KEY_READ, &hKey))
     {
 
         // Get the art path from the registry

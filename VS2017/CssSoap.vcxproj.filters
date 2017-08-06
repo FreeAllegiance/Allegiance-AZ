@@ -15,21 +15,24 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
+    <Text Include="..\src\CssSoap\ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="targetver.h">
+    <ClInclude Include="..\src\CssSoap\CssSoap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CssSoap.h">
+    <ClInclude Include="..\src\CssSoap\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h">
+    <ClInclude Include="..\src\CssSoap\targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CssSoap.cpp">
+    <ClCompile Include="..\src\CssSoap\CssSoap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\CssSoap\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

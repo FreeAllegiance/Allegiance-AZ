@@ -9,8 +9,8 @@
 
 #include <regex>
 //
-//#include "zlib.h"
-//#include "utility.h"
+#include "zlib.h"
+#include "utility.h"
 #include "messagecore.h"
 #include "messagesls.h"
 //#include "regkey.h"
@@ -89,26 +89,26 @@ bool CCssSoap::ValidateUserLogin(char *username, char *password, char * szReason
 		char status[50];
 		sprintf(status, result[1].str().c_str());
 
-		if (stricmp(status, "Ok") == 0)
+		if (_stricmp(status, "Ok") == 0)
 		{
 			return true;
 		}
-		else if (stricmp(status, "InvalidCredentials") == 0)
+		else if (_stricmp(status, "InvalidCredentials") == 0)
 		{
 			sprintf(szReason, "Your user name or password are invalid. Go to acss.alleg.net to create an account, or reset a forgotten password.");
 			return false;
 		}
-		else if (stricmp(status, "AccountLinked") == 0)
+		else if (_stricmp(status, "AccountLinked") == 0)
 		{
 			sprintf(szReason, "Your account has been linked to another user's account. Please log in with your main account. Please visit www.freeallegiance.org to request help in the forums.");
 			return false;
 		}
-		else if (stricmp(status, "PermissionDenied") == 0)
+		else if (_stricmp(status, "PermissionDenied") == 0)
 		{
 			sprintf(szReason, "Your account access has been denied. Please visit www.freeallegiance.org to request help in the forums.");
 			return false;
 		}
-		else if (stricmp(status, "AccountLocked") == 0)
+		else if (_stricmp(status, "AccountLocked") == 0)
 		{
 			sprintf(szReason, "Your account has been locked. Please visit www.freeallegiance.org to request help in the forums.");
 			return false;
