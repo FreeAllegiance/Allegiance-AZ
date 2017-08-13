@@ -84,6 +84,7 @@
     <ClCompile Include="..\src\WinTrek\ZoneSquad.cpp">
       <Filter>Zone</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\WinTrek\videoscreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Lang\Usa\allegiance\resource.h">

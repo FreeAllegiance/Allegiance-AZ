@@ -1,6 +1,11 @@
+
+
 #include "pch.h"
 #include "ddvideo.h" //Macros and crap
 #include "ddstream.h" //DShow object
+
+#if (DIRECT3D_VERSION >= 0x0800)
+
 
 DDVideo::DDVideo()
 {
@@ -127,3 +132,5 @@ BOOL DDVideo::Flip()
 
     return (ddrval == DD_OK);
 }
+
+#endif

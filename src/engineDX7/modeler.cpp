@@ -2339,7 +2339,7 @@ public:
         //
 
         pns->AddMember("SwitchString",       new TSwitchFactory<ZString>());
-
+		pns->AddMember("SwitchPoint", new TSwitchFactory<Point>());  // #361
         //
         // Data type constructors
         //

@@ -80,16 +80,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Retail|Win32'">.\..\..\objs\Retail\Engine\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Retail|Win32'">.\..\..\objs\Retail\Engine\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\..\..\objs\Debug\Engine\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\..\..\objs\Debug\Engine\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">.\..\..\objs\$(Configuration)\Engine\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">.\..\..\objs\$(Configuration)\Engine\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">.\..\..\objs\$(Configuration)\Engine\</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">.\..\..\objs\$(Configuration)\Engine\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">.\..\..\objs\$(Configuration)\Engine\</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">.\..\..\objs\$(Configuration)\Engine\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Retail|Win32'">..\..\objs14\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Retail|Win32'">..\..\objs14\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\objs14\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\objs14\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">..\..\objs14\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">..\..\objs14\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">..\..\objs14\$(Configuration)\$(ProjectName)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">..\..\objs14\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">..\..\objs14\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">..\..\objs14\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>

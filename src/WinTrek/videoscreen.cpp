@@ -81,12 +81,12 @@ public:
         HKEY hKey;
 
         if (ERROR_SUCCESS == ::RegCreateKeyEx(HKEY_LOCAL_MACHINE, ALLEGIANCE_REGISTRY_KEY_ROOT,
-                0, "", REG_OPTION_NON_VOLATILE, KEY_READ, NULL, &hKey, NULL)) {
+                0, L"", REG_OPTION_NON_VOLATILE, KEY_READ, NULL, &hKey, NULL)) {
             char buf[128];
             DWORD dwSize = sizeof(buf);
             DWORD dwType = REG_SZ;
 
-            ::RegQueryValueEx(hKey, "CDPath", NULL, &dwType, (BYTE*)buf, &dwSize);
+            ::RegQueryValueEx(hKey, L"CDPath", NULL, &dwType, (BYTE*)buf, &dwSize);
             ::RegCloseKey(hKey);
 
             if (dwType == REG_SZ) {
@@ -134,49 +134,49 @@ public:
 
     void NextVideo()
     {
-// BUILD_DX9
-        //ZString str;
+#if (DIRECT3D_VERSION < 0x0800)
+        ZString str;
 
-        //m_indexVideo++;
-        //switch (m_indexVideo) {
-        //    case 0: str = "msr_games.avi"; break;
-        //    case 1: str = "logo1.avi";     break;
-        //    case 2: str = "logo2.avi";     break;
-        //    case 3: str = "intro.avi";     break;
-        //    default: 
-        //        return;
-        //};
+        m_indexVideo++;
+        switch (m_indexVideo) {
+            case 0: str = "msr_games.avi"; break;
+            case 1: str = "logo1.avi";     break;
+            case 2: str = "logo2.avi";     break;
+            case 3: str = "intro.avi";     break;
+            default: 
+                return;
+        };
 
-        ////
-        //// Load from the artpath first
-        ////
+        //
+        // Load from the artpath first
+        //
 
-        //m_pvideoImage = 
-        //    CreateVideoImage(
-        //        m_pengine,
-        //        GetWindow()->GetScreenRectValue(), 
-        //        GetModeler()->GetArtPath() + "/" + str
-        //    );
+        m_pvideoImage = 
+            CreateVideoImage(
+                m_pengine,
+                GetWindow()->GetScreenRectValue(), 
+                GetModeler()->GetArtPath() + "/" + str
+            );
 
-        //if (
-        //       (m_pvideoImage == NULL || (!m_pvideoImage->IsValid()))
-        //    && (!m_strCD.IsEmpty())
-        //) {
-        //    m_pvideoImage = 
-        //        CreateVideoImage(
-        //            m_pengine,
-        //            GetWindow()->GetScreenRectValue(), 
-        //            m_strCD + str
-        //        );
-        //}
+        if (
+               (m_pvideoImage == NULL || (!m_pvideoImage->IsValid()))
+            && (!m_strCD.IsEmpty())
+        ) {
+            m_pvideoImage = 
+                CreateVideoImage(
+                    m_pengine,
+                    GetWindow()->GetScreenRectValue(), 
+                    m_strCD + str
+                );
+        }
 
-        //if (!m_pvideoImage->IsValid()) {
-        //    NextVideo();
-        //} else {
-        //    m_pwrapImageVideo->SetImage(m_pvideoImage);
-        //    m_pvideoImage->GetEventSource()->AddSink(IEventSink::CreateDelegate(this));
-        //}
-// BUILD_DX9
+        if (!m_pvideoImage->IsValid()) {
+            NextVideo();
+        } else {
+            m_pwrapImageVideo->SetImage(m_pvideoImage);
+            m_pvideoImage->GetEventSource()->AddSink(IEventSink::CreateDelegate(this));
+        }
+#endif
     }
 
     bool OnEvent(IEventSource* pevent)

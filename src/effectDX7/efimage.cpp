@@ -8,8 +8,8 @@
 
 class JoystickImageImpl : public JoystickImage {
 private:
-    TArray<TRef<ModifiableNumber> , 2> m_ppnumber;
-    TArray<TRef<ModifiableBoolean>, 3> m_ppboolButton;
+	TArray<TRef<ModifiableNumber>, 20> m_ppnumber; //imago increased 8/12/09, again 7/10
+	TArray<TRef<ModifiableBoolean>, 20> m_ppboolButton; //imago increased 8/12/09, again 7/10
     bool                               m_bJoystickEnabled;
     bool                               m_bButtonsEnabled;
     bool                               m_bJustEnabled;

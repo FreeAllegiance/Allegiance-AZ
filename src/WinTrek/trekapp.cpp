@@ -11,9 +11,9 @@
 #include "main.h"
 #include "regkey.h"
 
-// BUILD_DX9
+#if (DIRECT3D_VERSION >= 0x0800)
 #include "VideoSettingsDX9.h"
-// BUILD_DX9
+#endif
 
 extern bool g_bEnableSound = true;
 extern bool bStartTraining   = false;
@@ -439,10 +439,11 @@ public:
         // Fix success HRESULT
         hr = S_OK;
 
-// BUILD_DX9
+		// DXHACKS - this could cause issues now?
+#if (DIRECT3D_VERSION < 0x0800)
 		// For the D3D build, move this to after the window has been created, as we need a valid HWND to create the device.
-//		EffectApp::Initialize(strCommandLine);
-// BUILD_DX9
+		EffectApp::Initialize(strCommandLine);
+#endif 
 
         //
         // get the artpath
@@ -699,10 +700,11 @@ public:
 		debugf("Running %s %s\nArtpath: %s\nCommand line: %s\n", (PCC)vi.GetInternalName(),
 			(PCC)vi.GetStringValue("FileVersion"), (PCC)pathStr, (PCC)strCommandLine);
 
-		// BUILD_DX9
+#if (DIRECT3D_VERSION < 0x0800)
 		// Now set later for D3D build, as modeller isn't valid yet.
-		//GetModeler()->SetArtPath(pathStr);
-		// BUILD_DX9
+		GetModeler()->SetArtPath(pathStr);
+#endif 
+
 		UTL::SetArtPath(pathStr);
 
 		/*{
@@ -725,13 +727,14 @@ public:
 		}
 		}*/
 
-		// BUILD_DX9
+#if (DIRECT3D_VERSION < 0x0800)
 		//
 		// load the fonts
 		//
 
-		//        TrekResources::Initialize(GetModeler());
-		// BUILD_DX9
+		TrekResources::Initialize(GetModeler());
+#endif // BUILD_DX9
+
 
 
 
@@ -779,7 +782,7 @@ public:
         // Create the window
         //
 
-// BUILD_DX9
+#if (DIRECT3D_VERSION >= 0x0800)
 		// Ask the user for video settings. -- 
 		//   -adapter switch added for the needy
 		//   Raise dialog only if "Safe Mode" activated (any software/primary/secondary switches sent) 
@@ -803,18 +806,19 @@ public:
                 bPrimary,
                 bSecondary
             );
-// #else
-        //TRef<TrekWindow> pwindow = 
-        //    TrekWindow::Create(
-        //        this, 
-        //        strCommandLine,
-        //        bMovies,
-        //        bSoftware,
-        //        bHardware,
-        //        bPrimary,
-        //        bSecondary
-        //    );
-// BUILD_DX9
+ #else
+        TRef<TrekWindow> pwindow = 
+            TrekWindow::Create(
+                this, 
+                strCommandLine,
+				pathStr,
+                bMovies,
+                bSoftware,
+                bHardware,
+                bPrimary,
+                bSecondary
+            );
+#endif
 
         if (!pwindow->IsValid()) {
             return E_FAIL;

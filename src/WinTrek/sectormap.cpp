@@ -620,11 +620,13 @@ public:
         pvalueMode->Update();
 
         Modeler* pmodeler = GetModeler();
-		// BUILD_DX9
-        //m_pimageBkgnd = pmodeler->LoadImage("sectormapbkgndbmp", true);  //imago 7/15/09
 
-        m_pimageBkgnd = pmodeler->LoadImage("sectormapbkgndbmp", false);
-		// BUILD_DX9
+#if (DIRECT3D_VERSION >= 0x0800)
+		m_pimageBkgnd = pmodeler->LoadImage("sectormapbkgndbmp", true);
+#else
+		m_pimageBkgnd = pmodeler->LoadImage("sectormapbkgndbmp", false);
+#endif 
+
         m_pimageSectorHighlight = pmodeler->LoadImage("sectorhighlightbmp", true);
         m_pimageSectorTargetHighlight = pmodeler->LoadImage("sectortargetbmp", true);
         m_pimageSectorSel = pmodeler->LoadImage("sectorselbmp", true);

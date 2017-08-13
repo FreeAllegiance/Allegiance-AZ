@@ -329,6 +329,7 @@ class ButtonUIPane :
 {
     TRef<ButtonFacePane>  m_pfacePane;
     TRef<EventSourceImpl> m_peventSource;
+	TRef<EventSourceImpl> m_peventRightSource; //imago 7/6/09
     TRef<EventSourceImpl> m_peventSourceDoubleClick;
     TRef<EventSourceImpl> m_peventMouseEnterSource;
     TRef<EventSourceImpl> m_peventMouseLeaveSource;
@@ -347,6 +348,7 @@ class ButtonUIPane :
     bool  m_bDownTrigger;
     float m_repeatDelay;
     float m_repeatRate;
+	int m_button; //imago 7/6/09
 
 public:
     ButtonUIPane(
@@ -357,6 +359,7 @@ public:
     ) :
         m_pfacePane(ppane),
         m_peventSource(new EventSourceImpl()),
+		m_peventRightSource(new EventSourceImpl()), //imago 7/6/09
         m_peventSourceDoubleClick(new EventSourceImpl()),
         m_peventMouseEnterSource(new EventSourceImpl()),
         m_peventMouseLeaveSource(new EventSourceImpl()),
@@ -483,6 +486,12 @@ public:
         return m_peventSourceDoubleClick;
     }
 
+	//Imago added right click to button UI 7/6/09
+	IEventSource* GetRightEventSource()
+	{
+		return m_peventRightSource;
+	}
+
     IEventSource* GetMouseEnterEventSource()
     {
         return m_peventMouseEnterSource;
@@ -548,9 +557,10 @@ public:
 
     MouseResult Button(IInputProvider* pprovider, const Point& point, int button, bool bCaptured, bool bInside, bool bDown)
     {
-        if (button == 0) {
-            if (bDown) {
-                if (m_pprovider != NULL) {
+        if (button == 0 || button == 1) { //imago 7/6/09 added single right mouse button click trigger
+			m_button = button;
+			if (bDown) {
+                if (m_pprovider != NULL && button == 0) { //imago 7/10/09
                     assert(false); // we should not have a timer set before the button is pressed
                     m_pprovider->GetTimer()->RemoveSink(m_peventSinkDelegate);
                 }
@@ -558,26 +568,37 @@ public:
                 if (pprovider->IsDoubleClick()) {
                     m_peventSourceDoubleClick->Trigger();
                 } else if (m_bDownTrigger) {
-                    m_peventSource->Trigger();
+					if (button == 1) {
+						m_peventRightSource->Trigger();  //imago 7/6/09
+					} else {
+						m_peventSource->Trigger();
+					}
                 } else {
                     SetDown(true);
 
                     if (m_repeatRate != 0 && m_bEnabled) {
-                        m_peventSource->Trigger();
+						if (button == 1) {
+							m_peventRightSource->Trigger(); //imago 7/6/09
+						} else {
+							m_peventSource->Trigger();
+						}
 
-                        if (m_repeatDelay != 0) {
+                        if (m_repeatDelay != 0 && button == 0) {
                             m_bFirstEvent = true;
                             m_pprovider = pprovider;
                             pprovider->GetTimer()->AddSink(m_peventSinkDelegate, m_repeatDelay);
                         } else {
-                            m_bFirstEvent = false;
-                            m_pprovider = pprovider;
-                            pprovider->GetTimer()->AddSink(m_peventSinkDelegate, m_repeatRate);
+							if (button == 0) {
+                            	m_bFirstEvent = false;
+                            	m_pprovider = pprovider;
+                            	pprovider->GetTimer()->AddSink(m_peventSinkDelegate, m_repeatRate);
+							}
                         }
                     }
 
                     return MouseResultCapture();
                 }
+				//imago, button not down
             } else {
                 if (bCaptured) {
                     bool bWasDown = m_bDown;
@@ -588,7 +609,11 @@ public:
                             if (m_bToggle) {
                                 SetChecked(!m_bChecked);
                             }
-                            m_peventSource->Trigger();
+							if (button == 1) {
+								m_peventRightSource->Trigger();
+							} else {
+								m_peventSource->Trigger();
+							}
                         }
                     } else {
                         ZAssert(m_pprovider == NULL || pprovider == m_pprovider);
@@ -616,7 +641,11 @@ public:
     bool OnEvent(IEventSource* pevent)
     {
         if (m_bDown) {
-            m_peventSource->Trigger();
+			if (m_button == 1) { //imago 7/6/09
+				m_peventRightSource->Trigger();
+			} else {
+				m_peventSource->Trigger();
+			}
         }
 
         if (m_bFirstEvent) {
@@ -681,6 +710,7 @@ class ButtonBarPaneImpl :
 {
 private:
     TRef<IntegerEventSourceImpl>   m_peventSource;
+	TRef<IntegerEventSourceImpl>   m_peventRightSource;
     TRef<IntegerEventSourceImpl>   m_peventMouseEnterWhileEnabledSource;
     TRef<IEventSink>               m_peventSink;
     TMap<TRef<IEventSource>, int>  m_mapEventSources;
@@ -697,6 +727,7 @@ public:
         m_bActAsTabs(bActAsTabs)
     {
         m_peventSource = new IntegerEventSourceImpl();
+		m_peventRightSource = new IntegerEventSourceImpl(); //imago 7/6/09
         m_peventMouseEnterWhileEnabledSource = new IntegerEventSourceImpl();
         m_peventSink = IEventSink::CreateDelegate(this);
         if (!bUseColumn)
@@ -757,6 +788,11 @@ public:
     IIntegerEventSource* GetEventSource()
     {
         return m_peventSource;
+    }
+
+    IIntegerEventSource* GetRightEventSource()
+    {
+        return m_peventRightSource;
     }
 
     IIntegerEventSource* GetMouseEnterWhileEnabledEventSource()

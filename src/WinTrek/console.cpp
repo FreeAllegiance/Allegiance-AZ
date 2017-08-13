@@ -3433,18 +3433,28 @@ public:
 
     void SetDisplayMDL(const char* pszFileName)
     {
+
+#if (DIRECT3D_VERSION >= 0x0800)
 		int styleHud = GetModeler()->GetStyleHud();
 
-        if (strcmp(pszFileName, m_szFileName) == 0 && styleHud == m_nStyleHud)
-            return;
+		if (strcmp(pszFileName, m_szFileName) == 0 && styleHud == m_nStyleHud)
+			return;
+
+		m_nStyleHud = styleHud;
+#else
+		if (strcmp(pszFileName, m_szFileName) == 0)
+			return;
+#endif
 
         assert (strlen(pszFileName) < c_cbFileName);
         strcpy(m_szFileName, pszFileName);
-		m_nStyleHud = styleHud;
+		
 
         OverlayMask om = GetOverlayFlags();
 
+#if (DIRECT3D_VERSION >= 0x0800)
 		SetImage(NULL);
+#endif
 
         m_pconsoleData            = NULL;
         m_vpdisplayImages         = NULL;
@@ -3458,9 +3468,9 @@ public:
 
         m_pgroupDisplays = new GroupImage();
 
-		// BUILD_DX9
+#if (DIRECT3D_VERSION >= 0x0800)
 		GetModeler()->SetColorKeyHint( true );
-
+#endif
 		
 		m_pconsoleData   = new ConsoleDataImpl(this->GetViewport(), pszFileName);
 
