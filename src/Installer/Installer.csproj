@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0DE109CB-2510-4E66-9815-FD6D50726A9D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Allegiance.CommunitySecuritySystem.ClientSetup</RootNamespace>
+    <AssemblyName>Allegiance.CommunitySecuritySystem.ClientSetup</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="TheDoNothingClass.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="NSISPlugins\amd64-unicode\INetC.dll" />
+    <Content Include="NSISPlugins\README.txt" />
+    <Content Include="NSISPlugins\x86-ansi\AccessControl.dll" />
+    <Content Include="NSISPlugins\x86-ansi\INetC.dll" />
+    <Content Include="NSISPlugins\x86-ansi\nsis7z.dll" />
+    <Content Include="NSISPlugins\x86-ansi\SimpleFC.dll" />
+    <Content Include="NSISPlugins\x86-unicode\AccessControl.dll" />
+    <Content Include="NSISPlugins\x86-unicode\INetC.dll" />
+    <Content Include="Resources\ACSS\academy.ico" />
+    <Content Include="Resources\ACSS\allegb.ico" />
+    <Content Include="Resources\ACSS\allegg.ico" />
+    <Content Include="Resources\ACSS\allegr.ico" />
+    <Content Include="Resources\ACSS\Launcher.exe" />
+    <Content Include="Resources\ACSS\Launcher.pdb" />
+    <Content Include="Resources\Allegiance\Allegiance.exe" />
+    <Content Include="Resources\Allegiance\Reloader.exe" />
+    <Content Include="Resources\Bitmaps\allegb.ico" />
+    <Content Include="Resources\Bitmaps\allegg.ico" />
+    <Content Include="Resources\Bitmaps\header.bmp" />
+    <Content Include="Resources\Bitmaps\splash.bmp" />
+    <Content Include="Resources\DirectX\dxwebsetup.exe" />
+    <Content Include="Resources\NetFX35\dotnetfx35setup.exe" />
+    <Content Include="Resources\VC15\vc_redist.x86.exe" />
+    <Content Include="todo.txt" />
+    <Content Include="UsedPlugins.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Allegiance.nsi" />
+    <None Include="make_Installer.cmd" />
+    <None Include="Resources\ACSS\autoupdate.ds" />
+    <None Include="Resources\ACSS\EULA.RTF" />
+    <None Include="Resources\ACSS\ReadMe.url" />
+    <None Include="Resources\Compatibility\Compatibility.sdb" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>$(ProjectDir)\make_Installer.cmd "$(ProjectDir)"
+</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

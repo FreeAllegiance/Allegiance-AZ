@@ -3284,6 +3284,11 @@ public:
 	    if (LoadPreference("VirtualJoystick", FALSE))
 			ToggleVirtualJoystick();
 
+#if DIRECTSOUND_VERSION < 0x0800
+		// For DX7, we need to preset the max texture size, or the code will go into an infinate loop on some launches.
+		ToggleMaxTextureSize(LoadPreference("MaxTextureSize", 1));// yp Your_Persona August 2 2006 : MaxTextureSize Patch
+#endif 
+
 		ToggleFilterLobbyChats(LoadPreference("FilterLobbyChats", 0)); //TheBored 25-JUN-07: Mute lobby chat patch // mmf 04/08 default this to 0
 
 		// #360 timestamps are off by default

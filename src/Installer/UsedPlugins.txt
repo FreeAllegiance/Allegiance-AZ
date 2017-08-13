@@ -1,0 +1,26 @@
+http://nsis.sourceforge.net/AccessControl_plug-in
+-------------------------------------------------
+Changing ACL of folders/registry
+
+
+http://nsis.sourceforge.net/NSIS_Simple_Firewall_Plugin
+-------------------------------------------------------
+Adding exceptions to Windows Firewall
+
+
+http://nsis.sourceforge.net/Inetc_plug-in
+-----------------------------------------
+Downloading files via HTTP (.net framework installer/HighRes)
+
+
+
+
+
+
+======================
+= Currently not used =
+======================
+
+http://nsis.sourceforge.net/Nsis7z_plug-in
+------------------------------------------
+Extracting 7z files (HighRes)
