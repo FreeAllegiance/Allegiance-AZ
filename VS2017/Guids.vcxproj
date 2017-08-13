@@ -25,6 +25,10 @@
       <Configuration>FZDebug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="FZRetail-DX7|Win32">
+      <Configuration>FZRetail-DX7</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="FZRetail|Win32">
       <Configuration>FZRetail</Configuration>
       <Platform>Win32</Platform>
@@ -74,6 +78,13 @@
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='AZRetail-Optimized|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
@@ -109,11 +120,13 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">..\objs14\$(Configuration)\Guids\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">..\objs14\$(Configuration)\Guids\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">..\objs14\$(Configuration)\Guids\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">..\objs14\$(Configuration)\Guids\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='AZRetail-Optimized|Win32'">..\objs14\PGO\Guids\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='AZRetail-Instrumented|Win32'">..\objs14\PGO\Guids\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">..\objs14\$(Configuration)\Guids\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">..\objs14\$(Configuration)\Guids\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">..\objs14\$(Configuration)\Guids\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">..\objs14\$(Configuration)\Guids\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='AZRetail-Optimized|Win32'">..\objs14\PGO\Guids\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='AZRetail-Instrumented|Win32'">..\objs14\PGO\Guids\</IntDir>
   </PropertyGroup>
@@ -269,6 +282,43 @@
       <Command>lib /out:$(OutDir)AGCGuid.lib $(OutDir)AGCGuid.obj</Command>
     </PreLinkEvent>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>$(Outdir)..\Guids;..\src\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <GenerateTypeLibrary>true</GenerateTypeLibrary>
+      <TypeLibraryName>$(IntDir)$(ProjectName)_%(Filename).tlb</TypeLibraryName>
+      <OutputDirectory>
+      </OutputDirectory>
+      <HeaderFileName>%(Filename)_h.h</HeaderFileName>
+      <DllDataFileName>%(Filename)_dlldata.c</DllDataFileName>
+    </Midl>
+    <ClCompile>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>..\src\Inc;.\;.\$(OutDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DEBUG;SRVLOG;_AFXDLL;WIN32;_WINDOWS;STRICT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <OmitFramePointers>false</OmitFramePointers>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ErrorReporting>None</ErrorReporting>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Lib>
+      <LinkTimeCodeGeneration>false</LinkTimeCodeGeneration>
+    </Lib>
+    <PreLinkEvent>
+      <Command>lib /out:$(OutDir)AGCGuid.lib $(OutDir)AGCGuid.obj</Command>
+    </PreLinkEvent>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='AZRetail-Optimized|Win32'">
     <ClCompile>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -349,20 +399,24 @@
       <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">$(TargetDir)%(FileName).h</HeaderFileName>
       <OutputDirectory Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">$(TargetDir)</OutputDirectory>
       <OutputDirectory Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">$(TargetDir)</OutputDirectory>
+      <OutputDirectory Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">$(TargetDir)</OutputDirectory>
       <OutputDirectory Condition="'$(Configuration)|$(Platform)'=='AZRetail-Instrumented|Win32'">$(TargetDir)</OutputDirectory>
       <OutputDirectory Condition="'$(Configuration)|$(Platform)'=='AZRetail-Optimized|Win32'">$(TargetDir)</OutputDirectory>
       <OutputDirectory Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">$(TargetDir)</OutputDirectory>
       <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">$(TargetDir)%(FileName).h</HeaderFileName>
       <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">$(TargetDir)%(FileName).h</HeaderFileName>
+      <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">$(TargetDir)%(FileName).h</HeaderFileName>
       <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='AZRetail-Instrumented|Win32'">$(TargetDir)%(FileName).h</HeaderFileName>
       <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='AZRetail-Optimized|Win32'">$(TargetDir)%(FileName).h</HeaderFileName>
       <TypeLibraryName Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">$(TargetDir)AGC.tlb</TypeLibraryName>
       <TypeLibraryName Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">$(TargetDir)AGC.tlb</TypeLibraryName>
+      <TypeLibraryName Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">$(TargetDir)AGC.tlb</TypeLibraryName>
       <TypeLibraryName Condition="'$(Configuration)|$(Platform)'=='AZRetail-Instrumented|Win32'">$(TargetDir)AGC.tlb</TypeLibraryName>
       <TypeLibraryName Condition="'$(Configuration)|$(Platform)'=='AZRetail-Optimized|Win32'">$(TargetDir)AGC.tlb</TypeLibraryName>
       <TypeLibraryName Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">$(TargetDir)AGC.tlb</TypeLibraryName>
       <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">$(TargetDir)%(Filename)_dlldata.c</DllDataFileName>
       <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">$(TargetDir)%(Filename)_dlldata.c</DllDataFileName>
+      <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">$(TargetDir)%(Filename)_dlldata.c</DllDataFileName>
       <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='AZRetail-Instrumented|Win32'">$(TargetDir)%(Filename)_dlldata.c</DllDataFileName>
       <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">$(TargetDir)%(Filename)_dlldata.c</DllDataFileName>
       <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">$(TargetDir)%(Filename)_dlldata.c</DllDataFileName>
@@ -379,20 +433,24 @@
       <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">$(TargetDir)%(FileName).h</HeaderFileName>
       <OutputDirectory Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">$(TargetDir)</OutputDirectory>
       <OutputDirectory Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">$(TargetDir)</OutputDirectory>
+      <OutputDirectory Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">$(TargetDir)</OutputDirectory>
       <OutputDirectory Condition="'$(Configuration)|$(Platform)'=='AZRetail-Instrumented|Win32'">$(TargetDir)</OutputDirectory>
       <OutputDirectory Condition="'$(Configuration)|$(Platform)'=='AZRetail-Optimized|Win32'">$(TargetDir)</OutputDirectory>
       <OutputDirectory Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">$(TargetDir)</OutputDirectory>
       <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">$(TargetDir)%(FileName).h</HeaderFileName>
       <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">$(TargetDir)%(FileName).h</HeaderFileName>
+      <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">$(TargetDir)%(FileName).h</HeaderFileName>
       <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='AZRetail-Instrumented|Win32'">$(TargetDir)%(FileName).h</HeaderFileName>
       <HeaderFileName Condition="'$(Configuration)|$(Platform)'=='AZRetail-Optimized|Win32'">$(TargetDir)%(FileName).h</HeaderFileName>
       <TypeLibraryName Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">$(TargetDir)AGCIDL.tlb</TypeLibraryName>
       <TypeLibraryName Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">$(TargetDir)AGCIDL.tlb</TypeLibraryName>
+      <TypeLibraryName Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">$(TargetDir)AGCIDL.tlb</TypeLibraryName>
       <TypeLibraryName Condition="'$(Configuration)|$(Platform)'=='AZRetail-Instrumented|Win32'">$(TargetDir)AGCIDL.tlb</TypeLibraryName>
       <TypeLibraryName Condition="'$(Configuration)|$(Platform)'=='AZRetail-Optimized|Win32'">$(TargetDir)AGCIDL.tlb</TypeLibraryName>
       <TypeLibraryName Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">$(TargetDir)AGCIDL.tlb</TypeLibraryName>
       <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">$(TargetDir)%(Filename)_dlldata.c</DllDataFileName>
       <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">$(TargetDir)%(Filename)_dlldata.c</DllDataFileName>
+      <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">$(TargetDir)%(Filename)_dlldata.c</DllDataFileName>
       <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='AZRetail-Instrumented|Win32'">$(TargetDir)%(Filename)_dlldata.c</DllDataFileName>
       <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">$(TargetDir)%(Filename)_dlldata.c</DllDataFileName>
       <DllDataFileName Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">$(TargetDir)%(Filename)_dlldata.c</DllDataFileName>
@@ -404,12 +462,16 @@
     <CustomBuild Include="..\src\AGC\AGCEventsIDL.xsl">
       <Command Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">cscript /e:jscript /NoLogo ..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml ..\src\AGC\AGCEventsIDL.xsl $(OutDir)AGCEventsIDL.idl</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">cscript /e:jscript /NoLogo ..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml ..\src\AGC\AGCEventsIDL.xsl $(OutDir)AGCEventsIDL.idl</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">cscript /e:jscript /NoLogo ..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml ..\src\AGC\AGCEventsIDL.xsl $(OutDir)AGCEventsIDL.idl</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">Transforming AGCEvents.xml through AGCEventsIDL.xsl</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">Transforming AGCEvents.xml through AGCEventsIDL.xsl</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">Transforming AGCEvents.xml through AGCEventsIDL.xsl</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">$(OutDir)AGCEventsIDL.idl;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">$(OutDir)AGCEventsIDL.idl;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">$(OutDir)AGCEventsIDL.idl;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">..\src\AGC\XMLXForm.js;..\src\AGC\AGCEvents.xml;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">..\src\AGC\XMLXForm.js;..\src\AGC\AGCEvents.xml;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">..\src\AGC\XMLXForm.js;..\src\AGC\AGCEvents.xml;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">cscript /e:jscript /NoLogo ..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml ..\src\AGC\AGCEventsIDL.xsl $(OutDir)AGCEventsIDL.idl</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">cscript /e:jscript /NoLogo ..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml ..\src\AGC\AGCEventsIDL.xsl $(OutDir)AGCEventsIDL.idl</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">Transforming AGCEvents.xml through AGCEventsIDL.xsl</Message>
