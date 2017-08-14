@@ -203,8 +203,13 @@ DWORD WINAPI LogonThread( LPVOID param ) {
 		fValid = cssSoap.ValidateUserLogin(pqd->szCharacterName, pqd->szPW, szReason, iID);
 	}
 	else
+	{
+#ifdef STEAM
+		fValid = true; // BT - STEAM - When using FZ builds, do not use AZ auth.
+#else
 		fValid = IsRFC2898Valid(pqd->szCharacterName,pqd->szPW,szReason,iID);
-
+#endif
+	}
 #endif
 
 	(fValid) ? debugf("authed!\n") : debugf("not authed!\n");

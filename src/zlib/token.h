@@ -61,6 +61,11 @@ protected:
     virtual int ParseToken(PCC& pcc);
 
 public:
+
+	ZString GetErrorString() {
+		return "Error: " + m_strError + ", line: " + ZString(m_line) + ", pcc line: " + m_pccLine + ", current pcc: " + m_pcc;
+	}
+
     ~TextTokenImpl();
 
     //

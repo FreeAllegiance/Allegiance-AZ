@@ -77,7 +77,10 @@ public:
         {
             m_ppanePassword->SetHidden(true);
             m_pbuttonSavePassword->SetHidden(true);
-            m_pbuttonCDKey->SetHidden(true);
+           
+			// BT - Steam - No more CDKey. 
+			// m_pbuttonCDKey->SetHidden(true);
+
             m_pbuttonSignUp->SetHidden(true);
         }
         else

@@ -586,11 +586,11 @@ public:
 		m_pthing = NULL;
 #endif
 
-#ifdef USEAZ
+//#ifdef USEAZ
         TRef<INameSpace> pns = pmodeler->GetNameSpace("introscreen");
-#else
-		TRef<INameSpace> pns = pmodeler->GetNameSpace("introscreen_fz");
-#endif
+//#else
+//		TRef<INameSpace> pns = pmodeler->GetNameSpace("introscreen_fz");
+//#endif
         CastTo(m_ppane, pns->FindMember("screen"));
         CastTo(m_pbuttonPlayLan,    pns->FindMember("playLanButtonPane"));
         CastTo(m_pbuttonPlayInt,    pns->FindMember("playIntButtonPane"));
@@ -654,8 +654,14 @@ public:
         AddEventTarget(&IntroScreen::OnHoverNone,     m_pbuttonHelp->GetMouseLeaveEventSource());
         AddEventTarget(&IntroScreen::OnHoverNone,     m_pbuttonExit->GetMouseLeaveEventSource());
 
-        //m_pbuttonPlayLan->SetEnabled(false);
-        m_pbuttonPlayInt->SetEnabled(false); //Imago 9/14
+		/*m_pbuttonZoneClub->SetEnabled(false);
+        m_pbuttonPlayLan->SetEnabled(false);*/
+
+		// BT - Steam - Hiding these irrelevent buttons for now.
+		m_pbuttonZoneClub->SetHidden(true);
+		m_pbuttonPlayLan->SetHidden(true);
+
+        m_pbuttonPlayInt->SetEnabled(true); //Imago 9/14
 
         m_pfindServerPopup = new FindServerPopup(pns, this);
           

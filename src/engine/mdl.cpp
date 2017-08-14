@@ -1058,6 +1058,11 @@ public:
         while (ReadDefinition(pns, false)) {
         }
 
+		if (m_ptoken->Error() == true)
+		{
+			ZDebugOutput("Error reading token: " + m_ptoken->GetErrorString());
+		}
+
         return !m_ptoken->Error();
     }
 
