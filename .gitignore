@@ -181,3 +181,10 @@ x86
 
 # VS2017 files
 .vs/
+
+#Installer files
+src/Installer/AllegSetup_*.exe
+src/Installer/Resources/Allegiance/Allegiance*.exe 
+
+
+
