@@ -101,8 +101,8 @@ public:
                 float angle    = random(0, 2 * pi);
                 float distance = maxDistance * sqrtf(random(0, 1));
                 float radius   = rfocus * distance * sqrtf(random(0, 1));
-                float c        = radius * cos(angle);
-                float s        = radius * sin(angle);
+                float c        = radius * cosf(angle);
+                float s        = radius * sinf(angle);
 
                 data.m_position  = 
                       position 

@@ -718,7 +718,7 @@ public:
 	JoystickInputStreamImpl(IDirectInputDevice8* pdid, HWND hwnd) :		// kg: DInput8
         m_pdid(pdid),
         m_bFocus(false),
-        m_vvalueObject(5)
+        m_vvalueObject(20) //imago 12/03/09, was 5
     {
         DDCall(m_pdid->GetCapabilities(&m_didc));
         DDCall(m_pdid->GetDeviceInfo(&m_didi));

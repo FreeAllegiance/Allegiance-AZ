@@ -41,8 +41,8 @@ public:
         for(int vIndex = 0; vIndex < g_vSegments; vIndex++) {
             float vAngle = angle * ((float)(vIndex + 1) / (float)g_vSegments);
             int    index = vIndex * g_hSegments + 2;
-            float radius = sin(vAngle);
-            float      z = cos(vAngle);
+            float radius = sinf(vAngle);
+            float      z = cosf(vAngle);
 
             for (int hIndex = 0; hIndex < g_hSegments; hIndex++) {
                 float hAngle = 2 * pi * hIndex / g_hSegments;
@@ -51,13 +51,13 @@ public:
                     index + hIndex,
                     Vertex(
                         Vector(
-                            radius * cos(hAngle), 
-                            radius * sin(hAngle), 
+                            radius * cosf(hAngle), 
+                            radius * sinf(hAngle), 
                             z
                         ),
                         Vector(
-                            radius * cos(hAngle), 
-                            radius * sin(hAngle), 
+                            radius * cosf(hAngle), 
+                            radius * sinf(hAngle), 
                             z
                         )
                     )

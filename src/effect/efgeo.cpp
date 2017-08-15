@@ -274,8 +274,8 @@ public:
                 int index  = vIndex * hSegments + hIndex;
                 float hAngle = (float)hIndex * 2.0f * pi / (float)hSegments;
 
-                float x = cos(hAngle) * vCos;
-                float y = sin(hAngle) * vCos;
+                float x = cosf(hAngle) * vCos;
+                float y = sinf(hAngle) * vCos;
                 float z =              -vSin;
 
                 static const float intensity = 1.0f;

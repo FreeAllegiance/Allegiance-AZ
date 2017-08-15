@@ -327,7 +327,7 @@ STDMETHODIMP CTCNullStreamImpl::Clone(IStream** ppstm)
   CLock lock(this);
 
   // Initialize the new stream with our seek pointer and size
-  LARGE_INTEGER dlibMove = {0, m_nPosition};
+  LARGE_INTEGER dlibMove = {0, (LONG) m_nPosition};
   ULARGE_INTEGER libNewSize = {0, m_nSize};
   _SVERIFY(hr = pstm->Seek(dlibMove, STREAM_SEEK_SET, NULL));
   _SVERIFY(hr = pstm->SetSize(libNewSize));

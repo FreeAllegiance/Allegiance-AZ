@@ -82,8 +82,8 @@ public:
                 m_vertices.Set(
                     index + indexSection,
                     VertexL(
-                        radius * cos(angle), 
-                        radius * sin(angle), 
+                        radius * cosf(angle), 
+                        radius * sinf(angle), 
                         z,
                         bright,
                         bright,
@@ -126,7 +126,7 @@ public:
             int         index = indexDepth * (m_countSection + 1);
             float       value = (float)indexDepth / m_countDepth;
             float           z = time + value;
-            float angleOffset = 5 * (1 - pow(1 - value, 2));
+            float angleOffset = 5 * (1 - powf(1 - value, 2));
 
             for (int indexSection = 0; indexSection < (m_countSection + 1); indexSection++) {
                 float angle = 4 * (float)indexSection / m_countSection + angleOffset;
