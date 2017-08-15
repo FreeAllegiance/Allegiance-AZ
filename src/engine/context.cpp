@@ -203,7 +203,7 @@ private:
             Vector v3;
 
             if (m_forward.IsZero()) {
-                float c = cos(m_angle) * m_scale;
+                float c = cosf(m_angle) * m_scale;
                 float s = sin(m_angle) * m_scale;
                 float dx = c - s;
                 float dy = c + s;

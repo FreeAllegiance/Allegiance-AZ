@@ -142,7 +142,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..;..\src\Test\Inc;..\src\Inc;..\src\zlib;..\src\_Utility;..\src\AGC;..\src\engine;..\src\Zone;..\src\lobby;$(OutDir);$(OutDir)..\..\Guids;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0;_ATL_STATIC_REGISTRY;_USRDLL;_DEBUG;DEBUG;STRICT;_WINDOWS;WIN32;_AFXDLL;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DIRECT3D_VERSION=0x0900;_ITERATOR_DEBUG_LEVEL=0;_ATL_STATIC_REGISTRY;_USRDLL;_DEBUG;DEBUG;STRICT;_WINDOWS;WIN32;_AFXDLL;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>StackFrameRuntimeCheck</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -185,7 +185,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..;..\src\Test\Inc;..\src\Inc;..\src\zlib;..\src\_Utility;..\src\AGC;..\src\engine;..\src\Zone;..\src\lobby;$(OutDir);$(OutDir)..\..\Guids;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0;_ATL_STATIC_REGISTRY;_USRDLL;_DEBUG;DEBUG;STRICT;_WINDOWS;WIN32;_AFXDLL;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DIRECT3D_VERSION=0x0900;_ITERATOR_DEBUG_LEVEL=0;_ATL_STATIC_REGISTRY;_USRDLL;_DEBUG;DEBUG;STRICT;_WINDOWS;WIN32;_AFXDLL;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>StackFrameRuntimeCheck</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -230,6 +230,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>DIRECT3D_VERSION=0x0900;_VC80_UPGRADE=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>FLAVOR="$(Configuration)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -263,6 +264,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>DIRECT3D_VERSION=0x0900;_VC80_UPGRADE=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>FLAVOR="$(Configuration)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -296,6 +298,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>DIRECT3D_VERSION=0x0900;_VC80_UPGRADE=0x0600;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>FLAVOR="$(Configuration)";%(PreprocessorDefinitions)</PreprocessorDefinitions>

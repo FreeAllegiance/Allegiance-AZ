@@ -186,5 +186,8 @@ x86
 src/Installer/AllegSetup_*.exe
 src/Installer/Resources/Allegiance/Allegiance*.exe 
 
+#WinMerge
+*.bak
+
 
 

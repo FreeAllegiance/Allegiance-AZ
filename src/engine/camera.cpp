@@ -149,7 +149,7 @@ void Camera::SetPerspective(float f)
 void Camera::SetFOV(float fov)
 {
     m_fov = fov;
-    SetPerspective(cos(0.5f * fov) / sin(0.5f * fov));
+    SetPerspective((float) cos(0.5f * fov) / sin(0.5f * fov));
 }
 
 Vector Camera::TransformLocalToEye(const Vector& vec)

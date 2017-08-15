@@ -29,7 +29,7 @@ ZString UTL::DoHTTP(char * szHdrs, char * szHost, char * szVerb, char * szUri, c
 	if(hSession) {
 		HINTERNET hConnect = InternetConnectA(hSession,szHost,(bSecure) ? INTERNET_DEFAULT_HTTPS_PORT : INTERNET_DEFAULT_HTTP_PORT,NULL,NULL,INTERNET_SERVICE_HTTP,NULL,NULL);
 		if (!hConnect)
-			debugf( "Failed to connect to %s\n", szHost);
+			debugf( "Failed to connect to %s - %s - %s\n", szVerb, szHost, szUri);
 		else
 		{
 			debugf("%s %s",szVerb,szUri);

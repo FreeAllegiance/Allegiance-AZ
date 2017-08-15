@@ -99,8 +99,8 @@ public:
                 DebrisData& data = m_listData.GetFront();
 
                 float angle    = random(0, 2 * pi);
-                float distance = maxDistance * sqrt(random(0, 1));
-                float radius   = rfocus * distance * sqrt(random(0, 1));
+                float distance = maxDistance * sqrtf(random(0, 1));
+                float radius   = rfocus * distance * sqrtf(random(0, 1));
                 float c        = radius * cos(angle);
                 float s        = radius * sin(angle);
 
