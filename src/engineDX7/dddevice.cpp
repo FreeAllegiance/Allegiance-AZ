@@ -865,7 +865,9 @@ public:
             TRef<DeviceTexture> ptexture;
 
             if (!m_mapDeviceTextures.Find(pddsurface, ptexture)) {
-                while (true) {
+
+				// BT - 8/17 Dreg Texture load fix for DX7. - F3 Map view.
+				for (int i = 0; i < 10; i++) {
                     ptexture = CreateDeviceTexture(pd3dd, pddsurface, size);
                     if (ptexture) {
                         m_mapDeviceTextures.Set(pddsurface, ptexture);
@@ -873,6 +875,10 @@ public:
                     } 
 
                     RevokeTextures();
+
+					// BT - 8/17 Dreg Texture load fix for DX7.
+					if (m_pengine->IsEngineValid() == false)
+						break;
                 }
             }
 

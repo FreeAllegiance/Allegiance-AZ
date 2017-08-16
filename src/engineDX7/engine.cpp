@@ -135,6 +135,12 @@ private:
     //////////////////////////////////////////////////////////////////////////////
 
 public:
+
+	// BT - 8/17 Dreg Texture load fix for DX7.
+	bool IsEngineValid() {
+		return m_bValid;
+	}
+
     EngineImpl(bool bAllow3DAcceleration, bool bAllowSecondary, DWORD dwBPP) :
         m_pointFullscreen(800, 600),
         m_pointFullscreenCurrent(0, 0),

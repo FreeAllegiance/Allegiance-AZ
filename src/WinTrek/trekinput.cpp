@@ -800,18 +800,38 @@ public:
 
     void ClearButtonStates()
     {
+		// BT - 8/17 - DX7 Throttle bounce fix. Because the old patch(es) were resetting all the pointers to TValue to actual values instead
+		// of nulls, it was causing key presses to reload the key map which was tickeling the throttle causing the autopilot to disengage. 
+		// By checking if we actually need to set a value to false first, we no longer need to reload the map on every 
+		// ClearButtonStates call.
         for (int index = 0; index < TK_Max; index++) {
-			m_boolTrekKeyButtonDown[index] = false;
-			m_boolMouseTrekKeyDown[index] = false;	//8/10 #56
-        // mmf pull yp's changes for now //imago put back 10/14
-			m_pboolTrekKeyDown[index]       = false; // keyboard // yp - Your_Persona buttons get stuck patch. aug-03-2006
-            m_ppboolTrekKeyButtonDown[index] = false;
+
+			if (m_boolTrekKeyButtonDown[index] == true)
+				m_boolTrekKeyButtonDown[index] = false;
+
+			if (m_boolMouseTrekKeyDown[index] == true)
+				m_boolMouseTrekKeyDown[index] = false;
+
+			if (m_pboolTrekKeyDown[index] != NULL &&  m_pboolTrekKeyDown[index]->GetValue() == true)
+				m_pboolTrekKeyDown[index] = TRef<Boolean>(false);
+
+			if (m_ppboolTrekKeyButtonDown[index] != NULL && m_ppboolTrekKeyButtonDown[index]->GetValue() == true)
+				m_ppboolTrekKeyButtonDown[index] = TRef<Boolean>(false);
+
+
+			//m_boolTrekKeyButtonDown[index] = false;
+			//m_boolMouseTrekKeyDown[index] = false;	//8/10 #56
+   //     // mmf pull yp's changes for now //imago put back 10/14
+			//m_pboolTrekKeyDown[index]       = TRef<Boolean>(false); // keyboard // yp - Your_Persona buttons get stuck patch. aug-03-2006
+   //         m_ppboolTrekKeyButtonDown[index] = TRef<Boolean>(false);
         }
+
 		// yp - After that for loop we lose responce from most of our keys.. so..		 
 		// hack.. we reload the map, and something in there fixes it.
-		if (!LoadMap(INPUTMAP_FILE)) {
-            LoadMap(DEFAULTINPUTMAP_FILE);
-        }
+		/*if (!LoadMap(INPUTMAP_FILE)) {
+			LoadMap(DEFAULTINPUTMAP_FILE);
+		}*/
+		
     }
 
     //////////////////////////////////////////////////////////////////////////////

@@ -110,6 +110,15 @@ public:
             case 0: return "Left";
             case 1: return "Right";
             case 2: return "Middle";
+
+				// BT - 8/17 Added Mousewheel support from DX9 Engine.
+            case 3: return "XButton1";
+            case 4: return "XButton2";
+            case 5: return "XButton3";
+            case 6: return "XButton4";
+            case 7: return "XButton5";
+            case 8: return "Wheel Up";
+            case 9: return "Wheel Down";
         }
 
         return ZString();
@@ -123,12 +132,12 @@ public:
 
     int GetValueCount()
     {
-        return 2;
+        return 3; //Imago 8/13/09 was 2 // BT - 8/17 Added Mousewheel support from DX9 Engine.
     }
 
     int GetButtonCount()
     {
-        return 3;
+        return 10; //Imago 8/13/09 was 3 // BT - 8/17 Added Mousewheel support from DX9 Engine.
     }
 
     Boolean* IsDown(int id)
@@ -187,10 +196,12 @@ public:
         }
     }
 
+    //NYI WheelMove Imago m_ppnumber[2]
+
     MouseResult Button(IInputProvider* pprovider, const Point& point, int button, bool bCaptured, bool bInside, bool bDown)
     {
         if (m_bButtonsEnabled) {
-            if (button <= 3) {
+            if (button <= 20) { //was 3 Imago 8/13/09, 7/10 // BT - 8/17 Added Mousewheel support from DX9 Engine.
                 m_ppboolButton[button]->SetValue(bDown);
             }
         }

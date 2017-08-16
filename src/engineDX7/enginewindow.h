@@ -188,7 +188,9 @@ protected:
     void UpdateCursor();
     
     void UpdateInput();
-    void HandleMouseMessage(UINT message, const Point& point);
+
+	// BT - 8/17 Added Mousewheel support from DX9 Engine.
+    void HandleMouseMessage(UINT message, const Point& point, UINT flags = NULL);
 
     void ParseCommandLine(const ZString& strCommandLine, bool& bStartFullscreen);
     void DoIdle();

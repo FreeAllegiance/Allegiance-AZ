@@ -1271,7 +1271,8 @@ void EngineWindow::SetMouseEnabled(bool bEnable)
     m_bMouseEnabled = bEnable;
 }
 
-void EngineWindow::HandleMouseMessage(UINT message, const Point& point)
+// BT - 8/17 Added Mousewheel support from DX9 Engine.
+void EngineWindow::HandleMouseMessage(UINT message, const Point& point, UINT nFlags)
 {
     if (m_pgroupImage != NULL) {
         //
@@ -1286,12 +1287,18 @@ void EngineWindow::HandleMouseMessage(UINT message, const Point& point)
         //
 
         switch (message) {
+
+			// BT - 8/17 Added Mousewheel support from DX9 Engine.
+            case WM_MOUSEHOVER:
+			case WM_NCMOUSEHOVER: //Imago 7/10
+
             case 0: // 0 == WM_MOUSEENTER
                 //pimage->MouseEnter(this, point);
                 m_bMouseInside = true;
                 break;
 
             case WM_MOUSELEAVE:
+			case WM_NCMOUSELEAVE: //Imago 7/10 // BT - 8/17 Added Mousewheel support from DX9 Engine.
                 //pimage->MouseLeave(this);
                 m_bMouseInside = false;
                 break;
@@ -1345,6 +1352,7 @@ void EngineWindow::HandleMouseMessage(UINT message, const Point& point)
             pimage->MouseMove(this, point, false, true);
         }
 
+
         //
         // Handle button messages
         //
@@ -1375,6 +1383,37 @@ void EngineWindow::HandleMouseMessage(UINT message, const Point& point)
                 case WM_MBUTTONUP:   
                     mouseResult = pimage->Button(this, point, 2, m_bCaptured, m_bHit, false);
                     break;
+
+					// BT - 8/17 Added Mousewheel support from DX9 Engine.
+                case WM_MOUSEWHEEL:  //imago 8/13/09
+                    if (nFlags >2) {
+                        if (GET_WHEEL_DELTA_WPARAM(nFlags) < 0) {
+                            mouseResult = pimage->Button(this,point, 8, m_bCaptured, m_bHit, true );
+                            if (!GetFullscreen())
+                                mouseResult = pimage->Button(this,point, 8, m_bCaptured, m_bHit, false );
+                        } else {
+                            mouseResult = pimage->Button(this, point, 9, m_bCaptured, m_bHit, true );
+                            if (!GetFullscreen())
+                                mouseResult = pimage->Button(this, point, 9, m_bCaptured, m_bHit, false );
+                        }
+                    } else if (nFlags == 1) {
+                        mouseResult = pimage->Button(this,point, 8, m_bCaptured, m_bHit, false );
+                    } else if (nFlags == 0) {
+                        mouseResult = pimage->Button(this,point, 9, m_bCaptured, m_bHit, false );
+                    }
+                    break;
+
+		        case WM_XBUTTONDOWN: //imago 8/15/09
+                    ZDebugOutput("WM_XBUTTONDOWN: " + ZString(2+GET_XBUTTON_WPARAM(nFlags)) + "\n");
+                    mouseResult = pimage->Button(this, point, 2+GET_XBUTTON_WPARAM(nFlags), m_bCaptured, m_bHit, true );
+                    break;
+
+		        case WM_XBUTTONUP:
+                    ZDebugOutput("WM_XBUTTONUP: " + ZString(2+GET_XBUTTON_WPARAM(nFlags)) + "\n");
+                    mouseResult = pimage->Button(this, point, 2+GET_XBUTTON_WPARAM(nFlags), m_bCaptured, m_bHit, false );
+                    break;
+
+					// BT - 8/17 (end) Added Mousewheel support from DX9 Engine.
             }
         }
 
@@ -1386,13 +1425,14 @@ void EngineWindow::HandleMouseMessage(UINT message, const Point& point)
             CaptureMouse();
             m_bCaptured = true;
         }
+
     }
 }
 
 bool EngineWindow::OnMouseMessage(UINT message, UINT nFlags, const WinPoint& point)
 {
     if (!m_pengine->IsFullscreen()) {
-        HandleMouseMessage(message, Point::Cast(point));
+        HandleMouseMessage(message, Point::Cast(point), nFlags); // BT - 8/17 Added Mousewheel support from DX9 Engine.
     }
     
     return true;
@@ -1421,6 +1461,52 @@ bool EngineWindow::OnEvent(ButtonEvent::Source* pevent, ButtonEventData be)
             HandleMouseMessage(WM_MBUTTONDOWN, m_pmouse->GetPosition());
         } else {
             HandleMouseMessage(WM_MBUTTONUP,   m_pmouse->GetPosition());
+        }
+
+		// BT - 8/17 Added Mousewheel support from DX9 Engine.
+    //Imago 8/15/09
+    } else if (be.GetButton() == 3) {
+        if (be.IsDown()) {
+            HandleMouseMessage(WM_XBUTTONDOWN, m_pmouse->GetPosition(), MAKEWPARAM(0,1));
+        } else {
+            HandleMouseMessage(WM_XBUTTONUP,   m_pmouse->GetPosition(), MAKEWPARAM(0,1));
+        }
+    } else if (be.GetButton() == 4) {
+        if (be.IsDown()) {
+            HandleMouseMessage(WM_XBUTTONDOWN, m_pmouse->GetPosition(), MAKEWPARAM(0,2));
+        } else {
+            HandleMouseMessage(WM_XBUTTONUP,   m_pmouse->GetPosition(), MAKEWPARAM(0,2));
+        }
+    } else if (be.GetButton() == 5) {
+        if (be.IsDown()) {
+            HandleMouseMessage(WM_XBUTTONDOWN, m_pmouse->GetPosition(), MAKEWPARAM(0,3));
+        } else {
+            HandleMouseMessage(WM_XBUTTONUP,   m_pmouse->GetPosition(), MAKEWPARAM(0,3));
+        }
+    } else if (be.GetButton() == 6) {
+        if (be.IsDown()) {
+            HandleMouseMessage(WM_XBUTTONDOWN, m_pmouse->GetPosition(), MAKEWPARAM(0,4));
+        } else {
+            HandleMouseMessage(WM_XBUTTONUP,   m_pmouse->GetPosition(), MAKEWPARAM(0,4));
+        }
+    } else if (be.GetButton() == 7) {
+        if (be.IsDown()) {
+            HandleMouseMessage(WM_XBUTTONDOWN, m_pmouse->GetPosition(), MAKEWPARAM(0,5));
+        } else {
+            HandleMouseMessage(WM_XBUTTONUP,   m_pmouse->GetPosition(), MAKEWPARAM(0,5));
+        }
+
+    } else if (be.GetButton() == 8) {
+        if (be.IsDown()) {
+            HandleMouseMessage(WM_MOUSEWHEEL, m_pmouse->GetPosition(), -WHEEL_DELTA);
+        } else {
+            HandleMouseMessage(WM_MOUSEWHEEL, m_pmouse->GetPosition(), 1);
+        }
+    } else if (be.GetButton() == 9) {
+        if (be.IsDown()) {
+            HandleMouseMessage(WM_MOUSEWHEEL, m_pmouse->GetPosition(), WHEEL_DELTA);
+        } else {
+            HandleMouseMessage(WM_MOUSEWHEEL, m_pmouse->GetPosition(), 0);
         }
     }
 

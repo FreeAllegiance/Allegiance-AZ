@@ -370,12 +370,20 @@ public:
 
     void DeltaWheel(int dz)
     {
-        if (dz != 0 ) {
-            //ZDebugOutput("MouseDZ: " + ZString(dz) + "\n");
             m_z += float(dz);
 
-            if (m_vvalueObject.GetCount() >= 3) {
-                m_vvalueObject[0]->GetValue()->SetValue(m_z);
+			// BT - 8/17 Added Mousewheel support from DX9 Engine.
+        if (m_vvalueObject.GetCount() >= 3 && m_vvalueObject[2] != NULL) { //#217
+            m_vvalueObject[2]->GetValue()->SetValue(m_z); //imago 8/12/09 use z axis
+            if (dz < 0) {
+                ButtonChanged(8,true);
+            } else if (dz > 0) {
+                ButtonChanged(9,true);
+            } else { //imago 8/13/09 use dz == 0 for button up
+                if (m_vbuttonObject[8] != NULL && m_vbuttonObject[8]->GetValue()->GetValue()) //#217
+                    ButtonChanged(8,false);
+                if (m_vbuttonObject[8] != NULL && m_vbuttonObject[9]->GetValue()->GetValue()) //#217
+                    ButtonChanged(9,false);
             }
         }
     }
@@ -398,6 +406,7 @@ public:
         DWORD count = 1;
         int dx = 0;
         int dy = 0;
+        int dz = 0; // BT - 8/17 Added Mousewheel support from DX9 Engine.
 
         while (count == 1) {
             HRESULT hr = m_pdid->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), &didod, &count, 0);
@@ -456,7 +465,7 @@ public:
                         break;
 
                     case DIMOFS_Z:
-                        DeltaWheel(int(didod.dwData));
+                        dz += int(didod.dwData); // BT - 8/17 Added Mousewheel support from DX9 Engine.
                         break;
                 }
             }
@@ -467,6 +476,9 @@ public:
 
             DeltaPosition(dx, dy);
         }
+
+		// BT - 8/17 Added Mousewheel support from DX9 Engine.
+        DeltaWheel(dz);
     }
 
     void UpdatePolled()
@@ -555,6 +567,12 @@ public:
     void SetWheelPosition(float pos)
     {
         m_z = pos;
+    }
+
+	// BT - 8/17 Added Mousewheel support from DX9 Engine.
+    float GetWheelPosition()
+    {
+        return m_z;
     }
 
     const Point& GetPosition()

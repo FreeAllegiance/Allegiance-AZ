@@ -604,6 +604,9 @@ public:
     virtual DDSDescription  GetPrimaryDDSD()   = 0;
     virtual PrivateSurface* GetBackBuffer()    = 0;
 
+	// BT - 8/17 Dreg Texture load fix for DX7.
+	virtual bool IsEngineValid() = 0;
+
     virtual TRef<PrivateSurface> CreateCompatibleSurface(
         PrivateSurface* psurface, 
         const WinPoint& size, 
