@@ -211,13 +211,21 @@ public:
 //
 //////////////////////////////////////////////////////////////////////////////
 
+// BT - 8/17 - Resolution switch fixes.
 WinPoint g_validModes[] =
 {
     WinPoint( 640,  480),
     WinPoint( 800,  600),
     WinPoint(1024,  768),
-    WinPoint(1280, 1024),
-    WinPoint(1600, 1200)
+	WinPoint(1280,	720),
+	WinPoint(1280,	768),
+	WinPoint(1280,	800),
+	WinPoint(1280,	960),
+    WinPoint(1280, 1024), // This mode does not appear compatable. 
+	WinPoint(1360,	768),
+	WinPoint(1366,	768),
+	WinPoint(1440,	900),
+    WinPoint(1600,	1200) // Neither does this one, maybe remove these?
 };
 
 const int g_countValidModes = sizeof(g_validModes) / sizeof(g_validModes[0]);
@@ -271,35 +279,59 @@ private:
         return pthis->EnumModes(*(DDSDescription*)lpDDSurfaceDesc);
     }
 
-    HRESULT EnumModes(const DDSDescription& ddsd)
-    {
-        TRef<PixelFormat> ppf = m_pengine->GetPixelFormat(ddsd.GetPixelFormat());
+	HRESULT EnumModes(const DDSDescription& ddsd)
+	{
+		TRef<PixelFormat> ppf = m_pengine->GetPixelFormat(ddsd.GetPixelFormat());
 
-        int   xsize = ddsd.XSize();
-        int   ysize = ddsd.YSize();
-        DWORD bits  = ppf->PixelBits();
-        DWORD dwNeededVideoMemory = 6 * xsize * ysize;
+		int   xsize = ddsd.XSize();
+		int   ysize = ddsd.YSize();
+		DWORD bits = ppf->PixelBits();
+		DWORD dwNeededVideoMemory = 6 * xsize * ysize;
 
-        if (
-               bits == 16 // KGJV 32B TODO: this works as long as all 16bpp modes are supported in 32bpp too...
-            && xsize >= 640
-            && ysize >= 480
-            // !!! NT doesn't return the right value for TotalVideoMemory
-            //&& dwNeededVideoMemory < m_dwTotalVideoMemory 
-        ) {
-            for (int index = 0; index < g_countValidModes; index++) {
-                if (
-                       xsize == g_validModes[index].X()
-                    && ysize == g_validModes[index].Y()
-                ) {
-                    m_modes.PushEnd(ddsd.Size());
-                    break;
-                }
-            }
-        }
+		// BT - 8/17 - Resolution switch fixes.
+		char msg[1024];
+		sprintf(msg, "Found Mode: %ld x %ld\n", ddsd.XSize(), ddsd.YSize());
+		OutputDebugString(msg);
 
-        return D3DENUMRET_OK;
-    }
+		bool isValidMode = false;
+		for (int index = 0; index < g_countValidModes; index++)
+		{
+			if (xsize == g_validModes[index].X() && ysize == g_validModes[index].Y())
+			{
+				isValidMode = true;
+			}
+		}
+
+		if (isValidMode == true && m_modes.Find(ddsd.Size()) < 0)
+		{
+			sprintf(msg, "Mode Added: %ld x %ld\n", ddsd.XSize(), ddsd.YSize());
+			OutputDebugString(msg);
+
+			m_modes.PushEnd(ddsd.Size());
+
+		}
+
+		// BT - 8/17 - Resolution switch fixes. - Taking this old way out, it's not selecting valid modes on moden systems where 32bpp is the only option.
+		//if (
+		//       bits == 16 // KGJV 32B TODO: this works as long as all 16bpp modes are supported in 32bpp too...
+		//    && xsize >= 640
+		//    && ysize >= 480
+		//    // !!! NT doesn't return the right value for TotalVideoMemory
+		//    //&& dwNeededVideoMemory < m_dwTotalVideoMemory 
+		//) {
+		//    for (int index = 0; index < g_countValidModes; index++) {
+		//        if (
+		//               xsize == g_validModes[index].X()
+		//            && ysize == g_validModes[index].Y()
+		//        ) {
+		//            m_modes.PushEnd(ddsd.Size());
+		//            break;
+		//        }
+		//    }
+		//}
+
+		return D3DENUMRET_OK;
+	}
 
     //////////////////////////////////////////////////////////////////////////////
     //
@@ -604,36 +636,54 @@ public:
     {
         int count = m_modes.GetCount();
 
+		// BT - 8/17 - Resolution switch fixes.
+		int currentModeIndex = 0;
+
         for(int index = 0; index < count; index++) {
             if (
-                   m_modes[index].X() > size.X() 
-                || m_modes[index].Y() > size.Y() 
+                   m_modes[index].X() == size.X() 
+                && m_modes[index].Y() == size.Y() 
             ) {
-                return m_modes[index];
+				currentModeIndex = index;
+				break;
             }
         }
 
-        return m_modes[count - 1];
+		if (currentModeIndex + 1 < count)
+			return m_modes[currentModeIndex + 1];
+		else 
+			return m_modes[currentModeIndex]; 
     }
 
     WinPoint PreviousMode(const WinPoint& size)
     {
         int count = m_modes.GetCount();
 
-        for(int index = count - 1 ; index > 0; index--) {
+		// BT - 8/17 - Resolution switch fixes.
+		int currentModeIndex = 0;
+
+		for (int index = 0; index < count; index++) {
             if (
-                   m_modes[index].X() < size.X() 
-                || m_modes[index].Y() < size.Y() 
+				m_modes[index].X() == size.X()
+				&& m_modes[index].Y() == size.Y()
             ) {
-                return m_modes[index];
+				currentModeIndex = index;
+				break;
             }
         }
 
-        return m_modes[0];
+		if(currentModeIndex - 1 >= 0)
+			return m_modes[currentModeIndex - 1];
+		else
+			return m_modes[currentModeIndex]; 
     }
 
     void EliminateModes(const WinPoint& size)
     {
+		// BT - 8/17 - Resolution switch fixes.
+		m_modes.Remove(size);
+
+/*
         int count = m_modes.GetCount();
 
         for(int index = 0; index < count; index++) {
@@ -641,10 +691,11 @@ public:
                    m_modes[index].X() >= size.X() 
                 && m_modes[index].Y() >= size.Y() 
             ) {
+				m_modes.Remove(
                 m_modes.SetCount(index);
                 return;
             }
-        }
+        }*/
     }
 
     //////////////////////////////////////////////////////////////////////////////

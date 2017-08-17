@@ -239,6 +239,17 @@ public:
         // Setup the device
         //
 
+		// BT - 8/17 Mousewheel support from DX9 engine.
+		//Imago 8/14/09
+		if (m_vvalueObject[2] != NULL) {
+			m_vbuttonObject.SetCount(10);
+			ButtonDDInputObject* pobject = new ButtonDDInputObject("Wheel Up", 0x00000301UL, GUID_ZAxis);
+			m_vbuttonObject.Set(8, pobject);
+			pobject = new ButtonDDInputObject("Wheel Down", 0x00000401UL, GUID_ZAxis);
+			m_vbuttonObject.Set(9, pobject);
+
+		}
+
         SetupDevice();
 
         //

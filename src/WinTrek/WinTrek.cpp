@@ -8538,7 +8538,9 @@ public:
                             float   fov = m_cameraControl.GetFOV();
                             if (m_ptrekInput->IsTrekKeyDown(TK_ZoomIn, true))
                             {
-                                fov -= dt;
+								// BT - 8/17 Set fixed mousewheel zoom delta.
+								fov -= .08f;
+                                //fov -= dt;
                                 if (fov < s_fMinFOV)
                                     fov = s_fMinFOV;
 
@@ -8546,7 +8548,9 @@ public:
                             }
                             else if (m_ptrekInput->IsTrekKeyDown(TK_ZoomOut, true))
                             {
-                                fov += dt;
+								// BT - 8/17 Set fixed mousewheel zoom delta.
+								fov += .08f;
+                                //fov += dt;
                                 if (fov > s_fMaxFOV)
                                     fov = s_fMaxFOV;
 

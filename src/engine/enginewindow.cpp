@@ -1606,11 +1606,11 @@ void EngineWindow::HandleMouseMessage(UINT message, const Point& point, UINT nFl
                         mouseResult = pimage->Button(this,point, 8, m_bCaptured, m_bHit, false );
                     } else if (nFlags == 0) {
                         mouseResult = pimage->Button(this,point, 9, m_bCaptured, m_bHit, false );
-                    }
+                    }	
                     break;
 
 		        case WM_XBUTTONDOWN: //imago 8/15/09
-                    ZDebugOutput("WM_XBUTTONDOWN: " + ZString(2+GET_XBUTTON_WPARAM(nFlags)) + "\n");
+                     ZDebugOutput("WM_XBUTTONDOWN: " + ZString(2+GET_XBUTTON_WPARAM(nFlags)) + "\n");
                     mouseResult = pimage->Button(this, point, 2+GET_XBUTTON_WPARAM(nFlags), m_bCaptured, m_bHit, true );
                     break;
 
