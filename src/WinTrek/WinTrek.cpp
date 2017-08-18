@@ -3249,7 +3249,7 @@ public:
             ToggleFilterQuickComms();
 		if (!LoadPreference("FilterUnknownChats", TRUE))
             ToggleFilterUnknownChats(); //TheBored 30-JUL-07: Filter Unknown Chat patch
-        if (!LoadPreference("LinearControlResponse", TRUE))
+        if (!LoadPreference("LinearControlResponse", FALSE)) // BT - 8/17 Set to quadratic by default.
             ToggleLinearControls();
         if (!LoadPreference("Environment", TRUE))
             ToggleEnvironment();
@@ -3278,7 +3278,7 @@ public:
             ToggleCenterHUD();
         if (!LoadPreference("TargetHUD", TRUE))
             ToggleTargetHUD();
-        SetDeadzone(LoadPreference("DeadZone", 30)); //ToggleLargeDeadZone(); //Imago updated 7/8/09
+        SetDeadzone(LoadPreference("DeadZone", 31)); //ToggleLargeDeadZone(); //Imago updated 7/8/09 // BT 8/17 - Small deadzone default.
 		SetRadarLOD(LoadPreference("RadarLOD", 0)); //Imago updated 7/8/09 #24 (Gamma, VirtualJoystick, RadarLOD, ShowGrid)
 		if (LoadPreference("ShowGrid", FALSE))
 			ToggleShowGrid();

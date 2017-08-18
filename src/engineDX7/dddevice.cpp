@@ -302,9 +302,16 @@ private:
 			}
 		}
 
+		// BT - 8/17 resolution / refresh rate fix. 
+		// If the monitor resolution is at or below 1024 x 768 OR the refresh rate is at or below 60, then allegiance will run it.
+		if ((ddsd.Size().X() > 1024 || ddsd.Size().Y() > 768) && ddsd.dwRefreshRate > 60)
+		{
+			isValidMode = false;
+		}
+
 		if (isValidMode == true && m_modes.Find(ddsd.Size()) < 0)
 		{
-			sprintf(msg, "Mode Added: %ld x %ld\n", ddsd.XSize(), ddsd.YSize());
+			sprintf(msg, "Mode Added: %ld x %ld (%ld)\n", ddsd.XSize(), ddsd.YSize(), ddsd.dwRefreshRate);
 			OutputDebugString(msg);
 
 			m_modes.PushEnd(ddsd.Size());
