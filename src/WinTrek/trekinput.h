@@ -15,7 +15,7 @@ public:
 class TrekInput : public IObject {
 public:
     virtual bool         LoadMap(const ZString& str)                                               = 0;
-	virtual void		 ClearButtonStates()													   = 0; // yp - Your_Persona allow for clearButtonStates.(buttons get stuck patch) aug-03-2006
+	virtual void		 ClearButtonStates(bool reloadKeyMap)									   = 0; // yp - Your_Persona allow for clearButtonStates.(buttons get stuck patch) aug-03-2006  // BT - 8/17 Stuck button/Throttle Bounce
     virtual void         SetFocus(bool bFocus)                                                     = 0;
     virtual void         PlayFFEffect(ForceEffectID effectID, LONG lDirection = 0)                 = 0;
     virtual float        GetAxis(int index)                                                        = 0;

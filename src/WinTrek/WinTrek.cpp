@@ -3278,7 +3278,7 @@ public:
             ToggleCenterHUD();
         if (!LoadPreference("TargetHUD", TRUE))
             ToggleTargetHUD();
-        SetDeadzone(LoadPreference("DeadZone", 31)); //ToggleLargeDeadZone(); //Imago updated 7/8/09 // BT 8/17 - Small deadzone default.
+        SetDeadzone(LoadPreference("DeadZone", 5)); //ToggleLargeDeadZone(); //Imago updated 7/8/09 // BT 8/17 - Smaller deadzone default.
 		SetRadarLOD(LoadPreference("RadarLOD", 0)); //Imago updated 7/8/09 #24 (Gamma, VirtualJoystick, RadarLOD, ShowGrid)
 		if (LoadPreference("ShowGrid", FALSE))
 			ToggleShowGrid();
@@ -6791,7 +6791,9 @@ public:
 
 			// yp - Your_Persona buttons get stuck patch. aug-03-2006
 			// clear the keyboard buttons.
-			m_ptrekInput->ClearButtonStates();
+			m_ptrekInput->ClearButtonStates(true);
+
+			
 
 			// #294 / #361 Use different number of chatlines for the loadout screen cos there's less space
 			if (m_pchatListPane)
@@ -9524,7 +9526,7 @@ public:
 					{
 						m_bEnableVirtualJoystick = !m_bEnableVirtualJoystick;
 						SavePreference("VirtualJoystick", m_bEnableVirtualJoystick); //Imago 10/14
-						if(m_bEnableVirtualJoystick) m_ptrekInput->ClearButtonStates();//#56
+						if(m_bEnableVirtualJoystick) m_ptrekInput->ClearButtonStates(false);//#56
 						return true;
 					}
 					return false;

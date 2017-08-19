@@ -217,15 +217,17 @@ WinPoint g_validModes[] =
     WinPoint( 640,  480),
     WinPoint( 800,  600),
     WinPoint(1024,  768),
-	WinPoint(1280,	720),
+	//WinPoint(1280,	720),
 	WinPoint(1280,	768),
-	WinPoint(1280,	800),
-	WinPoint(1280,	960),
-    WinPoint(1280, 1024), // This mode does not appear compatable. 
-	WinPoint(1360,	768),
+	//WinPoint(1280,	800),
+	//WinPoint(1280,	960),
+    //WinPoint(1280, 1024), // This mode does not appear compatable. 
+	//WinPoint(1360,	768),
 	WinPoint(1366,	768),
 	WinPoint(1440,	900),
-    WinPoint(1600,	1200) // Neither does this one, maybe remove these?
+    //WinPoint(1600,	1200) // Neither does this one, maybe remove these?
+	WinPoint(1680,	1050),
+	WinPoint(1920,	1080),
 };
 
 const int g_countValidModes = sizeof(g_validModes) / sizeof(g_validModes[0]);
@@ -265,7 +267,7 @@ private:
     DDCaps                 m_ddcapsSW;
     DWORD                  m_dwTotalVideoMemory;
     TRef<PixelFormat>      m_ppfZBuffer;
-    TVector<WinPoint>      m_modes;
+    TVector<Vector>			m_modes; // BT - 8/17 - Enable refresh rate to be passed to SetFullscreen
 
     //////////////////////////////////////////////////////////////////////////////
     //
@@ -290,7 +292,7 @@ private:
 
 		// BT - 8/17 - Resolution switch fixes.
 		char msg[1024];
-		sprintf(msg, "Found Mode: %ld x %ld\n", ddsd.XSize(), ddsd.YSize());
+		sprintf(msg, "Found Mode: %ld x %ld %ldhz\n", ddsd.XSize(), ddsd.YSize(), ddsd.dwRefreshRate);
 		OutputDebugString(msg);
 
 		bool isValidMode = false;
@@ -309,14 +311,21 @@ private:
 			isValidMode = false;
 		}
 
-		if (isValidMode == true && m_modes.Find(ddsd.Size()) < 0)
+		Vector screenProps(ddsd.Size().X(), ddsd.Size().Y(), ddsd.dwRefreshRate);
+
+		if (isValidMode == true && m_modes.Find(screenProps) < 0)
 		{
-			sprintf(msg, "Mode Added: %ld x %ld (%ld)\n", ddsd.XSize(), ddsd.YSize(), ddsd.dwRefreshRate);
+			sprintf(msg, "Mode Added: %f x %f (%f)\n", screenProps.X(), screenProps.Y(), screenProps.Z());
 			OutputDebugString(msg);
 
-			m_modes.PushEnd(ddsd.Size());
-
+			m_modes.PushEnd(screenProps);
 		}
+
+
+		//// BT - 8/17 -Attempt #3 -  More modes, less compatibility.
+		//Vector newMode(ddsd.XSize(), ddsd.YSize(), ddsd.dwRefreshRate);
+		//m_modes.PushEnd(newMode);
+		//	
 
 		// BT - 8/17 - Resolution switch fixes. - Taking this old way out, it's not selecting valid modes on moden systems where 32bpp is the only option.
 		//if (
@@ -458,7 +467,8 @@ private:
             // Enumerate the display modes
             //
 
-            m_pdd->EnumDisplayModes(0, NULL, this, StaticEnumModes);
+			// BT - 8/17 - Resolution switch fixes. This will let the refresh rates be returned with the modes.
+            m_pdd->EnumDisplayModes(DDEDM_REFRESHRATES, NULL, this, StaticEnumModes);
 
             //
             // Enumerate the zbuffer formats
@@ -639,7 +649,7 @@ public:
         return m_strName;
     }
 
-    WinPoint NextMode(const WinPoint& size)
+    Vector NextMode(const WinPoint& size)
     {
         int count = m_modes.GetCount();
 
@@ -662,7 +672,7 @@ public:
 			return m_modes[currentModeIndex]; 
     }
 
-    WinPoint PreviousMode(const WinPoint& size)
+	Vector PreviousMode(const WinPoint& size)
     {
         int count = m_modes.GetCount();
 
@@ -685,25 +695,40 @@ public:
 			return m_modes[currentModeIndex]; 
     }
 
-    void EliminateModes(const WinPoint& size)
-    {
+	void EliminateModes(const Vector& size)
+	{
+
 		// BT - 8/17 - Resolution switch fixes.
-		m_modes.Remove(size);
+		int count = m_modes.GetCount();
 
-/*
-        int count = m_modes.GetCount();
+		for (int index = 0; index < count; index++) {
+			if (
+				m_modes[index].X() == size.X()
+				&& m_modes[index].Y() == size.Y()
+				) {
+				m_modes.Remove(index);
+				index--;
+				count = m_modes.GetCount();
+			}
+		}
+	}
 
-        for(int index = 0; index < count; index++) {
-            if (
-                   m_modes[index].X() >= size.X() 
-                && m_modes[index].Y() >= size.Y() 
-            ) {
-				m_modes.Remove(
-                m_modes.SetCount(index);
-                return;
-            }
-        }*/
-    }
+	// BT - 8/17 - Resolution switch fixes.
+	Vector GetModeWithRefreshRate(const Vector& screenProps)
+	{
+		int count = m_modes.GetCount();
+
+		for (int index = 0; index < count; index++) {
+			if (
+				m_modes[index].X() == screenProps.X()
+				&& m_modes[index].Y() == screenProps.Y()
+				) {
+				return m_modes[index];
+			}
+		}
+
+		return screenProps;
+	}
 
     //////////////////////////////////////////////////////////////////////////////
     //

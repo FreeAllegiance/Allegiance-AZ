@@ -133,7 +133,7 @@ public:
         // All the button states start up
         //
 
-        ClearButtonStates();
+        ClearButtonStates(true); // BT - 8/17 Stuck button/Throttle Bounce
 
         //
         // Initialize input mapping
@@ -798,7 +798,7 @@ public:
         return true;
     }
 
-    void ClearButtonStates()
+    void ClearButtonStates(bool reloadKeyMap)
     {
 		// BT - 8/17 - DX7 Throttle bounce fix. Because the old patch(es) were resetting all the pointers to TValue to actual values instead
 		// of nulls, it was causing key presses to reload the key map which was tickeling the throttle causing the autopilot to disengage. 
@@ -828,9 +828,12 @@ public:
 
 		// yp - After that for loop we lose responce from most of our keys.. so..		 
 		// hack.. we reload the map, and something in there fixes it.
-		/*if (!LoadMap(INPUTMAP_FILE)) {
-			LoadMap(DEFAULTINPUTMAP_FILE);
-		}*/
+		if (reloadKeyMap == true)  // BT - 8/17 Stuck button/Throttle Bounce
+		{
+			if (!LoadMap(INPUTMAP_FILE)) {
+				LoadMap(DEFAULTINPUTMAP_FILE);
+			}
+		}
 		
     }
 
@@ -898,7 +901,8 @@ public:
                     }
                 }
 
-                ClearButtonStates();
+				// BT - 8/17 - Don't force reload the keymap unless buttons are still getting stuck.
+                ClearButtonStates(false);
             }
         }
     }

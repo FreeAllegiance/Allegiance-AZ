@@ -688,7 +688,8 @@ void EngineWindow::Set3DAccelerationImportant(bool b3DAccelerationImportant)
 
 void EngineWindow::SetFullscreenSize(const WinPoint& size)
 {
-    m_pengine->SetFullscreenSize(size);
+	// BT - 8/17 - Resolution switch fixes.
+    m_pengine->SetFullscreenSize(Vector(size.X(), size.Y(), 0));
 }
 
 void EngineWindow::ChangeFullscreenSize(bool bLarger)
