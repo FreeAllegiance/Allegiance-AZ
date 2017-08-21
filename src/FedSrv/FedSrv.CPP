@@ -892,6 +892,7 @@ void GotLogonDetails(CQLogonStats * pquery)
 			g.pServerCounters->cLoginsFailed++;
 		}
 	}
+	
 
 	BEGIN_PFM_CREATE(g.fm, pfmLogonAck, S, LOGONACK)
 		FM_VAR_PARM(pqd->szReason, CB_ZTS)
@@ -4662,6 +4663,17 @@ static void DisplaceProbe(IclusterIGC* pcluster, Vector* position, float r)
 	}*/
 }
 
+
+// BT - STEAM
+//DWORD WINAPI LogonThread(LPVOID param)
+//{
+//	CSteamValidation * steamValidation = (CSteamValidation *)param;
+//
+//	steamValidation->BeginSteamAuthentication();
+//
+//	return 0;
+//}
+
 /*-------------------------------------------------------------------------
  * OnAppMessage
  *-------------------------------------------------------------------------
@@ -5623,6 +5635,30 @@ HRESULT FedSrvSiteBase::OnAppMessage(FedMessaging * pthis, CFMConnection & cnxnF
 
 				if (g.fmLobby.IsConnected()) //Spunky #340
 				{
+					
+#if STEAM
+					//BT - STEAM
+					// If we are connected to the lobby and using Steam authentication, then we are first going to make an async call to steam to validate that the client
+					// is correct, then, we are going to make an async call to the Lobby to get the player's rank, then the return from that call will finally trigger the 
+					// SQL Done state on the pQuery and let the user login.
+
+					memcpy(pqd->steamAuthTicket, pfmLogon->steamAuthTicket, pfmLogon->steamAuthTicketLength);
+					pqd->steamAuthTicketLength = pfmLogon->steamAuthTicketLength;
+					pqd->steamID = pfmLogon->steamID;
+
+					CSteamValidation steamValidation(g.idReceiveThread, pfmLogon->CharacterID, pquery, pqd);
+					steamValidation.BeginSteamAuthentication();
+
+					//DWORD threadID;
+					//CreateThread(NULL, 0, LogonThread, &steamValidation, 0, &threadID);
+		
+					// at this point, FedSrv is done with the message, now it's up to CSteamValidation to get
+					// The response from steam, then kick off the player rank message to the lobby
+					// When the lobby returns the rank results, this query will finally be complete with all the appropriate data. 
+#else
+					// If we are not using Steam, then we will connect to the lobby to get the ranks async. When the lobby sends the ranks back in that message, then the
+					// logon data query will be completed with that rank data.
+
 					// BT - 12/21/2010 ACSS - Use a message to the lobby server to get the player's rank details instead of
 					// direct calls to the lobby web service.
 					BEGIN_PFM_CREATE(g.fmLobby, pfmPlayerRank, LS, PLAYER_RANK)
@@ -5639,7 +5675,11 @@ HRESULT FedSrvSiteBase::OnAppMessage(FedMessaging * pthis, CFMConnection & cnxnF
 					pfmPlayerRank->fValid = pqd->fValid;
 					pfmPlayerRank->dwConnectionID = pqd->dwConnectionID;
 					g.fmLobby.SendMessages(g.fmLobby.GetServerConnection(), FM_GUARANTEED, FM_FLUSH);
-					// Wait for a PLAYER_RANK message to come back from the lobby.
+
+#endif
+
+					// Wait for a PLAYER_RANK message to come back from the lobby. At this point, FedSrv is done with the message, now it's up to the lobby to send a response with the
+					// data which will complete this query and let the user login.
 				}
 				else
 				{
@@ -8376,6 +8416,7 @@ DWORD ProcessMsgPump(int dwSleep, DWORD nCount, LPHANDLE pHandles)
 	static CTempTimer timerSingleMsg("handling single Windows msg", .01f);
 	timerMsgPump.Start();
 	DWORD dwWait = WAIT_TIMEOUT;
+
 	do
 	{
 		// Wait until either we get a message or we ran out of time
@@ -8796,6 +8837,9 @@ DWORD WINAPI ReceiveThread(LPVOID pThreadParameter)
 	DWORD dwWait = WAIT_TIMEOUT;
 	while (dwWait != WAIT_OBJECT_0)
 	{
+		// BT - STEAM
+		SteamGameServer_RunCallbacks();
+
 		timerReceiveIterations.Stop();
 		timerReceiveIterations.Start();
 		if (g.pServerCounters)
@@ -9610,6 +9654,10 @@ int __cdecl main(int argc, char *argv[])
 	// Load the global settings from the registry
 	LoadSettings();
 
+
+
+
+
 	// set the FPU to double precision, instead of long double
 	// (this makes FP compares a little safer)
 	if (g.fDoublePrecision)
@@ -9688,6 +9736,24 @@ int __cdecl main(int argc, char *argv[])
 
 		UnregisterAllSrv(argv[0]);
 	}
+
+	// BT - STEAM
+	uint32 unIP = INADDR_ANY;
+	uint32 steamAuthenticationPort = 8766;
+	uint32 gamePort = 27115; // We will manage our own network communications with game clients, so this will not be used directly by us.
+	uint32 masterUpdaterPort = 27116;
+	EServerMode eMode = eServerModeAuthenticationAndSecure;
+	const char *lobbyVersion = "1.0.0.4";
+
+	if (SteamGameServer_Init(unIP, steamAuthenticationPort, gamePort, masterUpdaterPort, eMode, lobbyVersion) == false)
+	{
+		printf("failed on steam server init.\n");
+	}
+
+	SteamGameServer()->LogOnAnonymous();
+
+
+
 
 	_Module.SetCOMStarted(argc == 2 && !strcmpi("-Embedding", argv[1]));
 

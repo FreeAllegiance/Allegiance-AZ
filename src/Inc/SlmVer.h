@@ -12,3 +12,4 @@
 
 #define szVerName	""
 #define szVerUser	"CURTC3"
+

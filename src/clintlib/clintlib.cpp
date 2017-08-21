@@ -1333,6 +1333,10 @@ HRESULT BaseClient::ConnectToServer(ConnectInfo & ci, DWORD dwCookie, Time now, 
         pfmLogon->dwCookie = dwCookie;
 		pfmLogon->CharacterID = GetZoneClubID(); //Imago 9/14
         pfmLogon->time = Time::Now ();  //TODO salt CDKey with this NYI Imago
+
+		// BT - STEAM
+		UpdateServerLoginRequestWithSteamAuthTokenInformation(pfmLogon);
+
         debugf("Logging on to game server \"%s\"...\n",
           ci.strServer.IsEmpty() ? "" : (LPCSTR)ci.strServer);
         SendMessages();
@@ -1407,6 +1411,10 @@ HRESULT BaseClient::ConnectToLobby(ConnectInfo * pci) // pci is NULL if reloggin
         pfmLogon->dwTime = dwTime;
         strcpy(pfmLogon->szName, m_ci.szName);
 		strcpy(pfmLogon->szPW, (PCC)ZString(m_ci.szPW).Scramble("Imago2014"));
+
+		// BT - STEAM
+		UpdateLobbyLoginRequestWithSteamAuthTokenInformation(pfmLogon);
+
         // do art update--see ConnectToServer
         debugf("Logging on to lobby \"%s\"...pw: %s\n",m_ci.strServer.IsEmpty() ? "" : (LPCSTR)m_ci.strServer,pfmLogon->szPW);
         strcpy(m_szLobbyCharName, m_ci.szName);
@@ -1417,6 +1425,33 @@ HRESULT BaseClient::ConnectToLobby(ConnectInfo * pci) // pci is NULL if reloggin
     m_cUnansweredPings = 0;
     m_serverOffsetValidF = false;
     return hr;
+}
+
+// BT - STEAM
+void BaseClient::UpdateLobbyLoginRequestWithSteamAuthTokenInformation(FMD_C_LOGON_LOBBY *pfmLogon)
+{
+	if (SteamUser() != nullptr)
+	{
+		if (m_hAuthTicketLobby != 0)
+			SteamUser()->CancelAuthTicket(m_hAuthTicketLobby);
+
+		m_hAuthTicketLobby = SteamUser()->GetAuthSessionTicket(pfmLogon->steamAuthTicket, sizeof(pfmLogon->steamAuthTicket), &pfmLogon->steamAuthTicketLength);
+
+		pfmLogon->steamID = SteamUser()->GetSteamID().ConvertToUint64();
+	}
+}
+
+void BaseClient::UpdateServerLoginRequestWithSteamAuthTokenInformation(FMD_C_LOGONREQ *pfmLogon)
+{
+	if (SteamUser() != nullptr)
+	{
+		if (m_hAuthTicketServer != 0)
+			SteamUser()->CancelAuthTicket(m_hAuthTicketServer);
+
+		m_hAuthTicketServer = SteamUser()->GetAuthSessionTicket(pfmLogon->steamAuthTicket, sizeof(pfmLogon->steamAuthTicket), &pfmLogon->steamAuthTicketLength);
+
+		pfmLogon->steamID = SteamUser()->GetSteamID().ConvertToUint64();
+	}
 }
 
 
@@ -1477,6 +1512,26 @@ void BaseClient::FindStandaloneServersByName(const char* szName, TList<TRef<LANS
 
     m_plistFindServerResults = NULL;
 };
+
+//// BT - STEAM
+//void BaseClient::BeginSteamAuthSessionForLobby()
+//{
+//	// Get the current users Steam name.
+//	const char *name = SteamFriends()->GetPersonaName();
+//	CSteamID id = SteamUser()->GetSteamID();
+//	uint64 uid = id.ConvertToUint64();
+//
+//	CSteamID testID = CSteamID(uid);
+//	bool isTestIDValid = testID.IsValid();
+//
+//	if (m_hAuthTicketLobby != 0)
+//		SteamUser()->CancelAuthTicket(m_hAuthTicket);
+//
+//	m_hAuthTicket = SteamUser()->GetAuthSessionTicket(m_steamAuthTicket, sizeof(m_steamAuthTicket), &m_steamAuthTicketLength);
+//
+//}
+
+
 
 void BaseClient::SetCDKey(const ZString& strCDKey, int processID)
 {

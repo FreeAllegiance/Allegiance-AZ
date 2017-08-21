@@ -295,7 +295,9 @@ struct Global
 	// *** Network layer stuff ***
 	DWORD               idReceiveThread;
 	HANDLE              hReceiveThread;
+	HANDLE				hSteamCallbackThread; // BT - STEAM
 	HANDLE              hKillReceiveEvent;
+	HANDLE				hKillSteamCallbackEvent; // BT - STEAM
 	HANDLE              hPlayerEvent;
 	FedMessaging        fm;               // all missions share a session for now
 	FedMessaging        fmLobby;

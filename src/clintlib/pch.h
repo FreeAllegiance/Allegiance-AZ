@@ -4,6 +4,9 @@
 //#include <dplobby.h>
 #include <tchar.h>
 
+// BT - STEAM
+#include "steam_api.h"
+
 //
 // Headers for fed code.
 //

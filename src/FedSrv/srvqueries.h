@@ -50,6 +50,12 @@ RankID	commandRank;
 double	commandSigma;
 double	commandMu;
 
+// BT - STEAM
+int8	steamAuthTicket[1024]; // BT - STEAM
+uint32	steamAuthTicketLength; // BT - STEAM
+uint64	steamID; // BT - STEAM
+
+
 BEGIN_COLUMN_MAP(CQLogonStatsData)
 	COLUMN_ENTRY_TYPE(1, DBTYPE_I2, civID)
 	COLUMN_ENTRY_TYPE(2, DBTYPE_I2, rank)

@@ -42,6 +42,9 @@
 //#include <dplobby.h>
 #include <mmsystem.h> 
 
+// BT - STEAM
+#include "steam_gameserver.h"
+
 // ZLib Includes
 #if !defined(ALLSRV_STANDALONE)
 #define __MODULE__ "AllSrv"
@@ -77,6 +80,9 @@
 
 
 #include "Zone.h"
+
+
+
 
 #include <messagesAll.h>
 #include <Messages.h>
@@ -122,6 +128,10 @@ extern Global g;
 
 
 #include "regkey.h"
+
+
+// BT - STEAM
+#include "CSteamValidation.h"
 
 
 /////////////////////////////////////////////////////////////////////////////

@@ -702,6 +702,11 @@ private:
 
     BallotList              m_listBallots;
 
+
+	// BT - STEAM
+	HAuthTicket				m_hAuthTicketLobby = 0;
+	HAuthTicket				m_hAuthTicketServer = 0;
+
 public: //todo: make protected
 
     // messaging
@@ -720,6 +725,7 @@ public: //todo: make protected
         ZeroMemory(&ftLastArtUpdate, sizeof(ftLastArtUpdate));
         ZeroMemory(szName, sizeof(szName));
 		ZeroMemory(szPW, sizeof(szName));
+		ZeroMemory(steamAuthTicket, sizeof(steamAuthTicket));
       }
       FILETIME  ftLastArtUpdate;
       ZString   strServer;
@@ -727,6 +733,8 @@ public: //todo: make protected
 	  char		szPW [c_cbCDKey];
 	  DWORD     dwPort;				// mdvalley: The port number to connect to
       GUID      guidSession;
+	  int8		steamAuthTicket[1024]; // BT - STEAM
+	  int32		steamAuthTicketLength; // BT - STEAM
     };
     
     bool                m_fLoggedOn   : 1;
@@ -868,6 +876,13 @@ public:
         return m_strCDKey;
     }
     virtual void        SetCDKey(const ZString& strCDKey, int processID);
+
+	// BT - STEAM
+	void UpdateLobbyLoginRequestWithSteamAuthTokenInformation(FMD_C_LOGON_LOBBY *pfmLogon);
+	void UpdateServerLoginRequestWithSteamAuthTokenInformation(FMD_C_LOGONREQ *pfmLogon);
+	//void BeginSteamAuthSessionForLobby();
+	//void SetSteamAuthSessionInfo(HAuthTicket hAuthTicket, int8 *pTicket, uint32 pcbTicket);
+	//HAuthTicket	GetSteamAuthTicketID();
 
     virtual void        OnLogonAck(bool fValidated, bool bRetry, LPCSTR szFailureReason) = 0;
     virtual void        OnLogonLobbyAck(bool fValidated, bool bRetry, LPCSTR szFailureReason) = 0;

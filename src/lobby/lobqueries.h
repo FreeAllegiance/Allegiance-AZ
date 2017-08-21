@@ -12,6 +12,7 @@
 #define _LOBQUERIES_H_
 
 #include "allegdb.h"
+#include "steam_gameserver.h"
 
 // Stuff we need to logon
 BEGIN_QUERY(CQLobbyLogon, true, "{call GetLobbyLogonInfo(?, ?, ?, ?, ?)}")
@@ -39,6 +40,11 @@ BEGIN_QUERY(CQLobbyLogon, true, "{call GetLobbyLogonInfo(?, ?, ?, ?, ?)}")
   int   characterID;
   char  fValidCode; // out
   char  fCanCheat;  // out
+
+  // BT - STEAM
+  int8	steamAuthTicket[1024];
+  int32 steamAuthTicketLength;
+  uint64 steamID;
 
   //squad stuff
   char szSquadName[31]; // constant??? Please???

@@ -13,6 +13,9 @@
 // mmf added this include so client.cpp has HKLM_FedSrv defined
 #include "regkey.h"
 
+// BT - STEAM
+#include "steam_gameserver.h"
+
 // KGJV moved into regkey.h
 //#define HKLM_AllLobby "SYSTEM\\CurrentControlSet\\Services\\AllLobby"
 
@@ -191,9 +194,15 @@ public:
 	  return m_bAzGameInfoEnabled;
   }
 
+  // BT - STEAM
+  //STEAM_GAMESERVER_CALLBACK(CLobbyApp, OnValidateAuthTicketResponse, ValidateAuthTicketResponse_t);
+
   // BT - 12/21/2010 - ACSS integration
   //bool CLobbyApp::GetRankForCallsign(const char* szPlayerName, int *rank, double *sigma, double *mu, int *commandRank, double *commandSigma, double *commandMu, char *rankName, int rankNameLen);
-  //bool CDKeyIsValid(const char* szPlayerName, const char* szCDKey, const char* szAddress, char *resultMessage, int resultMessageLength);
+  
+  // BT - STEAM
+  bool CDKeyIsValid(const char* szPlayerName, const char* szCDKey, const char* szAddress, char *resultMessage, int resultMessageLength, char *playerIdentifier);
+
 
   void SetPlayerMission(const char* szPlayerName, const char* szCDKey, CFLMission* pMission, const char* szAddress);
   void RemovePlayerFromMission(const char* szPlayerName, CFLMission* pMission);
@@ -226,6 +235,13 @@ public:
 	  m_cStaticCoreInfo = 0;
   }
 
+  //  BT - STEAM
+  void AddAuthorizingPlayerByPlayerIdentifier(const ZString &strPlayerIdentifier, void * data);
+  void RemoveAuthorizingPlayerByPlayerIdentifier(const ZString &strPlayerIdentifier);
+  bool BootPlayerFromLobbyByPlayerIdentifier(const ZString &strPlayerIdentifier, const ZString &bootReason);
+  bool AuthorizePlayerToConnectToLobby(const ZString &strPlayerIdentifier);
+  ZString GetPlayerIdentifierFromCDKeyString(char * cdKey);
+  bool IsPlayerWaitingForAuthorization(const  ZString &playerIdentifier);
 
 private:
   const char *    SzFmMsgHeader(FedMessaging * pthis) {return IsFMServers(pthis) ? "Servers: " : "Clients: ";}
@@ -316,6 +332,10 @@ private:
   typedef std::multimap<ZString, PlayerByCDKey::iterator, StringICmpLess> PlayerByName;
   PlayerByCDKey     m_playerByCDKey;
   PlayerByName      m_playerByName;
+
+  // BT - STEAM
+  typedef std::multimap<ZString, void *, CLobbyApp::StringCmpLess> PlayersBySteamIdentifier;
+  PlayersBySteamIdentifier m_playersByPlayerIdentifier;
 
   // KGJV #114 - core stuff
   StaticCoreInfo   *m_vStaticCoreInfo;

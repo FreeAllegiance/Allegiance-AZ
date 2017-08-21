@@ -1,6 +1,9 @@
 #include "pch.h"
 #include <zreg.h>
 
+// BT - STEAM
+#include "atlenc.h"
+#include <inttypes.h>
 
 // #define NO_CLUB_SERVER_CONNECTION 1 // comment out before checkin
 
@@ -63,6 +66,7 @@ private:
     ScreenID           m_screenPostConnect;
 
     static bool s_bWasAuthenticated;
+	HAuthTicket m_hAuthTicket = 0;
 
 public:
     ZoneClubScreen(Modeler* pmodeler, Number* ptime) :
@@ -148,144 +152,209 @@ public:
     }
 
     // connect to either Zone Lobby server or Zone Club
-    void ConnectToZone(bool bConnectLobby, ScreenID screenid, const ZString& strPrompt)
-    {
-        if (bConnectLobby)
-        {
-            if (trekClient.GetIsZoneClub())
-            {
-                if (trekClient.GetCfgInfo().strClubLobby.IsEmpty())
-                {
-                    TRef<IMessageBox> pmsgBox = CreateMessageBox(
-                        "The Allegiance Zone lobby is not available at the moment.  "
-                        + ZString(trekClient.GetCfgInfo().strPublicLobby.IsEmpty()
-                            ? "Please try again later."
-                            : "Please try the free lobby instead.")
-                        );
-                    GetWindow()->GetPopupContainer()->OpenPopup(pmsgBox, false);
-                    return;
-                }
-            }
-            else
-            {
-                if (trekClient.GetCfgInfo().strPublicLobby.IsEmpty())
-                {
+	void ConnectToZone(bool bConnectLobby, ScreenID screenid, const ZString& strPrompt)
+	{
+		if (bConnectLobby)
+		{
+			if (trekClient.GetIsZoneClub())
+			{
+				if (trekClient.GetCfgInfo().strClubLobby.IsEmpty())
+				{
+					TRef<IMessageBox> pmsgBox = CreateMessageBox(
+						"The Allegiance Zone lobby is not available at the moment.  "
+						+ ZString(trekClient.GetCfgInfo().strPublicLobby.IsEmpty()
+							? "Please try again later."
+							: "Please try the free lobby instead.")
+					);
+					GetWindow()->GetPopupContainer()->OpenPopup(pmsgBox, false);
+					return;
+				}
+			}
+			else
+			{
+				if (trekClient.GetCfgInfo().strPublicLobby.IsEmpty())
+				{
 
-                	TRef<IMessageBox> pmsgBox = CreateMessageBox(
-                    	"The free lobby is not available at the moment.  "
-                    	+ ZString(trekClient.GetCfgInfo().strClubLobby.IsEmpty()
-                    	    ? "Please try again later."
-                    	    : "Please try the Allegiance Zone instead.")
-                   	 );
-                	GetWindow()->GetPopupContainer()->OpenPopup(pmsgBox, false);
-                	return;
-                }
-            }
-        }
-        else
-        {
-            if (trekClient.GetCfgInfo().strClub.IsEmpty())
-            {
-                TRef<IMessageBox> pmsgBox = CreateMessageBox(
-                    "The Club server is not available at the moment.  "
-                    "Please try again later."
-                    );
-                GetWindow()->GetPopupContainer()->OpenPopup(pmsgBox, false);
-                return;
-            }
-        }
+					TRef<IMessageBox> pmsgBox = CreateMessageBox(
+						"The free lobby is not available at the moment.  "
+						+ ZString(trekClient.GetCfgInfo().strClubLobby.IsEmpty()
+							? "Please try again later."
+							: "Please try the Allegiance Zone instead.")
+					);
+					GetWindow()->GetPopupContainer()->OpenPopup(pmsgBox, false);
+					return;
+				}
+			}
+		}
+		else
+		{
+			if (trekClient.GetCfgInfo().strClub.IsEmpty())
+			{
+				TRef<IMessageBox> pmsgBox = CreateMessageBox(
+					"The Club server is not available at the moment.  "
+					"Please try again later."
+				);
+				GetWindow()->GetPopupContainer()->OpenPopup(pmsgBox, false);
+				return;
+			}
+		}
 
-        m_bConnectLobby = bConnectLobby;
-        m_screenPostConnect = screenid;
+		m_bConnectLobby = bConnectLobby;
+		m_screenPostConnect = screenid;
 
-        assert (!trekClient.LoggedOn() && !trekClient.m_fm.IsConnected());
-        HRESULT hr = E_FAIL;
+		assert(!trekClient.LoggedOn() && !trekClient.m_fm.IsConnected());
+		HRESULT hr = E_FAIL;
 #ifdef USEAUTH
-        TRef<IZoneAuthClient> pzac;
+		TRef<IZoneAuthClient> pzac;
 
-        if (g_fZoneAuth)
-        {
-            pzac = trekClient.GetZoneAuthClient();
-            if (!pzac)
-                pzac = trekClient.CreateZoneAuthClient();
+		if (g_fZoneAuth)
+		{
+			pzac = trekClient.GetZoneAuthClient();
+			if (!pzac)
+				pzac = trekClient.CreateZoneAuthClient();
 
-            if (trekClient.GetCfgInfo().bUsePassport
-                && !pzac->HasInterface(trekClient.GetCfgInfo().guidZoneAuth))
-            {
-                // take them to the web page...
-                GetWindow()->ShowWebPage(trekClient.GetCfgInfo().strPassportUpdateURL);
+			if (trekClient.GetCfgInfo().bUsePassport
+				&& !pzac->HasInterface(trekClient.GetCfgInfo().guidZoneAuth))
+			{
+				// take them to the web page...
+				GetWindow()->ShowWebPage(trekClient.GetCfgInfo().strPassportUpdateURL);
 
-                // shut down the client
-                GetWindow()->PostMessage(WM_CLOSE);
+				// shut down the client
+				GetWindow()->PostMessage(WM_CLOSE);
 
-                return;
-            }
+				return;
+			}
 
-            if (s_bWasAuthenticated)
-            {
-                hr = S_OK;
-            }
-            else
-            {
-                pzac->SetAuthServer(trekClient.GetCfgInfo().strZAuth);
+			if (s_bWasAuthenticated)
+			{
+				hr = S_OK;
+			}
+			else
+			{
+				pzac->SetAuthServer(trekClient.GetCfgInfo().strZAuth);
 
-                if (!m_bTriedCurrentLogin)
-                    hr = pzac->IsAuthenticated(5000);
-            }
-        }
+				if (!m_bTriedCurrentLogin)
+					hr = pzac->IsAuthenticated(5000);
+			}
+		}
 
-        if (SUCCEEDED(hr)) // must be false if !g_fZoneAuth
-        {
-            BaseClient::ConnectInfo ci;
-            DWORD cbZoneTicket;
-            DWORD cbName = sizeof(ci.szName);
-            ZSucceeded(pzac->GetTicket(&ci.pZoneTicket, &cbZoneTicket, ci.szName, &cbName));
-            assert(cbName <= sizeof(ci.szName));
-            ci.cbZoneTicket = cbZoneTicket;
+		if (SUCCEEDED(hr)) // must be false if !g_fZoneAuth
+		{
+			BaseClient::ConnectInfo ci;
+			DWORD cbZoneTicket;
+			DWORD cbName = sizeof(ci.szName);
+			ZSucceeded(pzac->GetTicket(&ci.pZoneTicket, &cbZoneTicket, ci.szName, &cbName));
+			assert(cbName <= sizeof(ci.szName));
+			ci.cbZoneTicket = cbZoneTicket;
 
-            if(m_bConnectLobby)
-                trekClient.ConnectToLobby(&ci);
-            else
-                trekClient.ConnectToClub(&ci);
+			if (m_bConnectLobby)
+				trekClient.ConnectToLobby(&ci);
+			else
+				trekClient.ConnectToClub(&ci);
 
-            m_bTriedCurrentLogin = true;
-        }
-        else
+			m_bTriedCurrentLogin = true;
+		}
+		else
 #endif
-        {
-            m_szName[0] = '\0';
-            m_szPWOrig[0] = '\0';
+		{
+			m_szName[0] = '\0';
+			m_szPWOrig[0] = '\0';
 #ifdef USEAUTH
-            if (g_fZoneAuth)
-            pzac->GetDefaultLogonInfo(m_szName, m_szPWOrig, &m_fRememberPW);
+			if (g_fZoneAuth)
+				pzac->GetDefaultLogonInfo(m_szName, m_szPWOrig, &m_fRememberPW);
 #else
-            strcpy(m_szName, trekClient.GetSavedCharacterName());
-			strcpy(m_szPWOrig, trekClient.GetSavedPassword());
-			m_fRememberPW = trekClient.GetSavePassword();
-#endif
-		  // wlp - don't ask for callsign if it was on the command line //imago include m_szPWOrig 9/14
-          if (!g_bAskForCallSign && strlen(m_szPWOrig) > 1) 
-		  {
-		  this->OnLogon(trekClient.GetSavedCharacterName(), m_szPWOrig, false); 
-	      } // wlp - end of dont ask for callsign
-		  else
-		  {
-            TRef<IPopup> plogonPopup = CreateLogonPopup(m_pmodeler, this,
-                (trekClient.GetIsZoneClub() ?
-                  LogonAllegianceZone :
-#ifdef USEAUTH
-                  LogonFreeZone
-#else
-                  LogonLAN
-#endif
-                ), strPrompt, m_szName, m_szPWOrig, m_fRememberPW);
-            Point point(c_PopupX, c_PopupY);
-            Rect rect(point, point);
-            GetWindow()->GetPopupContainer()->OpenPopup(plogonPopup, rect, false);
-		    }// wlp = end of else ask for callsign
-        }
-    }
+			strcpy(m_szName, trekClient.GetSavedCharacterName());
 
+			// BT - Steam
+			bool isUserLoggedIntoSteam = SteamUser() != nullptr;
+
+			if (isUserLoggedIntoSteam == true)
+			{
+				char steamID[64];
+				sprintf(steamID, "%" PRIu64, SteamUser()->GetSteamID().ConvertToUint64());
+				trekClient.SetCDKey(steamID, 0);
+			}
+
+			//if (isUserLoggedIntoSteam == true)
+			//{
+			//	//trekClient.SetCDKey(GetCDKeyFromSteamInfo(), 0);
+			//	// Start the Steam Auth Session, and add the session key into the 
+			//	trekClient.BeginSteamAuthSessionForLobby();
+			//}
+			//else
+			//{
+				strcpy(m_szPWOrig, trekClient.GetSavedPassword());
+				m_fRememberPW = trekClient.GetSavePassword();
+			//}
+#endif
+			
+			// wlp - don't ask for callsign if it was on the command line //imago include m_szPWOrig 9/14 // BT - STEAM
+			if ((!g_bAskForCallSign && strlen(m_szPWOrig) > 1 ) || isUserLoggedIntoSteam == true)
+			{
+				this->OnLogon(trekClient.GetSavedCharacterName(), m_szPWOrig, false);
+			} // wlp - end of dont ask for callsign
+			else
+			{
+				TRef<IPopup> plogonPopup = CreateLogonPopup(m_pmodeler, this,
+					(trekClient.GetIsZoneClub() ?
+						LogonAllegianceZone :
+#ifdef USEAUTH
+						LogonFreeZone
+#else
+						LogonLAN
+#endif
+						), strPrompt, m_szName, m_szPWOrig, m_fRememberPW);
+				Point point(c_PopupX, c_PopupY);
+				Rect rect(point, point);
+				GetWindow()->GetPopupContainer()->OpenPopup(plogonPopup, rect, false);
+			}// wlp = end of else ask for callsign
+		}
+	}
+
+
+	//ZString BeginSteamAuthSession()
+	//{
+	//	// Get the current users Steam name.
+	//	const char *name = SteamFriends()->GetPersonaName();
+	//	CSteamID id = SteamUser()->GetSteamID();
+	//	uint64 uid = id.ConvertToUint64();
+
+	//	CSteamID testID = CSteamID(uid);
+	//	bool isTestIDValid = testID.IsValid();
+
+	//	if (trekClient.GetSteamAuthTicketID() != 0)
+	//		SteamUser()->CancelAuthTicket(trekClient.GetSteamAuthTicketID());
+
+	//	int8 pTicket[1024];
+	//	uint32 pcbTicket = 0;
+	//	m_hAuthTicket = SteamUser()->GetAuthSessionTicket(pTicket, sizeof(pTicket), &pcbTicket);
+
+	//	trekClient.SetSteamAuthSessionInfo(m_hAuthTicket, pTicket, pcbTicket);
+
+	//	//msg.SetToken(rgchToken, unTokenLen);
+
+	//	//char uuencodebuffer[2064];
+	//	//int uuencodebufferLen = sizeof(uuencodebuffer);
+	//	//UUEncode((BYTE *)rgchToken, unTokenLen, uuencodebuffer, &uuencodebufferLen);
+
+	//	//uuencodebuffer[uuencodebufferLen] = '\0';
+
+	//	//char cdKey[2100];
+	//	//sprintf(cdKey, "%" PRIu64 ":%s", uid, uuencodebuffer);
+
+	//	//char testDecodeValue[1024];
+	//	//int testDecodeValueLen = sizeof(testDecodeValue);
+	//	//UUDecode((BYTE *)uuencodebuffer, uuencodebufferLen, (BYTE *)testDecodeValue, &testDecodeValueLen);
+
+	//	//for (int i = 0; i < unTokenLen; i++)
+	//	//{
+	//	//	if (testDecodeValue[i] != rgchToken[i])
+	//	//		OutputDebugStringA("FAIL!\n");
+	//	//}
+
+	//	//// This is the combo of the user's CSteamID:AuthToken. It will need to be parsed by the lobby and the server.
+	//	//return ZString(cdKey);
+	//}
 
     bool OnButtonMainMenu()
     {

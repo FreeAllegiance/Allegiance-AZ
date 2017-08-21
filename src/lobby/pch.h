@@ -74,6 +74,7 @@
 #include "LobbyEvents.h"
 #include "pkcs5.h" //Imago 9/14
 #include "CssSoap.h" // BT - 7/15 CSS Integration.
+#include "CSteamValidation.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // This is included very last since it conflicts with <atlwin.h>, included
