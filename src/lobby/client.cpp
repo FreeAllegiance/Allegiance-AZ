@@ -14,7 +14,6 @@
 #include "pch.h"
 
 // BT - STEAM
-//#include "lobbyapp.h"
 #include <inttypes.h>
 
 const DWORD CFLClient::c_dwID = 19680815;
@@ -132,6 +131,10 @@ void GotLogonInfo(CQLobbyLogon * pquery)
   if (pqd->fValid)
   {
     fm.SetDefaultRecipient(pcnxn, FM_GUARANTEED);
+
+	// BT - STEAM
+	pcnxn->SetSteamID(pqd->steamID);
+
     BEGIN_PFM_CREATE(fm, pfmLogonAck, L, LOGON_ACK)
     END_PFM_CREATE
     pfmLogonAck->dwTimeOffset = pqd->dTime;
@@ -204,13 +207,7 @@ void ValidateWithCssOrAZ(CSQLQuery * pQuery, CQLobbyLogonData * pqd)
 	}
 	else
 	{
-#ifdef STEAM
-		//fValid = true; // BT - STEAM - When using FZ builds, do not use AZ auth.
-#else
 		fValid = IsRFC2898Valid(pqd->szCharacterName, pqd->szPW, szReason, iID);
-
-		
-#endif
 	}
 #endif
 
@@ -233,6 +230,7 @@ DWORD WINAPI LogonThread( LPVOID param ) {
 	int iID = 0;
 	EnterCriticalSection(g_pLobbyApp->GetLogonCS()); 
 
+	// BT - STEAM
 #ifdef STEAM
 	CSteamValidation steamValidation(_Module.dwThreadID, iID, pQuery, pqd);
 	steamValidation.BeginSteamAuthentication();
@@ -240,38 +238,6 @@ DWORD WINAPI LogonThread( LPVOID param ) {
 	ValidateWithCssOrAZ(pQuery, pls);
 #endif
 
-//#ifdef NOAUTH //imago 1/14
-//	bool fValid = true;
-//#else
-//	bool fValid = false;
-//
-//	// BT - 7/15 - CSS Integration
-//	if (g_pLobbyApp->IsCssAuthenticationEnabled() == true)
-//	{
-//		CCssSoap cssSoap(g_pLobbyApp->GetCssServerDomain(), g_pLobbyApp->GetCssClientServicePath(), g_pLobbyApp->GetCssLobbyServicePath(), g_pLobbyApp->GetCssGameDataServicePath());
-//
-//		fValid = cssSoap.ValidateUserLogin(pqd->szCharacterName, pqd->szPW, szReason, iID);
-//	}
-//	else
-//	{
-//#ifdef STEAM
-//		//fValid = true; // BT - STEAM - When using FZ builds, do not use AZ auth.
-//#else
-//		fValid = IsRFC2898Valid(pqd->szCharacterName,pqd->szPW,szReason,iID);
-//
-//		(fValid) ? debugf("authed!\n") : debugf("not authed!\n");
-//		pqd->fValid = fValid;
-//		pqd->fRetry = false;
-//		pqd->szReason = new char[strlen(szReason) + 1];
-//		pqd->characterID = iID;
-//		Strcpy(pqd->szReason, szReason);
-//		LeaveCriticalSection(g_pLobbyApp->GetLogonCS());
-//		PostThreadMessage(_Module.dwThreadID, wm_sql_querydone, (WPARAM)NULL, (LPARAM)pQuery);
-//#endif
-//	}
-//#endif
-//
-//	
 	return 0;
 }
 
@@ -622,6 +588,10 @@ HRESULT LobbyClientSite::OnDestroyConnection(FedMessaging * pthis, CFMConnection
 {
   debugf("Player %s has left.\n", cnxn.GetName());
   g_pLobbyApp->GetCounters()->cLogoffs++;
+
+  // BT - STEAM
+  SteamGameServer()->EndAuthSession(CSteamID(cnxn.GetSteamID()));
+
   delete CFLClient::FromConnection(cnxn);
   return S_OK;
 }

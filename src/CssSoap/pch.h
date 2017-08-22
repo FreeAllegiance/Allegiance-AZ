@@ -34,6 +34,8 @@
 #include <zlib.h>
 #include <utility.h>
 
+// BT - STEAM
+#include "steam_gameserver.h"
 
 //#include <TCLib.h>
 //#include <TCAtl.h>

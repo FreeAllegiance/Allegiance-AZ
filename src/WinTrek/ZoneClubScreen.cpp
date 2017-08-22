@@ -268,13 +268,6 @@ public:
 			// BT - Steam
 			bool isUserLoggedIntoSteam = SteamUser() != nullptr;
 
-			if (isUserLoggedIntoSteam == true)
-			{
-				char steamID[64];
-				sprintf(steamID, "%" PRIu64, SteamUser()->GetSteamID().ConvertToUint64());
-				trekClient.SetCDKey(steamID, 0);
-			}
-
 			//if (isUserLoggedIntoSteam == true)
 			//{
 			//	//trekClient.SetCDKey(GetCDKeyFromSteamInfo(), 0);

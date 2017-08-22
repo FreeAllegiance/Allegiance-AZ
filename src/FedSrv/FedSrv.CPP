@@ -824,6 +824,9 @@ void GotLogonDetails(CQLogonStats * pquery)
 	{
 		Strcpy(pqd->szReason, pqd->szCharacterName);
 
+		// BT - STEAM
+		pcnxn->SetSteamID(pqd->steamID);
+
 		if (NULL != g.pServerCounters)
 		{
 			g.pServerCounters->cLogins++;
@@ -5526,6 +5529,10 @@ HRESULT FedSrvSiteBase::OnAppMessage(FedMessaging * pthis, CFMConnection & cnxnF
 				(pfsPlayer->GetSide() ? pfsPlayer->GetSide()->GetObjectID() : NA),
 				(pfsPlayer->GetMission() ? pfsPlayer->GetMission()->GetCookie() : NA));
 			g.fm.ForwardMessage(pfsPlayer->GetConnection(), pfm, FM_GUARANTEED);
+
+			// BT - STEAM
+			SteamGameServer()->EndAuthSession(CSteamID(pfsPlayer->GetConnection()->GetSteamID()));
+
 			delete pfsPlayer; //need to delete here, instead of in OnDestroyConnection, so we can tell when we get there whether it was a dropped connection
 		}
 		break;
@@ -8876,6 +8883,9 @@ DWORD WINAPI ReceiveThread(LPVOID pThreadParameter)
 	}
 
 	printf("Shutting down server...\n");
+
+	// BT - STEAM
+	SteamGameServer_Shutdown();
 
 	// Suspend creation of any objects
 	CoSuspendClassObjects();

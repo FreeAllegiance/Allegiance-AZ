@@ -613,6 +613,9 @@ public:
 			// STEAM TODO: Figure out how to get the primary clan and get the clan tag. 
 			trekClient.SaveCharacterName(SteamFriends()->GetPersonaName());
 
+			char steamID[64];
+			sprintf(steamID, "%" PRIu64, SteamUser()->GetSteamID().ConvertToUint64());
+			trekClient.SetCDKey(steamID, 0);
 		}
 
 

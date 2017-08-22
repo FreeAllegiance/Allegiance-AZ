@@ -235,14 +235,6 @@ public:
 	  m_cStaticCoreInfo = 0;
   }
 
-  //  BT - STEAM
-  void AddAuthorizingPlayerByPlayerIdentifier(const ZString &strPlayerIdentifier, void * data);
-  void RemoveAuthorizingPlayerByPlayerIdentifier(const ZString &strPlayerIdentifier);
-  bool BootPlayerFromLobbyByPlayerIdentifier(const ZString &strPlayerIdentifier, const ZString &bootReason);
-  bool AuthorizePlayerToConnectToLobby(const ZString &strPlayerIdentifier);
-  ZString GetPlayerIdentifierFromCDKeyString(char * cdKey);
-  bool IsPlayerWaitingForAuthorization(const  ZString &playerIdentifier);
-
 private:
   const char *    SzFmMsgHeader(FedMessaging * pthis) {return IsFMServers(pthis) ? "Servers: " : "Clients: ";}
   void            SetNow()
@@ -332,10 +324,6 @@ private:
   typedef std::multimap<ZString, PlayerByCDKey::iterator, StringICmpLess> PlayerByName;
   PlayerByCDKey     m_playerByCDKey;
   PlayerByName      m_playerByName;
-
-  // BT - STEAM
-  typedef std::multimap<ZString, void *, CLobbyApp::StringCmpLess> PlayersBySteamIdentifier;
-  PlayersBySteamIdentifier m_playersByPlayerIdentifier;
 
   // KGJV #114 - core stuff
   StaticCoreInfo   *m_vStaticCoreInfo;

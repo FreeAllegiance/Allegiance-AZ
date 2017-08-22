@@ -399,23 +399,24 @@ CLobbyApp::CLobbyApp(ILobbyAppSite * plas) :
 
 CLobbyApp::~CLobbyApp()
 {
-  m_plas->LogEvent(EVENTLOG_INFORMATION_TYPE, LE_ShuttingDown);
-// KG guard with USEAUTH for consistency 
+	m_plas->LogEvent(EVENTLOG_INFORMATION_TYPE, LE_ShuttingDown);
+	// KG guard with USEAUTH for consistency 
 #ifdef USEAUTH
-  m_pzas = NULL;
+	m_pzas = NULL;
 #endif
-  m_perfshare.FreeCounters(m_pCounters);
-  ZGameInfoClose();
-  FreeStaticCoreInfo(); // KGJV #114
-  
-  //imago, only if we have gameinfoservers to report to
-  if (m_cReportServers) {
-	  ZGameInfoClose();
-	  WSACleanup();
-  }
+	m_perfshare.FreeCounters(m_pCounters);
+	ZGameInfoClose();
+	FreeStaticCoreInfo(); // KGJV #114
+
+	//imago, only if we have gameinfoservers to report to
+	if (m_cReportServers) {
+		ZGameInfoClose();
+		WSACleanup();
+	}
+
+	// BT - STEAM 
+	SteamGameServer_Shutdown();
 }
-
-
 
 HRESULT CLobbyApp::Init()
 {
@@ -703,112 +704,6 @@ void CLobbyApp::BootPlayersByName(const ZString& strName)
     ++iterPlayer;
   }
 }
-
-
-// BT - Steam
-void CLobbyApp::AddAuthorizingPlayerByPlayerIdentifier(const ZString &strPlayerIdentifier, void * data)
-{
-	m_playersByPlayerIdentifier.insert(PlayersBySteamIdentifier::value_type(strPlayerIdentifier, data));
-}
-
-// BT - Steam
-void CLobbyApp::RemoveAuthorizingPlayerByPlayerIdentifier(const ZString &strPlayerIdentifier)
-{
-	m_playersByPlayerIdentifier.erase(strPlayerIdentifier);
-}
-
-// BT - Steam
-ZString CLobbyApp::GetPlayerIdentifierFromCDKeyString(char * cdKey)
-{
-	ZString strCdKey = cdKey;
-	ZString playerIdentifier = strCdKey.LeftOf(":");
-
-	return playerIdentifier;
-}
-
-// BT - Steam
-bool CLobbyApp::IsPlayerWaitingForAuthorization(const  ZString &strPlayerIdentifier)
-{
-	PlayersBySteamIdentifier::iterator iterPlayerBySteamID = m_playersByPlayerIdentifier.find(strPlayerIdentifier);
-	bool foundPlayer = false;
-
-	// if we think that player is already logged on...
-	while (iterPlayerBySteamID != m_playersByPlayerIdentifier.end()
-		&& (*iterPlayerBySteamID).first == strPlayerIdentifier)
-	{
-		foundPlayer = true;
-
-		iterPlayerBySteamID++;
-	}
-
-	return foundPlayer;
-}
-
-// BT - Steam
-bool CLobbyApp::BootPlayerFromLobbyByPlayerIdentifier(const ZString &strPlayerIdentifier, const ZString &bootReason)
-{
-	PlayersBySteamIdentifier::iterator iterPlayerBySteamID = m_playersByPlayerIdentifier.find(strPlayerIdentifier);
-	bool foundPlayer = false;
-
-	// if we think that player is already logged on...
-	while (iterPlayerBySteamID != m_playersByPlayerIdentifier.end()
-		&& (*iterPlayerBySteamID).first == strPlayerIdentifier)
-	{
-		foundPlayer = true;
-		void * data = (*iterPlayerBySteamID).second;
-
-		CSQLQuery * pQuery = (CSQLQuery *)data;  //use the AZ legacy data & callback
-		CQLobbyLogon * pls = (CQLobbyLogon *)data;
-		CQLobbyLogonData * pqd = pls->GetData();
-
-		char resultMessage[1024];
-
-		//mutex->lock();
-		pqd->fValid = false;
-		pqd->fRetry = false;
-		pqd->szReason = new char[lstrlenA(resultMessage) + 1];
-		Strcpy(pqd->szReason, bootReason);
-		//mutex->unlock();
-
-		PostThreadMessage(_Module.dwThreadID, wm_sql_querydone, (WPARAM)NULL, (LPARAM)pQuery);
-
-		iterPlayerBySteamID++;
-	}
-
-	RemoveAuthorizingPlayerByPlayerIdentifier(strPlayerIdentifier);
-
-	return foundPlayer;
-}
-
-// BT - Steam
-bool CLobbyApp::AuthorizePlayerToConnectToLobby(const ZString &strPlayerIdentifier)
-{
-	PlayersBySteamIdentifier::iterator iterPlayerBySteamID = m_playersByPlayerIdentifier.find(strPlayerIdentifier);
-	bool foundPlayer = false;
-
-	// if we think that player is already logged on...
-	while (iterPlayerBySteamID != m_playersByPlayerIdentifier.end()
-		&& (*iterPlayerBySteamID).first == strPlayerIdentifier)
-	{
-		foundPlayer = true;
-		void * data = (*iterPlayerBySteamID).second;
-
-		CSQLQuery * pQuery = (CSQLQuery *)data;  //use the AZ legacy data & callback
-		CQLobbyLogon * pls = (CQLobbyLogon *)data;
-		CQLobbyLogonData * pqd = pls->GetData();
-
-		// let the player proceed to connect to the lobby.
-		PostThreadMessage(_Module.dwThreadID, wm_sql_querydone, (WPARAM)NULL, (LPARAM)pQuery);
-
-		iterPlayerBySteamID++;
-	}
-
-	RemoveAuthorizingPlayerByPlayerIdentifier(strPlayerIdentifier);
-
-	return foundPlayer;
-}
-
-
 
 bool CLobbyApp::BootPlayersByCDKey(const ZString& strCDKey, const ZString& strNameExclude, ZString& strOldPlayer)
 {

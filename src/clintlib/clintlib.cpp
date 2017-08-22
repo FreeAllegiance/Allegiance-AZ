@@ -3726,6 +3726,11 @@ void BaseClient::OnQuitSide()
 
 void BaseClient::OnJoinSide()
 {
+	// BT - STEAM
+	// WHen joining a server, the player leaves the lobby, so cancel their lobby auth ticket, and transition to the server auth ticket.
+	if (m_hAuthTicketLobby != 0)
+		SteamUser()->CancelAuthTicket(m_hAuthTicketLobby);
+
     ResetShip();
     m_strBriefingText.SetEmpty();
     m_bGenerateCivBriefing = false;
@@ -3749,6 +3754,11 @@ void BaseClient::OnJoinSide()
 void BaseClient::OnQuitMission(QuitSideReason reason, const char* szMessageParam)
 {
     Disconnect();
+
+	// BT - STEAM
+	if (m_hAuthTicketServer != 0)
+		SteamUser()->CancelAuthTicket(m_hAuthTicketServer);
+
     // clear chat messages
     m_chatList.purge(true);
     m_pClientEventSource->OnClearChat();

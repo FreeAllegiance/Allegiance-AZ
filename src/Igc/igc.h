@@ -1307,10 +1307,10 @@ struct MissionParams
 		nInitialMinersPerTeam = 1;
 		nMaxDronesPerTeam = 4;
 
-		nMinPlayersPerTeam = 1;
-		nMaxPlayersPerTeam = 4;
+		nMinPlayersPerTeam = 1; 
+		nMaxPlayersPerTeam = 100; // BT - 8/17 - Increased back to normal default starting numbers for min/max players. 
 
-		nTotalMaxPlayersPerGame = 90; // 6 teams * 15 players per team
+		nTotalMaxPlayersPerGame = 200; // 6 teams * 15 players per team // BT - 8/17 Increased back to R7 numbers for min/max players. 
 	}
 
 	const char* Invalid(bool bFromClient = false) const
