@@ -528,6 +528,18 @@ void CLobbyApp::RollCall()
   }
 }
 
+extern "C" void __cdecl SteamAPIDebugTextHook(int nSeverity, const char *pchDebugText)
+{
+	printf("STEAM: %s\n", pchDebugText);
+	if (nSeverity >= 1)
+	{
+		// place to set a breakpoint for catching API errors
+		int x = 3;
+		x = x;
+	}
+}
+
+
 
 int CLobbyApp::Run()
 {
@@ -544,11 +556,14 @@ int CLobbyApp::Run()
   EServerMode eMode = eServerModeAuthenticationAndSecure;
   const char *lobbyVersion = "1.0.0.4";
 
+
   if (SteamGameServer_Init(unIP, steamAuthenticationPort, gamePort, masterUpdaterPort, eMode, lobbyVersion) == false)
   {
 	  printf("failed on steam server init.\n");
+	  exit(-1);
   }
 
+  SteamUtils()->SetWarningMessageHook(&SteamAPIDebugTextHook);
   SteamGameServer()->LogOnAnonymous();
 
 
