@@ -27,6 +27,9 @@
 #include <sqlext.h>
 //#include <dplobby.h> Imago 9/14
 
+// BT - STEAM
+#include "steam_gameserver.h"
+
 // This also includes <atlbase.h> and <atlcom.h>
 #include "AllClubModule.h"
 

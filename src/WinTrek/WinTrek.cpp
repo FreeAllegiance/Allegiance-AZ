@@ -8541,10 +8541,18 @@ public:
                         else
 						{
                             float   fov = m_cameraControl.GetFOV();
+
+							// BT - 8/17 Set zoom delta based on current resolution FOV settings instead of pinning it to refresh ticks.
+							// This gives a much smoother feel when zooming with the keyboard.
+							float	fovChangeRate = (s_fMaxFOV - s_fMinFOV) / 125;
+
+							
                             if (m_ptrekInput->IsTrekKeyDown(TK_ZoomIn, true))
                             {
-								// BT - 8/17 Set fixed mousewheel zoom delta.
-								fov -= .08f;
+								// BT - 8/17 Set zoom delta based on current resolution FOV settings instead of pinning it to refresh ticks.
+								fov -= fovChangeRate;
+
+								//fov -= .08f;
                                 //fov -= dt;
                                 if (fov < s_fMinFOV)
                                     fov = s_fMinFOV;
@@ -8553,8 +8561,10 @@ public:
                             }
                             else if (m_ptrekInput->IsTrekKeyDown(TK_ZoomOut, true))
                             {
-								// BT - 8/17 Set fixed mousewheel zoom delta.
-								fov += .08f;
+								// BT - 8/17 Set zoom delta based on current resolution FOV settings instead of pinning it to refresh ticks.
+								fov += fovChangeRate;
+
+								//fov += .08f;
                                 //fov += dt;
                                 if (fov > s_fMaxFOV)
                                     fov = s_fMaxFOV;
@@ -10684,7 +10694,8 @@ public:
             case TK_ZoomOut:
             case TK_ZoomIn:
             {
-                if (!m_ptrekInput->IsTrekKeyDown(TK_ZoomOut, true) && !m_ptrekInput->IsTrekKeyDown(TK_ZoomIn, true)) {
+				// BT - 8/17  - Mouse wheel zoom fix - This was preventing the mouse wheel zoom from working correctly.
+                //if (!m_ptrekInput->IsTrekKeyDown(TK_ZoomOut, true) && !m_ptrekInput->IsTrekKeyDown(TK_ZoomIn, true)) {
                     float dt = 0.1f;
                     if (CommandCamera(m_cm) && !m_pconsoleImage->DrawSelectionBox()) {
                         float delta = dt * m_distanceCommandCamera;
@@ -10723,7 +10734,7 @@ public:
                         }
                     }
 					
-                }
+               // } // BT - 8/17 - Mouse wheel zoom fix.
             }
             break;
 			

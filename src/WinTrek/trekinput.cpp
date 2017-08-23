@@ -139,9 +139,10 @@ public:
         // Initialize input mapping
         //
 
-        if (!LoadMap(INPUTMAP_FILE)) {
-            LoadMap(DEFAULTINPUTMAP_FILE);
-        }
+		// BT - 8/17 - Stuck button / throttle bounce
+        //if (!LoadMap(INPUTMAP_FILE)) {
+        //    LoadMap(DEFAULTINPUTMAP_FILE);
+        //}
 
         Flush();
     }

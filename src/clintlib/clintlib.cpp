@@ -1432,8 +1432,7 @@ void BaseClient::UpdateLobbyLoginRequestWithSteamAuthTokenInformation(FMD_C_LOGO
 {
 	if (SteamUser() != nullptr)
 	{
-		if (m_hAuthTicketLobby != 0)
-			SteamUser()->CancelAuthTicket(m_hAuthTicketLobby);
+		CancelSteamAuthSessionToLobby();
 
 		m_hAuthTicketLobby = SteamUser()->GetAuthSessionTicket(pfmLogon->steamAuthTicket, sizeof(pfmLogon->steamAuthTicket), &pfmLogon->steamAuthTicketLength);
 
@@ -1441,16 +1440,36 @@ void BaseClient::UpdateLobbyLoginRequestWithSteamAuthTokenInformation(FMD_C_LOGO
 	}
 }
 
+// BT - STEAM
 void BaseClient::UpdateServerLoginRequestWithSteamAuthTokenInformation(FMD_C_LOGONREQ *pfmLogon)
 {
 	if (SteamUser() != nullptr)
 	{
-		if (m_hAuthTicketServer != 0)
-			SteamUser()->CancelAuthTicket(m_hAuthTicketServer);
+		CancelSteamAuthSessionToGameServer();
 
 		m_hAuthTicketServer = SteamUser()->GetAuthSessionTicket(pfmLogon->steamAuthTicket, sizeof(pfmLogon->steamAuthTicket), &pfmLogon->steamAuthTicketLength);
 
 		pfmLogon->steamID = SteamUser()->GetSteamID().ConvertToUint64();
+	}
+}
+
+// BT - STEAM
+void BaseClient::CancelSteamAuthSessionToGameServer()
+{
+	if (m_hAuthTicketServer != 0)
+	{
+		SteamUser()->CancelAuthTicket(m_hAuthTicketServer);
+		m_hAuthTicketServer = 0;
+	}
+}
+
+// BT - STEAM
+void BaseClient::CancelSteamAuthSessionToLobby()
+{
+	if (m_hAuthTicketLobby != 0)
+	{
+		SteamUser()->CancelAuthTicket(m_hAuthTicketLobby);
+		m_hAuthTicketLobby = 0;
 	}
 }
 
@@ -1612,6 +1631,10 @@ void BaseClient::Disconnect(void)
         m_fm.Shutdown();
         m_fLoggedOn = false;
     }
+
+	// BT - STEAM 
+	CancelSteamAuthSessionToGameServer();
+
     m_szCharName[0] = '\0';
     m_szIGCStaticFile[0] = '\0';
 }
@@ -3728,8 +3751,7 @@ void BaseClient::OnJoinSide()
 {
 	// BT - STEAM
 	// WHen joining a server, the player leaves the lobby, so cancel their lobby auth ticket, and transition to the server auth ticket.
-	if (m_hAuthTicketLobby != 0)
-		SteamUser()->CancelAuthTicket(m_hAuthTicketLobby);
+	CancelSteamAuthSessionToLobby();
 
     ResetShip();
     m_strBriefingText.SetEmpty();
@@ -3756,8 +3778,7 @@ void BaseClient::OnQuitMission(QuitSideReason reason, const char* szMessageParam
     Disconnect();
 
 	// BT - STEAM
-	if (m_hAuthTicketServer != 0)
-		SteamUser()->CancelAuthTicket(m_hAuthTicketServer);
+	CancelSteamAuthSessionToGameServer();
 
     // clear chat messages
     m_chatList.purge(true);

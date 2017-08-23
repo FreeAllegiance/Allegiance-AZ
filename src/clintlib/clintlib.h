@@ -880,6 +880,9 @@ public:
 	// BT - STEAM
 	void UpdateLobbyLoginRequestWithSteamAuthTokenInformation(FMD_C_LOGON_LOBBY *pfmLogon);
 	void UpdateServerLoginRequestWithSteamAuthTokenInformation(FMD_C_LOGONREQ *pfmLogon);
+	void CancelSteamAuthSessionToGameServer();
+	void CancelSteamAuthSessionToLobby();
+
 	//void BeginSteamAuthSessionForLobby();
 	//void SetSteamAuthSessionInfo(HAuthTicket hAuthTicket, int8 *pTicket, uint32 pcbTicket);
 	//HAuthTicket	GetSteamAuthTicketID();
