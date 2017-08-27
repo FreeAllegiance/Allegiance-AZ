@@ -1322,7 +1322,7 @@ public:
     // chase view stuff
     //
 
-    #define ARRAY_OF_SAMPLES_SIZE  128
+    #define ARRAY_OF_SAMPLES_SIZE  2048 // BT - 8/17 - Was 128. Fixing sample under-run issues. Dx9 takes way more samples than Dx7 did, especially when zoomed out. 
     struct  TurnRateSample
     {
         float   fTurnRate[3];
@@ -7045,7 +7045,16 @@ public:
 
         // find the sample index to interpolate
         int     iSampleIndex = ((m_turnRateSampleIndex - 1) + ARRAY_OF_SAMPLES_SIZE) % ARRAY_OF_SAMPLES_SIZE;
-        while ((m_turnRateSamples[iSampleIndex].time + fDelayTime) > m_turnRateSamples[m_turnRateSampleIndex].time)
+
+		// BT - 8/17 Fixing DX9 hang when in chase mode, and the camera is zoomed all the way out, this would cause a hang withe Dx9 engine. 
+		// The experiance is still bad (it's jumping all over the place), but at  least it doesn't hang. The Dx7 engine 
+		// works smoothly here, and the ship itself turns a lot nicer under DX7. 
+		// I believe that if you can figure out why this is different between the two engines, you will have solved the issue that was 
+		// introduced with the Dx9 conversion that is causing some players to report aiming issues. 
+		// The issue with the Dx9 version is that the m_turnRateSamples[iSampleIndex].time + fDelayTime) > m_turnRateSamples[m_turnRateSampleIndex].time is always true. 
+		// In the Dx7 engine version, this is NOT always true. 
+		// TODO: Resolve difference between Dx7 and Dx9 versions of the engines. 
+        while ((m_turnRateSamples[iSampleIndex].time + fDelayTime) > m_turnRateSamples[m_turnRateSampleIndex].time && iSampleIndex != 0)
             iSampleIndex = ((iSampleIndex - 1) + ARRAY_OF_SAMPLES_SIZE) % ARRAY_OF_SAMPLES_SIZE;
 
         // find the amount to interpolate
@@ -8542,18 +8551,9 @@ public:
 						{
                             float   fov = m_cameraControl.GetFOV();
 
-							// BT - 8/17 Set zoom delta based on current resolution FOV settings instead of pinning it to refresh ticks.
-							// This gives a much smoother feel when zooming with the keyboard.
-							float	fovChangeRate = (s_fMaxFOV - s_fMinFOV) / 125;
-
-							
                             if (m_ptrekInput->IsTrekKeyDown(TK_ZoomIn, true))
                             {
-								// BT - 8/17 Set zoom delta based on current resolution FOV settings instead of pinning it to refresh ticks.
-								fov -= fovChangeRate;
-
-								//fov -= .08f;
-                                //fov -= dt;
+                                fov -= dt;
                                 if (fov < s_fMinFOV)
                                     fov = s_fMinFOV;
 
@@ -8561,11 +8561,7 @@ public:
                             }
                             else if (m_ptrekInput->IsTrekKeyDown(TK_ZoomOut, true))
                             {
-								// BT - 8/17 Set zoom delta based on current resolution FOV settings instead of pinning it to refresh ticks.
-								fov += fovChangeRate;
-
-								//fov += .08f;
-                                //fov += dt;
+                                fov += dt;
                                 if (fov > s_fMaxFOV)
                                     fov = s_fMaxFOV;
 
@@ -10733,7 +10729,6 @@ public:
                             m_cameraControl.SetFOV(fov);
                         }
                     }
-					
                // } // BT - 8/17 - Mouse wheel zoom fix.
             }
             break;

@@ -905,6 +905,26 @@ public:
     void Paint(Surface* psurface)
     {
     }
+
+	//imago 9/14 // BT - 8/17 - Mouse Wheel support from Dx9 Engine
+    MouseResult Button(
+        IInputProvider* pprovider,
+        const Point& point,
+        int button,
+        bool bCaptured,
+        bool bInside,
+        bool bDown
+    ) {
+        if(button == 8 && bDown) { //Imago 8/14/09 mouse wheel
+            m_pscroll->LineDown(); //pagedown is too much and just one line doesn't seem enough
+            m_pscroll->LineDown();
+        } else if (button == 9 && bDown) { 
+            m_pscroll->LineUp(); //intentional duplication
+            m_pscroll->LineUp();
+        }
+        return Pane::Button(pprovider, point, button, bCaptured, bInside, bDown);
+    }
+
 };
 
 //////////////////////////////////////////////////////////////////////////////
