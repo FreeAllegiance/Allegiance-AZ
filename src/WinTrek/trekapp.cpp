@@ -343,6 +343,7 @@ public:
 		//if (SteamAPI_RestartAppIfNecessary(STEAM_APP_ID) == true)
 		//	::exit(-1);
 
+#if defined STEAM_APP_ID
 		bool steamInitResult = SteamAPI_Init();
 		if (steamInitResult == false)
 		{
@@ -350,8 +351,7 @@ public:
 			::MessageBoxA(NULL, "Steam Client is not running. Please launch Steam and try again.", "Error", MB_ICONERROR | MB_OK);
 			::exit(-1);
 		}
-
-
+#endif
 
         //
         // Make sure reloader finished correctly--this must be first before any other files are opened
