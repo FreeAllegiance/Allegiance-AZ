@@ -97,8 +97,8 @@ bool g_bAskForCallSign = true ; // wlp 2006
 //
 //    //
 //    //This call enables both EULA and warranty accepting/viewing/printing.  If your
-//    //game doesn't ship with a WARRANTY file, specifiy NULL instead of szWarranty…
-//    //The code below, for instance, works with both OEM and retail builds…
+//    //game doesn't ship with a WARRANTY file, specifiy NULL instead of szWarrantyâ€¦
+//    //The code below, for instance, works with both OEM and retail buildsâ€¦
 //    //
 //    TCHAR *pszWarrantyParam = 0xFFFFFFFF != GetFileAttributes(szWarranty) ? szWarranty : NULL;
 //    */
@@ -343,7 +343,6 @@ public:
 		//if (SteamAPI_RestartAppIfNecessary(STEAM_APP_ID) == true)
 		//	::exit(-1);
 
-#if defined STEAM_APP_ID
 		bool steamInitResult = SteamAPI_Init();
 		if (steamInitResult == false)
 		{
@@ -351,7 +350,6 @@ public:
 			::MessageBoxA(NULL, "Steam Client is not running. Please launch Steam and try again.", "Error", MB_ICONERROR | MB_OK);
 			::exit(-1);
 		}
-#endif
 
         //
         // Make sure reloader finished correctly--this must be first before any other files are opened
