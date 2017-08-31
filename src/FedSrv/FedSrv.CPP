@@ -15,6 +15,9 @@
 #include <agc.h>
 #include <zreg.h>
 
+// BT - STEAM
+#include <inttypes.h>
+
  // mmf log to file on SRVLOG define as well as _DEBUG
 #ifdef _DEBUG
 #define SRVLOG
@@ -3081,7 +3084,9 @@ void HandleCOMChatEvents(const char *szMessage, const char *szDest, ShipID shipi
 			if (pfsShipFrom->IsPlayer())
 				idSource = static_cast<USHORT>(CAdminUser::DetermineID(pfsShipFrom->GetPlayer())) | static_cast<DWORD>(AGC_AdminUser << 16);
 
-			idTeam = pShipIGC->GetSide()->GetUniqueID();
+			if (pShipIGC->GetSide() != nullptr)
+				idTeam = pShipIGC->GetSide()->GetUniqueID();
+
 		}
 	}
 
@@ -4667,6 +4672,7 @@ static void DisplaceProbe(IclusterIGC* pcluster, Vector* position, float r)
 }
 
 
+
 // BT - STEAM
 //DWORD WINAPI LogonThread(LPVOID param)
 //{
@@ -4676,6 +4682,65 @@ static void DisplaceProbe(IclusterIGC* pcluster, Vector* position, float r)
 //
 //	return 0;
 //}
+
+
+
+// BT - STEAM
+const char m_lookUpTable[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
+'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+'m', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+
+// BT - STEAM
+// https://stackoverflow.com/questions/1235371/fastest-base-conversion-method
+void GetPlayerHandleFromSteamID(CSteamID steamID, char *playerHandle)
+{
+	char* pWritePos = playerHandle;
+	uint64 leftOver = steamID.ConvertToUint64();
+	int counter = 0;
+	while (leftOver)
+	{
+		int value62 = leftOver % 62;
+		*pWritePos = m_lookUpTable[value62];
+		pWritePos++;
+
+		leftOver = floor(leftOver / 62);
+		counter++;
+	}
+	*pWritePos = 0;
+
+	// Reverse the string.
+	for (int i = 0; i < counter / 2; i++)
+	{
+		char temp = playerHandle[i];
+		playerHandle[i] = playerHandle[counter - i - 1];
+		playerHandle[counter - i - 1] = temp;
+	}
+}
+
+// BT - STEAM
+CSteamID GetSteamIDFromPlayerHandle(char *playerHandle)
+{
+	int iterator = strlen(playerHandle);
+	uint64 returnValue = 0;
+	int multiplier = 62;
+
+	for(int index = 0; index < strlen(playerHandle); index++)
+	{
+		for (int i = 0; i < sizeof(m_lookUpTable); i++)
+		{
+			if (m_lookUpTable[i] == playerHandle[index])
+			{
+				returnValue = (returnValue * multiplier) + i;
+				break;
+			}
+		}
+
+		//multiplier *= 62;
+	}
+
+	return CSteamID(returnValue);
+}
 
 /*-------------------------------------------------------------------------
  * OnAppMessage
@@ -4825,7 +4890,105 @@ HRESULT FedSrvSiteBase::OnAppMessage(FedMessaging * pthis, CFMConnection & cnxnF
 				}
 				else
 #endif
+
+
 				{
+					// BT - STEAM - Enable a user that is a member of the MS Allegiance Steam Group to get a list of players and steam IDs 
+					// so that a moderator can kick or ban users from inside the game console.
+					if (pfmChat->cbMessage > strlen("#who") && _strnicmp(FM_VAR_REF(pfmChat, Message), "#who", strlen("#who")) == 0)
+					{
+						if (CSteamUserGroupStatus::IsMemberOfModeratorsGroup(pfsPlayer->GetCDKey()) == true)
+						{
+							for (ShipLinkIGC* psl = pfsMission->GetIGCMission()->GetShips()->first(); (psl != NULL); psl = psl->next())
+							{
+								CFSShip*  pfsShip = (CFSShip*)(psl->data()->GetPrivateData());
+								if (pfsShip->IsPlayer() == true)
+								{
+									char playerData[1024];
+
+									uint64 steamUID = strtoull(pfsShip->GetPlayer()->GetCDKey(), NULL, 0);
+									CSteamID steamID(steamUID);
+
+									char playerHandle[256];
+									GetPlayerHandleFromSteamID(steamID, playerHandle);
+
+									sprintf(playerData, "%s - %s", pfsShip->GetPlayer()->GetName(), playerHandle);
+
+									CSteamID testID = GetSteamIDFromPlayerHandle(playerHandle);
+
+									pfsMission->GetSite()->SendChatf(NULL, CHAT_INDIVIDUAL_NOFILTER, pfsPlayer->GetIGCShip()->GetObjectID(),
+										NA, playerData);
+								}
+							}
+						}
+					}
+
+					// BT - STEAM
+					if (pfmChat->cbMessage > strlen("#kick") && _strnicmp(FM_VAR_REF(pfmChat, Message), "#kick", strlen("#kick")) == 0)
+					{
+						if (CSteamUserGroupStatus::IsMemberOfModeratorsGroup(pfsPlayer->GetCDKey()) == true)
+						{
+							char *kickPlayerHandle = FM_VAR_REF(pfmChat, Message) + strlen("#kick ");
+							CSteamID targetSteamID = GetSteamIDFromPlayerHandle(kickPlayerHandle);
+							char kickSteamID[1024];
+							sprintf(kickSteamID, "%" PRIu64, targetSteamID.ConvertToUint64());
+
+
+							for (ShipLinkIGC* psl = pfsMission->GetIGCMission()->GetShips()->first(); (psl != NULL); psl = psl->next())
+							{
+								CFSShip*  pfsShip = (CFSShip*)(psl->data()->GetPrivateData());
+								if (pfsShip->IsPlayer() == true && strcmp(pfsShip->GetPlayer()->GetCDKey(), kickSteamID) == 0)
+								{
+									pfsMission->RemovePlayerFromSide(pfsShip->GetPlayer(), QuitSideReason::QSR_SwitchingSides, "You have been removed from the team by an admin.");
+
+									// TE: Fire AGCEvent informing of the kick
+									LPCSTR pszContext = pfsMission->GetIGCMission()->GetContextName();
+									_AGCModule.TriggerContextEvent(NULL, EventID_LeaveTeam, pszContext, pfsShip->GetName(),
+										pfsShip->GetShipID(), -1, -1, 3, "GameID", VT_I4, pfsMission->GetMissionID(),
+										"GameName", VT_LPSTR, pfsMission->GetIGCMission()->GetMissionParams()->strGameName,
+										"zKicker", VT_LPSTR, pfsPlayer->GetName());
+									// This is named zBooter so the parameter appears last in the alphabetical list
+									// TE
+
+									break;
+								}
+							}
+						}
+					}
+
+
+					// BT - STEAM
+					if (pfmChat->cbMessage > strlen("#ban") && _strnicmp(FM_VAR_REF(pfmChat, Message), "#ban", strlen("#ban")) == 0)
+					{
+						if (CSteamUserGroupStatus::IsMemberOfModeratorsGroup(pfsPlayer->GetCDKey()) == true)
+						{
+							char *banPlayerHandle = FM_VAR_REF(pfmChat, Message) + strlen("#ban ");
+							CSteamID targetSteamID = GetSteamIDFromPlayerHandle(banPlayerHandle);
+							char banSteamID[1024];
+							sprintf(banSteamID, "%" PRIu64, targetSteamID.ConvertToUint64());
+
+							for (ShipLinkIGC* psl = pfsMission->GetIGCMission()->GetShips()->first(); (psl != NULL); psl = psl->next())
+							{
+								CFSShip*  pfsShip = (CFSShip*)(psl->data()->GetPrivateData());
+								if (pfsShip->IsPlayer() == true && strcmp(pfsShip->GetPlayer()->GetCDKey(), banSteamID) == 0)
+								{
+									pfsMission->RemovePlayerFromMission(pfsShip->GetPlayer(), QuitSideReason::QSR_AdminBooted, "You have been removed from the game by an admin.");
+
+									// TE: Fire AGCEvent informing of the kick
+									LPCSTR pszContext = pfsMission->GetIGCMission()->GetContextName();
+									_AGCModule.TriggerContextEvent(NULL, EventID_LogoutGame, pszContext, pfsShip->GetName(),
+										pfsShip->GetShipID(), -1, -1, 3, "GameID", VT_I4, pfsMission->GetMissionID(),
+										"GameName", VT_LPSTR, pfsMission->GetIGCMission()->GetMissionParams()->strGameName,
+										"zBanner", VT_LPSTR, pfsPlayer->GetName());
+									// This is named zBooter so the parameter appears last in the alphabetical list
+									// TE
+
+									break;
+								}
+							}
+						}
+					}
+
 
 					//NYI hack to allow misison owner to boot people from the lobby
 					if (pfmChat->cbMessage > 5 && pfsMission->GetOwner() == pfsPlayer)
@@ -4862,60 +5025,60 @@ HRESULT FedSrvSiteBase::OnAppMessage(FedMessaging * pthis, CFMConnection & cnxnF
 						}
 					}
 
-          if (pfsPlayer->GetSide()->GetObjectID() >= 0)
-		  {
-			if (pfsMission->GetStage() == STAGE_STARTED) //Spunky #177
-			{
-				
-			  // imago commented out resign. BT - 7/15 - Readded resign. 
+					if (pfsPlayer->GetSide() != nullptr && pfsPlayer->GetSide()->GetObjectID() >= 0)
+					{
+						if (pfsMission->GetStage() == STAGE_STARTED) //Spunky #177
+						{
 
-              if (pfmChat->cbMessage > strlen("#resign") && _strnicmp(FM_VAR_REF(pfmChat, Message), "#resign", strlen("#resign")) == 0)
-              {
-				// mmf/KGJV 09/07 allow only one ballot of each type at a time
-				if (!pfsMission->HasBallots(BALLOT_RESIGN))
-                  pfsMission->AddBallot(new ResignBallot(pfsPlayer));
-				else pfsMission->GetSite()->SendChatf(NULL, CHAT_INDIVIDUAL_NOFILTER, pfsPlayer->GetIGCShip()->GetObjectID(),
-					NA, "Resign vote already in progress...");
-                bForward = false;
-              }
-              else
-              // ^-- imago commented out resign 7/15 -- BT 7/15 - Readded #resign
+							// imago commented out resign. BT - 7/15 - Readded resign. 
+
+							if (pfmChat->cbMessage > strlen("#resign") && _strnicmp(FM_VAR_REF(pfmChat, Message), "#resign", strlen("#resign")) == 0)
+							{
+								// mmf/KGJV 09/07 allow only one ballot of each type at a time
+								if (!pfsMission->HasBallots(BALLOT_RESIGN))
+									pfsMission->AddBallot(new ResignBallot(pfsPlayer));
+								else pfsMission->GetSite()->SendChatf(NULL, CHAT_INDIVIDUAL_NOFILTER, pfsPlayer->GetIGCShip()->GetObjectID(),
+									NA, "Resign vote already in progress...");
+								bForward = false;
+							}
+							else
+								// ^-- imago commented out resign 7/15 -- BT 7/15 - Readded #resign
 
 
-              if (pfmChat->cbMessage > strlen("#draw") && _strnicmp(FM_VAR_REF(pfmChat, Message), "#draw", strlen("#draw")) == 0)
-              {
-				// mmf/KGJV 09/07 allow only one ballot of each type at a time
-				if (!pfsMission->HasBallots(BALLOT_OFFERDRAW))
-                  pfsMission->AddBallot(new OfferDrawBallot(pfsPlayer));
-				else pfsMission->GetSite()->SendChatf(NULL, CHAT_INDIVIDUAL_NOFILTER, pfsPlayer->GetIGCShip()->GetObjectID(),
-					NA, "Draw vote already in progress...");
-                bForward = false;
-              }
-			   // yp Your_Persona bug98 (toggle auto accept after game launch) aug-3-2006
-			   // mmf changed this from GetOwner to GetLeader
-			  else if(pfsMission->GetLeader(pfsPlayer->GetSide()->GetObjectID()) == pfsPlayer && pfmChat->cbMessage > strlen("#autoaccept") && _strnicmp(FM_VAR_REF(pfmChat, Message), "#autoaccept", strlen("#autoaccept")) == 0)
-              {
-				pfsMission->SetAutoAccept(pfsPlayer->GetSide(),!pfsMission->GetAutoAccept(pfsPlayer->GetSide()));
-                bForward = true;
-				g.fm.ForwardMessage(pfsMission->GetGroupMission(), pfsMission->GetMissionDef(), FM_GUARANTEED); //Imago7/10
-			  }
-			  // mmf added ability to change balance (MaxTeamImbalance) to 1 2 a (for auto) n (for N/A)
-			  else if(pfsMission->GetOwner() == pfsPlayer && pfmChat->cbMessage > strlen("#autobalance  ") && _strnicmp(FM_VAR_REF(pfmChat, Message), "#autobalance", strlen("#autobalance")) == 0)
-              {
-                // check all cases explicitly instead of doing a string manipulation to pull of the parameter
-				if (_strnicmp(FM_VAR_REF(pfmChat, Message), "#autobalance 1", strlen("#autobalance 1")) == 0)
-					pfsMission->SetMaxTeamImbalance(1);
-				if (_strnicmp(FM_VAR_REF(pfmChat, Message), "#autobalance 2", strlen("#autobalance 2")) == 0)
-					pfsMission->SetMaxTeamImbalance(2);
-				if (_strnicmp(FM_VAR_REF(pfmChat, Message), "#autobalance a", strlen("#autobalance a")) == 0)
-					pfsMission->SetMaxTeamImbalance(0x7ffe);
-				if (_strnicmp(FM_VAR_REF(pfmChat, Message), "#autobalance n", strlen("#autobalance n")) == 0)
-					pfsMission->SetMaxTeamImbalance(0x7fff);
-                pfmChat->cd.chatTarget = CHAT_EVERYONE;
-                pfmChat->cd.oidRecipient = NA;
-				bForward = true;
-				g.fm.ForwardMessage(pfsMission->GetGroupMission(), pfsMission->GetMissionDef(), FM_GUARANTEED); //Imago #4 7/10
-			  }
+								if (pfmChat->cbMessage > strlen("#draw") && _strnicmp(FM_VAR_REF(pfmChat, Message), "#draw", strlen("#draw")) == 0)
+								{
+									// mmf/KGJV 09/07 allow only one ballot of each type at a time
+									if (!pfsMission->HasBallots(BALLOT_OFFERDRAW))
+										pfsMission->AddBallot(new OfferDrawBallot(pfsPlayer));
+									else pfsMission->GetSite()->SendChatf(NULL, CHAT_INDIVIDUAL_NOFILTER, pfsPlayer->GetIGCShip()->GetObjectID(),
+										NA, "Draw vote already in progress...");
+									bForward = false;
+								}
+							// yp Your_Persona bug98 (toggle auto accept after game launch) aug-3-2006
+							// mmf changed this from GetOwner to GetLeader
+								else if (pfsMission->GetLeader(pfsPlayer->GetSide()->GetObjectID()) == pfsPlayer && pfmChat->cbMessage > strlen("#autoaccept") && _strnicmp(FM_VAR_REF(pfmChat, Message), "#autoaccept", strlen("#autoaccept")) == 0)
+								{
+									pfsMission->SetAutoAccept(pfsPlayer->GetSide(), !pfsMission->GetAutoAccept(pfsPlayer->GetSide()));
+									bForward = true;
+									g.fm.ForwardMessage(pfsMission->GetGroupMission(), pfsMission->GetMissionDef(), FM_GUARANTEED); //Imago7/10
+								}
+							// mmf added ability to change balance (MaxTeamImbalance) to 1 2 a (for auto) n (for N/A)
+								else if (pfsMission->GetOwner() == pfsPlayer && pfmChat->cbMessage > strlen("#autobalance  ") && _strnicmp(FM_VAR_REF(pfmChat, Message), "#autobalance", strlen("#autobalance")) == 0)
+								{
+									// check all cases explicitly instead of doing a string manipulation to pull of the parameter
+									if (_strnicmp(FM_VAR_REF(pfmChat, Message), "#autobalance 1", strlen("#autobalance 1")) == 0)
+										pfsMission->SetMaxTeamImbalance(1);
+									if (_strnicmp(FM_VAR_REF(pfmChat, Message), "#autobalance 2", strlen("#autobalance 2")) == 0)
+										pfsMission->SetMaxTeamImbalance(2);
+									if (_strnicmp(FM_VAR_REF(pfmChat, Message), "#autobalance a", strlen("#autobalance a")) == 0)
+										pfsMission->SetMaxTeamImbalance(0x7ffe);
+									if (_strnicmp(FM_VAR_REF(pfmChat, Message), "#autobalance n", strlen("#autobalance n")) == 0)
+										pfsMission->SetMaxTeamImbalance(0x7fff);
+									pfmChat->cd.chatTarget = CHAT_EVERYONE;
+									pfmChat->cd.oidRecipient = NA;
+									bForward = true;
+									g.fm.ForwardMessage(pfsMission->GetGroupMission(), pfsMission->GetMissionDef(), FM_GUARANTEED); //Imago #4 7/10
+								}
 
 						}
 						// KGJV #110 //Spunky #177
@@ -4952,7 +5115,8 @@ HRESULT FedSrvSiteBase::OnAppMessage(FedMessaging * pthis, CFMConnection & cnxnF
 					// mmf 03/22/07 added #list to display all the other # commands
 					//              keep this at the end of this else if
 					// turkey #317 moved down and added list for lobby commands
-					else if (pfmChat->cbMessage > strlen("#list") && _strnicmp(FM_VAR_REF(pfmChat, Message), "#list", strlen("#list")) == 0)
+					else if (pfmChat->cbMessage > strlen("#list") && _strnicmp(FM_VAR_REF(pfmChat, Message), "#list", strlen("#list")) == 0
+						|| pfmChat->cbMessage > strlen("#help") && _strnicmp(FM_VAR_REF(pfmChat, Message), "#help", strlen("#help")) == 0)
 					{
 						// mmf send message to self
 						// KGJV #110 added #mutiny
@@ -4966,6 +5130,17 @@ HRESULT FedSrvSiteBase::OnAppMessage(FedMessaging * pthis, CFMConnection & cnxnF
 						{
 							pfsMission->GetSite()->SendChatf(NULL, CHAT_INDIVIDUAL_NOFILTER, pfsPlayer->GetIGCShip()->GetObjectID(),
 								NA, "#mutiny | #removecom [1|2|...|6]");
+							bForward = false;
+						}
+
+						if (CSteamUserGroupStatus::IsMemberOfModeratorsGroup(pfsPlayer->GetCDKey()) == true)
+						{
+							pfsMission->GetSite()->SendChatf(NULL, CHAT_INDIVIDUAL_NOFILTER, pfsPlayer->GetIGCShip()->GetObjectID(),
+								NA, "Moderator Commands: #who - Get a list of steam IDs currently logged in.");
+							pfsMission->GetSite()->SendChatf(NULL, CHAT_INDIVIDUAL_NOFILTER, pfsPlayer->GetIGCShip()->GetObjectID(),
+								NA, "Moderator Commands: #kick - Move a player from a team to NOAT. The player may rejoin any team.");
+							pfsMission->GetSite()->SendChatf(NULL, CHAT_INDIVIDUAL_NOFILTER, pfsPlayer->GetIGCShip()->GetObjectID(),
+								NA, "Moderator Commands: #ban - Boot the player from the game. The player will not be able to rejoin this game.");
 							bForward = false;
 						}
 					}
@@ -9643,17 +9818,17 @@ void UnregisterAllSrv(char *szServerName)
 	}
 }
 
-// BT - STEAM
-extern "C" void __cdecl SteamAPIDebugTextHook(int nSeverity, const char *pchDebugText)
-{
-	printf("STEAM: %s\n", pchDebugText);
-	if (nSeverity >= 1)
-	{
-		// place to set a breakpoint for catching API errors
-		int x = 3;
-		x = x;
-	}
-}
+//// BT - STEAM
+//extern "C" void __cdecl SteamAPIDebugTextHook(int nSeverity, const char *pchDebugText)
+//{
+//	printf("STEAM: %s\n", pchDebugText);
+//	if (nSeverity >= 1)
+//	{
+//		// place to set a breakpoint for catching API errors
+//		int x = 3;
+//		x = x;
+//	}
+//}
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -9773,7 +9948,8 @@ int __cdecl main(int argc, char *argv[])
 		exit(-1);
 	}
 
-	SteamUtils()->SetWarningMessageHook(&SteamAPIDebugTextHook);
+	// Only for SteamAPI, not SteamGameServerAPI.
+	//SteamUtils()->SetWarningMessageHook(&SteamAPIDebugTextHook);
 	SteamGameServer()->LogOnAnonymous();
 
 

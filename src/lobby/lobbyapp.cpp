@@ -527,18 +527,18 @@ void CLobbyApp::RollCall()
     }
   }
 }
-
-extern "C" void __cdecl SteamAPIDebugTextHook(int nSeverity, const char *pchDebugText)
-{
-	printf("STEAM: %s\n", pchDebugText);
-	if (nSeverity >= 1)
-	{
-		// place to set a breakpoint for catching API errors
-		int x = 3;
-		x = x;
-	}
-}
-
+//
+//extern "C" void __cdecl SteamAPIDebugTextHook(int nSeverity, const char *pchDebugText)
+//{
+//	printf("STEAM: %s\n", pchDebugText);
+//	if (nSeverity >= 1)
+//	{
+//		// place to set a breakpoint for catching API errors
+//		int x = 3;
+//		x = x;
+//	}
+//}
+//
 
 
 int CLobbyApp::Run()
@@ -563,7 +563,8 @@ int CLobbyApp::Run()
 	  exit(-1);
   }
 
-  SteamUtils()->SetWarningMessageHook(&SteamAPIDebugTextHook);
+  // Only for SteamAPI, not SteamGameServerAPI.
+  //SteamUtils()->SetWarningMessageHook(&SteamAPIDebugTextHook);
   SteamGameServer()->LogOnAnonymous();
 
 

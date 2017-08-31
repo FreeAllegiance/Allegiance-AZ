@@ -7752,7 +7752,7 @@ public:
         return m_fDeltaTime;
     }
 
-    void EvaluateFrame(Time time)
+    void EvaluateFrame(Time time) 
     {
         static bool bFirstFrame = true;
 

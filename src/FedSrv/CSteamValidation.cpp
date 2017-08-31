@@ -90,6 +90,10 @@ void CSteamValidation::OnValidateAuthTicketResponse(ValidateAuthTicketResponse_t
 	char steamID[64];
 	sprintf(steamID, "%" PRIu64, pResponse->m_SteamID.ConvertToUint64());
 
+	// If the response was not for us, then just keep waiting. 
+	if (pResponse->m_SteamID.ConvertToUint64() != m_logonStatsData->steamID)
+		return;
+
 	ZString strSteamID = steamID;
 
 	ZString responseText;

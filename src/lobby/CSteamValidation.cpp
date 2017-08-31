@@ -35,7 +35,7 @@ void CSteamValidation::BeginSteamAuthentication()
 		break;
 
 	case k_EBeginAuthSessionResultGameMismatch:
-		responseMessage = "Couldn't begin authorization: Game Mismatch.";
+		responseMessage = "Couldn't begin authorization: Game Mismatch - You need to update to the latest version.";
 		break;
 
 	case k_EBeginAuthSessionResultExpiredTicket:
@@ -85,6 +85,11 @@ void CSteamValidation::OnValidateAuthTicketResponse(ValidateAuthTicketResponse_t
 {
 	char steamID[64];
 	sprintf(steamID, "%" PRIu64, pResponse->m_SteamID.ConvertToUint64());
+
+	// If the response was not for us, then just keep waiting. 
+	if (pResponse->m_SteamID.ConvertToUint64() != m_lobbyLogonData->steamID)
+		return;
+
 
 	ZString strSteamID = steamID;
 
