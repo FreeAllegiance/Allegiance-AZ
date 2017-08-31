@@ -183,6 +183,10 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d
+xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">
     <ClCompile>
@@ -212,6 +216,10 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d
+xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">
     <ClCompile>
@@ -245,6 +253,10 @@
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d
+xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">
     <ClCompile>
@@ -283,6 +295,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d
+xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">
     <ClCompile>
@@ -322,7 +338,8 @@
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d</Command>
+      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d
+xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='FZRetail-DX7|Win32'">
@@ -363,7 +380,8 @@
       <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d</Command>
+      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d
+xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='AZRetail-Optimized|Win32'">
@@ -410,6 +428,10 @@
       <GenerateMapFile>true</GenerateMapFile>
       <ManifestFile>$(Outdir)$(TargetName)$(TargetExt).intermediate.manifest</ManifestFile>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d
+xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='AZRetail-Instrumented|Win32'">
     <ClCompile>
@@ -455,6 +477,10 @@
       <GenerateMapFile>true</GenerateMapFile>
       <ManifestFile>$(Outdir)$(TargetName)$(TargetExt).intermediate.manifest</ManifestFile>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d
+xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ProjectReference Include="CssSoap.vcxproj">

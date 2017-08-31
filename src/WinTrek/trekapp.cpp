@@ -97,8 +97,8 @@ bool g_bAskForCallSign = true ; // wlp 2006
 //
 //    //
 //    //This call enables both EULA and warranty accepting/viewing/printing.  If your
-//    //game doesn't ship with a WARRANTY file, specifiy NULL instead of szWarrantyâ€¦
-//    //The code below, for instance, works with both OEM and retail buildsâ€¦
+//    //game doesn't ship with a WARRANTY file, specifiy NULL instead of szWarranty…
+//    //The code below, for instance, works with both OEM and retail builds…
 //    //
 //    TCHAR *pszWarrantyParam = 0xFFFFFFFF != GetFileAttributes(szWarranty) ? szWarranty : NULL;
 //    */

@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.10
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Allegiance", "Allegiance.vcxproj", "{3702DB5A-C966-4133-824F-5958F4BF9BCF}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -35,6 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Includes", "Includes", "{CB
 		..\src\Inc\quickchat.h = ..\src\Inc\quickchat.h
 		..\src\Inc\regkey.h = ..\src\Inc\regkey.h
 		..\src\Inc\SlmVer.h = ..\src\Inc\SlmVer.h
+		..\src\Inc\steam_appid.txt = ..\src\Inc\steam_appid.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{29B93072-BF20-474E-B687-39BCF1292357}"
