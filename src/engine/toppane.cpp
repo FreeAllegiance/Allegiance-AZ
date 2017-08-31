@@ -83,9 +83,12 @@ void TopPane::Evaluate()
 
 		WinPoint sizeNew = GetSize();
 
-		// This creates the top level surface. Create a new render target for now.
-        if ( ( sizeNew != sizeOld ) && ( sizeNew != WinPoint(0,0) ) )
+		
+		// BT - 8/17 - Fixing white minimap / chat window on loadout when using various huds.
+        if ( ( sizeNew != sizeOld ) && ( sizeNew != WinPoint(0,0) ) && sizeNew.X() >= 0 && sizeNew.Y() >= 0)
+		// if ( ( sizeNew != sizeOld ) && ( sizeNew != WinPoint(0,0) )
 		{
+			// This creates the top level surface. Create a new render target for now.
             m_bNeedPaint = true;
 			m_bPaintAll = true;
 

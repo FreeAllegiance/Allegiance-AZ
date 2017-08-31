@@ -195,8 +195,8 @@
       <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d
-xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
+      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d /y
+xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">
@@ -239,8 +239,8 @@ xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
       <DelayLoadDLLs>%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d
-xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
+      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d /y
+xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d /y</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copying external DLLs to output directory.</Message>
@@ -290,8 +290,8 @@ xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d
-xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
+      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d /y
+xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">
@@ -342,8 +342,8 @@ xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d
-xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
+      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d /y
+xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">
@@ -394,8 +394,8 @@ xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d
-xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
+      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d /y
+xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d /y</Command>
       <Message>Copying external DLLs to output directory.</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -447,8 +447,8 @@ xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d
-xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
+      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d /y
+xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d /y</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copying external DLLs to output directory.</Message>
@@ -506,8 +506,8 @@ xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
       <ManifestFile>$(Outdir)$(TargetName)$(TargetExt).intermediate.manifest</ManifestFile>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d
-xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
+      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d /y
+xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='AZRetail-Instrumented|Win32'">
@@ -562,8 +562,8 @@ xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
       <ManifestFile>$(Outdir)$(TargetName)$(TargetExt).intermediate.manifest</ManifestFile>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d
-xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d</Command>
+      <Command>xcopy ..\src\lib\steam\steam_api.dll $(OutDir) /s /d /y
+xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
