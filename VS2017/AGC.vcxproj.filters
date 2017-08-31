@@ -268,7 +268,6 @@
     <ClInclude Include="..\src\AGC\AGCStations.h" />
     <ClInclude Include="..\src\AGC\AGCTeam.h" />
     <ClInclude Include="..\src\AGC\AGCTeams.h" />
-    <ClInclude Include="..\src\AGC\AGCUtil.h" />
     <ClInclude Include="..\src\AGC\AGCVector.h" />
     <ClInclude Include="..\src\AGC\AGCVersionInfo.h" />
     <ClInclude Include="..\src\AGC\AGCWinApp.h" />
