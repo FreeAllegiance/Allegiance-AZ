@@ -1424,9 +1424,23 @@ public:
 
                     case CHAT_WING:
                     {
-                        pszRecipient = c_pszWingName[m_pchsCurrent->m_oidRecipient == NA
+
+						// BT - 8/17 - Fixing training mission crash on chat target selection.
+						int currentWing = trekClient.GetShip()->GetWingID();
+						int currentRecipient = m_pchsCurrent->m_oidRecipient;
+
+						if (currentRecipient == NA && currentWing == NA)
+							pszRecipient = pszAllies;
+
+						else if (currentRecipient == NA)
+							pszRecipient = c_pszWingName[currentWing];
+
+						else
+							pszRecipient = c_pszWingName[currentRecipient];
+
+                       /* pszRecipient = c_pszWingName[m_pchsCurrent->m_oidRecipient == NA
                                                      ? trekClient.GetShip()->GetWingID()
-                                                     : m_pchsCurrent->m_oidRecipient];
+                                                     : m_pchsCurrent->m_oidRecipient];*/
                     }
                     break;
 

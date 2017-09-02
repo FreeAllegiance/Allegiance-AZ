@@ -192,3 +192,4 @@ src/Installer/Resources/Allegiance/Allegiance*.exe
 
 
 *.zip
+*.idb

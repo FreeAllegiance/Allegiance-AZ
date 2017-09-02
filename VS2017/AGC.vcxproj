@@ -21,6 +21,10 @@
       <Configuration>AZRetail-SSE2</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="FZDebug-DX7|Win32">
+      <Configuration>FZDebug-DX7</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="FZDebug|Win32">
       <Configuration>FZDebug</Configuration>
       <Platform>Win32</Platform>
@@ -55,6 +59,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <UseOfAtl>false</UseOfAtl>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
     <UseOfAtl>false</UseOfAtl>
@@ -116,6 +127,9 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'" Label="PropertySheets">
     <Import Project="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.props" Condition="exists('$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.props')" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'" Label="PropertySheets">
+    <Import Project="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.props" Condition="exists('$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.props')" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">
     <Import Project="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.props" Condition="exists('$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.props')" />
   </ImportGroup>
@@ -124,8 +138,10 @@
     <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">..\objs14\$(Configuration)\AGC\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">..\objs14\$(Configuration)\AGC\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">..\objs14\$(Configuration)\AGC\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">..\objs14\$(Configuration)\AGC\</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">..\objs14\$(Configuration)\AGC\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">..\objs14\$(Configuration)\AGC\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">..\objs14\$(Configuration)\AGC\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">..\objs14\$(Configuration)\AGC\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">..\objs14\$(Configuration)\AGC\</OutDir>
@@ -149,6 +165,9 @@
     <CustomBuildAfterTargets>Link</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">
+    <CustomBuildAfterTargets>Link</CustomBuildAfterTargets>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">
     <CustomBuildAfterTargets>Link</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">
@@ -228,6 +247,67 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>.\$(SolutionDir);.\$(TargetDir);..\src\Inc;..\src\AGC;.\$(OutDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <GenerateTypeLibrary>true</GenerateTypeLibrary>
+      <TypeLibraryName>$(TargetDir)/AGC.tlb</TypeLibraryName>
+      <OutputDirectory>$(TargetDir)\</OutputDirectory>
+      <HeaderFileName>%(FileName).h</HeaderFileName>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\;..\src\AGC;..\src\zlib;..\src\Igc;..\src\Inc;..\src\test\Inc;.\$(OutDir);.\$(OutDir)..\Guids;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DIRECT3D_VERSION=0x0900;_ITERATOR_DEBUG_LEVEL=0;_ATL_STATIC_REGISTRY;_USRDLL;_DEBUG;DEBUG;STRICT;_WINDOWS;WIN32;_AFXDLL;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BasicRuntimeChecks>StackFrameRuntimeCheck</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level2</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4996;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>.\$(OutDir);.\$(OutDir)..\Guids;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>FLAVOR=\"$(ConfigurationName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+    <Link>
+      <AdditionalDependencies>dbghelp.lib;$(OutDir)..\Guids\AGCGuid.lib;$(OutDir)..\Test\TCLib\TCLib.lib;$(OutDir)..\ZLib\ZLib.lib;$(OutDir)..\_utility\Utility.lib;$(OutDir)..\igc\igc.lib;version.lib;Winmm.lib;wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ShowProgress>NotSet</ShowProgress>
+      <SuppressStartupBanner>false</SuppressStartupBanner>
+      <ModuleDefinitionFile>..\src\AGC\AGC.def</ModuleDefinitionFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapExports>false</MapExports>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+      <UACExecutionLevel>HighestAvailable</UACExecutionLevel>
+    </Link>
+    <CustomBuildStep>
+      <Command>regsvr32 $(TargetPath) /s</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>
+      </Outputs>
+    </CustomBuildStep>
+    <PreBuildEvent>
+      <Command>..\src\AGC\Pre-build.bat $(OutDir)</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Transforming XML</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">
     <Midl>
       <AdditionalIncludeDirectories>.\$(SolutionDir);.\$(TargetDir);..\src\Inc;..\src\AGC;.\$(OutDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <GenerateTypeLibrary>true</GenerateTypeLibrary>
@@ -489,7 +569,7 @@
       <Optimization>Disabled</Optimization>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>.\;..\src\AGC;..\src\zlib;..\src\Igc;..\src\Inc;..\src\test\Inc;.\$(OutDir);.\$(OutDir)..\Guids;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>DIRECT3D_VERSION=0x0900;DEBUG;_ATL_STATIC_REGISTRY;SRVLOG; _USRDLL;STRICT;_WINDOWS;WIN32;_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DIRECT3D_VERSION=0x0900;_ATL_STATIC_REGISTRY; _USRDLL;STRICT;_WINDOWS;WIN32;_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
@@ -683,14 +763,20 @@
       </Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">
       </Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">
+      </Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">
       </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">
       </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">
+      </Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">
       </Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">
@@ -733,14 +819,19 @@
     <None Include="..\src\AGC\AGCEventsCPP.xsl">
       <Message Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">Transforming AGCEvents.xml through AGCEventsCPP.xsl</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">Transforming AGCEvents.xml through AGCEventsCPP.xsl</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">Transforming AGCEvents.xml through AGCEventsCPP.xsl</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">cscript /e:jscript /NoLogo ..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml ..\src\AGC\AGCEventsCPP.xsl $(OutDir)AGCEventsCPP.h
 </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">cscript /e:jscript /NoLogo ..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml ..\src\AGC\AGCEventsCPP.xsl $(OutDir)AGCEventsCPP.h
 </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">cscript /e:jscript /NoLogo ..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml ..\src\AGC\AGCEventsCPP.xsl $(OutDir)AGCEventsCPP.h
+</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">$(OutDir)AGCEventsCPP.h;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">$(OutDir)AGCEventsCPP.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">$(OutDir)AGCEventsCPP.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">Transforming AGCEvents.xml through AGCEventsCPP.xsl</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">Transforming AGCEvents.xml through AGCEventsCPP.xsl</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">Transforming AGCEvents.xml through AGCEventsCPP.xsl</Message>
@@ -777,16 +868,22 @@
     <None Include="..\src\AGC\AGCEventsMC.xsl">
       <Message Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">Transforming AGCEvents.xml through AGCEventsMC.xsl</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">Transforming AGCEvents.xml through AGCEventsMC.xsl</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">Transforming AGCEvents.xml through AGCEventsMC.xsl</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">cscript /e:jscript /NoLogo ..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml ..\src\AGC\AGCEventsMC.xsl $(OutDir)AGCEventsMC.mc
 mc.exe -r $(OutDir) -h $(OutDir) $(OutDir)AGCEventsMC.mc
 </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">cscript /e:jscript /NoLogo ..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml ..\src\AGC\AGCEventsMC.xsl $(OutDir)AGCEventsMC.mc
 mc.exe -r $(OutDir) -h $(OutDir) $(OutDir)AGCEventsMC.mc
 </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">cscript /e:jscript /NoLogo ..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml ..\src\AGC\AGCEventsMC.xsl $(OutDir)AGCEventsMC.mc
+mc.exe -r $(OutDir) -h $(OutDir) $(OutDir)AGCEventsMC.mc
+</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">$(OutDir)AGCEventsMC.mc;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">$(OutDir)AGCEventsMC.mc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">$(OutDir)AGCEventsMC.mc;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">Transforming AGCEvents.xml through AGCEventsMC.xsl</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">Transforming AGCEvents.xml through AGCEventsMC.xsl</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">Transforming AGCEvents.xml through AGCEventsMC.xsl</Message>
@@ -829,14 +926,19 @@ mc.exe -r $(OutDir) -h $(OutDir) $(OutDir)AGCEventsMC.mc
     <None Include="..\src\AGC\AGCEventsRC2.xsl">
       <Message Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">Transforming AGCEvents.xml through AGCEventsRC2.xsl</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">Transforming AGCEvents.xml through AGCEventsRC2.xsl</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">Transforming AGCEvents.xml through AGCEventsRC2.xsl</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">cscript /e:jscript /NoLogo ..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml ..\src\AGC\AGCEventsRC2.xsl $(OutDir)AGCEventsRC2.rc2
 </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">cscript /e:jscript /NoLogo ..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml ..\src\AGC\AGCEventsRC2.xsl $(OutDir)AGCEventsRC2.rc2
 </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">cscript /e:jscript /NoLogo ..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml ..\src\AGC\AGCEventsRC2.xsl $(OutDir)AGCEventsRC2.rc2
+</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">$(OutDir)AGCEventsRC2.rc2;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">$(OutDir)AGCEventsRC2.rc2;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">$(OutDir)AGCEventsRC2.rc2;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">Transforming AGCEvents.xml through AGCEventsRC2.xsl</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">Transforming AGCEvents.xml through AGCEventsRC2.xsl</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">Transforming AGCEvents.xml through AGCEventsRC2.xsl</Message>
@@ -873,14 +975,19 @@ mc.exe -r $(OutDir) -h $(OutDir) $(OutDir)AGCEventsMC.mc
     <None Include="..\src\AGC\AGCEventsRCH.xsl">
       <Message Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">Transforming AGCEvents.xml through AGCEventsRCH.xsl</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">Transforming AGCEvents.xml through AGCEventsRCH.xsl</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">Transforming AGCEvents.xml through AGCEventsRCH.xsl</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">cscript /e:jscript /NoLogo ..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml ..\src\AGC\AGCEventsRCH.xsl $(OutDir)AGCEventsRCH.h
 </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">cscript /e:jscript /NoLogo ..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml ..\src\AGC\AGCEventsRCH.xsl $(OutDir)AGCEventsRCH.h
 </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">cscript /e:jscript /NoLogo ..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml ..\src\AGC\AGCEventsRCH.xsl $(OutDir)AGCEventsRCH.h
+</Command>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml;%(AdditionalInputs)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">..\src\AGC\XMLXForm.js ..\src\AGC\AGCEvents.xml;%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">$(OutDir)AGCEventsRCH.h;%(Outputs)</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">$(OutDir)AGCEventsRCH.h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">$(OutDir)AGCEventsRCH.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">Transforming AGCEvents.xml through AGCEventsRCH.xsl</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">Transforming AGCEvents.xml through AGCEventsRCH.xsl</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">Transforming AGCEvents.xml through AGCEventsRCH.xsl</Message>
@@ -952,6 +1059,8 @@ mc.exe -r $(OutDir) -h $(OutDir) $(OutDir)AGCEventsMC.mc
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">
+      </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">
@@ -968,6 +1077,7 @@ mc.exe -r $(OutDir) -h $(OutDir) $(OutDir)AGCEventsMC.mc
     <ClCompile Include="..\src\AGC\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='AZDebug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='FZDebug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='FZDebug-DX7|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='AZRetail-SSE2|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='AZRetail|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='FZRetail|Win32'">Create</PrecompiledHeader>

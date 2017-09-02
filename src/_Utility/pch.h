@@ -41,4 +41,9 @@
 #include "zlib.h"
 #include "utility.h"
 //#include "zauth.h" // KG removed
+
+
+// BT - STEAM
+#include "FileHash.h"
+#include "FileHashTable.h"
 #endif

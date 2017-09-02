@@ -4497,6 +4497,10 @@ void      WinTrekClient::ReceiveChat(IshipIGC*   pshipSender,
                     bForMe = false;
                 }
 
+				// BT - 8/17 - training misson crash fix. 
+				if (wid == -1)
+					wid = 0;
+
                 strRecipient = c_pszWingName[wid];
             }
             break;

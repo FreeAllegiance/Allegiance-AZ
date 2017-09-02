@@ -467,6 +467,7 @@ int ZString::Find(const ZString& str) const
 
 int ZString::ReverseFind(const ZString& str) const
 {
+	// BT - Not sure why this is using a forward find, but it's used EVERYWHERE, so not touching it.
     return m_pdata->Find(str.m_pdata);
 }
 

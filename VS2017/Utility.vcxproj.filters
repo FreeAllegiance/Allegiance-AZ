@@ -12,6 +12,7 @@
     <ClCompile Include="..\src\_Utility\pch.cpp" />
     <ClCompile Include="..\src\_Utility\Utility.cpp" />
     <ClCompile Include="..\src\_Utility\allegdb.cpp" />
+    <ClCompile Include="..\src\_Utility\FileHashTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\Inc\MessageVersion.h" />
@@ -19,5 +20,7 @@
     <ClInclude Include="..\src\_Utility\listwrappers.h" />
     <ClInclude Include="..\src\_Utility\pch.h" />
     <ClInclude Include="..\src\_Utility\Utility.h" />
+    <ClInclude Include="..\src\_Utility\FileHash.h" />
+    <ClInclude Include="..\src\_Utility\FileHashTable.h" />
   </ItemGroup>
 </Project>

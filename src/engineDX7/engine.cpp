@@ -56,6 +56,7 @@ private:
     HWND                      m_hwndFocus;
     Vector                  m_pointFullscreen; // BT - 8/17 - Resolution switch fixes.
 	Vector                  m_pointFullscreenCurrent; // BT - 8/17 - Resolution switch fixes.
+	WinPoint				m_winpointFullscreen; // BT - 8/17 - Resolution switch fixes.
     TRef<PrivateSurface>      m_psurfaceBack;
     TRef<IDirectDrawClipper>  m_pddClipper;
     float                     m_gamma;
@@ -1047,7 +1048,8 @@ private:
     const WinPoint& GetFullscreenSize()
     {
 		// BT - 8/17 - Resolution switch fixes.
-        return WinPoint(m_pointFullscreen.X(), m_pointFullscreen.Y());
+		m_winpointFullscreen = WinPoint(m_pointFullscreen.X(), m_pointFullscreen.Y());
+        return m_winpointFullscreen;
     }
 
     bool IsFullscreen()

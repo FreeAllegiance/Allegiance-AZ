@@ -49,6 +49,9 @@ public:
 ////////////////////////////////////////////////////////////////////////////////
 
 class ZFile : public WaitableObject {
+private: 
+	PathString m_pathString; // BT - STEAM
+
 protected:
 
     BYTE* m_p;
@@ -83,6 +86,9 @@ public:
     {
         return Write(&value, sizeof(Type));
     }
+
+	// BT - STEAM
+	ZString GetSha1Hash();
 };
 
 class ZWriteFile : public ZFile {

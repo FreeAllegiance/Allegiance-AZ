@@ -995,7 +995,10 @@ void EngineWindow::OnEngineWindowMenuCommand(IMenuItem* pitem)
 			Vector mode = modes[pitem->GetID() - 1];
 			GetEngine()->SetFullscreenChanged(true);
 			GetEngine()->SetFullscreenSize(mode);
-			m_pmenu->ClosePopup(m_popup);
+
+			// BT - 9/17 Fixing ZAssert error in debug mode.
+			if(m_popup != NULL)
+				m_pmenu->ClosePopup(m_popup);
     }
 }
 

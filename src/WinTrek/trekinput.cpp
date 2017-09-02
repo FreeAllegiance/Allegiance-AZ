@@ -807,10 +807,13 @@ public:
 		// ClearButtonStates call.
         for (int index = 0; index < TK_Max; index++) {
 
-			if (m_boolTrekKeyButtonDown[index] == true)
+			// BT - 9/17 - Debug build fix.
+			// Because the array is not initialized in debug builds, it can be 0xCD (205) == true which is != to boolean true. So, using != false insted to get it to meaningful values.
+			if (m_boolTrekKeyButtonDown[index] != false)
 				m_boolTrekKeyButtonDown[index] = false;
 
-			if (m_boolMouseTrekKeyDown[index] == true)
+			// BT - 9/17 - Debug build fix.
+			if (m_boolMouseTrekKeyDown[index] != false)
 				m_boolMouseTrekKeyDown[index] = false;
 
 			if (m_pboolTrekKeyDown[index] != NULL &&  m_pboolTrekKeyDown[index]->GetValue() == true)
