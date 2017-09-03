@@ -2533,13 +2533,13 @@ public:
         pfile->Write(ZString("    [\n"          ));
 
         for (index = 0; index < m_paxis.GetCount(); index++) {
-            pfile->Write(
-                   "        ("
-                + ZString(m_paxis[index].m_indexJoystick)
-                + ", "
-                + ZString(m_paxis[index].m_indexValue)
-                + ")"
-            );
+			pfile->Write(
+				"        ("
+				+ ZString(m_paxis[index].m_indexJoystick)
+				+ ", "
+				+ ZString(m_paxis[index].m_indexValue)
+				+ ")"
+			);
 
             if (index != m_paxis.GetCount() - 1) {
                 pfile->Write(ZString(","));

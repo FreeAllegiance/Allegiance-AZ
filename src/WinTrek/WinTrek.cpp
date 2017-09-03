@@ -1322,7 +1322,7 @@ public:
     // chase view stuff
     //
 
-    #define ARRAY_OF_SAMPLES_SIZE  2048 // BT - 8/17 - Was 128. Fixing sample under-run issues. Dx9 takes way more samples than Dx7 did, especially when zoomed out. 
+    #define ARRAY_OF_SAMPLES_SIZE  4092 // BT - 8/17 - Was 128. Fixing sample under-run issues. Dx9 takes way more samples than Dx7 did, especially when zoomed out. 
     struct  TurnRateSample
     {
         float   fTurnRate[3];
@@ -6791,7 +6791,7 @@ public:
 
 			// yp - Your_Persona buttons get stuck patch. aug-03-2006
 			// clear the keyboard buttons.
-			m_ptrekInput->ClearButtonStates(true);
+			//m_ptrekInput->ClearButtonStates(true);
 
 			
 

@@ -551,6 +551,7 @@
     <ClInclude Include="..\src\zlib\point.h" />
     <ClInclude Include="..\src\zlib\quaternion.h" />
     <ClInclude Include="..\src\zlib\rect.h" />
+    <ClInclude Include="..\src\zlib\tarray.h" />
     <ClInclude Include="..\src\zlib\tcompare.h" />
     <ClInclude Include="..\src\zlib\Threads.h" />
     <ClInclude Include="..\src\zlib\tlist.h" />

@@ -865,12 +865,23 @@ TRef<IPopup> EngineWindow::GetEngineMenu(IEngineFont* pfont)
             m_pmenuCommandSink
         );
 	m_pmenu = pmenu; //Imago 10/14
-                                 pmenu->AddMenuItem(0                     , "------------------------------------------------"     );
-                                 pmenu->AddMenuItem(0                     , "Options are only valid when flying in fullscreen"     );
-                                 pmenu->AddMenuItem(0                     , "------------------------------------------------"     );
-                                 pmenu->AddMenuItem(idmBrightnessDown     , "Brightness Down"                                 , 'D');
-                                 pmenu->AddMenuItem(idmBrightnessUp       , "Brightness Up"                                   , 'U');
-								 pmenu->AddMenuItem(idmSelectResolution   , "Change Resolution"                               , 'R', m_psubmenuEventSink); //Imago 10/14
+                                 pmenu->AddMenuItem(0                     , "------------------------------------------------------------------"     );
+                                 pmenu->AddMenuItem(0                     , "These Options are only valid when flying in fullscreen during game"     );
+                                 pmenu->AddMenuItem(0                     , "------------------------------------------------------------------"     );
+
+								 if (m_pengine->IsFullscreen() && m_bSizeable)
+								 {
+									 pmenu->AddMenuItem(idmBrightnessDown, "Brightness Down", 'D');
+									 pmenu->AddMenuItem(idmBrightnessUp, "Brightness Up", 'U');
+									 pmenu->AddMenuItem(idmSelectResolution, "Change Resolution", 'R', m_psubmenuEventSink); //Imago 10/14
+								 }
+								 else
+								 {
+									 pmenu->AddMenuItem(0, "Brightness Down (Disabled In This View)", 'D');
+									 pmenu->AddMenuItem(0, "Brightness Up (Disabled In This View)", 'U');
+									 pmenu->AddMenuItem(0, "Change Resolution (Disabled In This View)", 'R'); //Imago 10/14
+								 }
+
 								 pmenu->AddMenuItem(0                     , "------------------------------------------------"     );
                                  pmenu->AddMenuItem(0                     , "Current device state                            "	   );
                                  pmenu->AddMenuItem(0	                  , "------------------------------------------------"     );
@@ -995,10 +1006,7 @@ void EngineWindow::OnEngineWindowMenuCommand(IMenuItem* pitem)
 			Vector mode = modes[pitem->GetID() - 1];
 			GetEngine()->SetFullscreenChanged(true);
 			GetEngine()->SetFullscreenSize(mode);
-
-			// BT - 9/17 Fixing ZAssert error in debug mode.
-			if(m_popup != NULL)
-				m_pmenu->ClosePopup(m_popup);
+			m_pmenu->ClosePopup(m_popup);
     }
 }
 

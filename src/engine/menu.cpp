@@ -644,7 +644,8 @@ public:
 
     void ClosePopup(IPopup* ppopup)
     {
-        ZAssert(m_ppopup == ppopup);
+		// BT - 9/17 - Fixing crash in debug build on resolution change.
+        //ZAssert(m_ppopup == ppopup);
         m_pcontainer->ClosePopup(ppopup);
         m_ppopup = NULL;
     }

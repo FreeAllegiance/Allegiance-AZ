@@ -10,6 +10,7 @@ TVector<ZString> GetWhiteList()
 
 	// File names should always be lowercase.
 	returnValue.PushEnd(ZString("dialog.mdl"));
+	returnValue.PushEnd(ZString("inputmap1.mdl"));
 
 	return returnValue;
 }

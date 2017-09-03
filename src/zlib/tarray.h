@@ -14,7 +14,10 @@ protected:
 
 public:
     TArray()
-    {
+	{
+		// BT - 9/17 - Ensure that memory is properly cleared when creating new TArray 
+		// objects. This is especially important for arrays of bool values.
+		ZeroMemory(m_pvalue, sizeof(m_pvalue));
     }
 
     TArray(TValue pvalue[count]) :

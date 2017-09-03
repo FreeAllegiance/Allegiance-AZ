@@ -116,6 +116,7 @@
     </ClInclude>
     <ClInclude Include="..\src\zlib\minidump.h" />
     <ClInclude Include="..\src\zlib\ZDirectory.h" />
+    <ClInclude Include="..\src\zlib\tarray.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="7z">

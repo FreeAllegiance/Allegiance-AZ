@@ -293,7 +293,8 @@ FileHashTable::FileHashTable()
 	m_filehashes.PushEnd(FileHash("debris.cvh", "c69e1d455c89b846fc06f2efecf0602bf86ec61f"));
 	m_filehashes.PushEnd(FileHash("debris.mdl", "be437270b306a1f00b01f41579c1b3910fdca9bb"));
 	m_filehashes.PushEnd(FileHash("defaultevents.mdl", "827c1ddf13ae7baaf6063f949b5e6b6efad00721"));
-	m_filehashes.PushEnd(FileHash("defaultinputmap.mdl", "663104365d2f3996a9f05e24dfcf21cc40fe2c90"));
+	m_filehashes.PushEnd(FileHash("defaultinputmap.mdl", "434863cb182b998682598e39db0b0ec16e27c87c"));
+	m_filehashes.PushEnd(FileHash("defaultinputmap.mdl.bak", "663104365d2f3996a9f05e24dfcf21cc40fe2c90"));
 	m_filehashes.PushEnd(FileHash("defaultloadout.mdl", "9027e84fefe1b2845ed777ffc0c9bbe3799f2b94"));
 	m_filehashes.PushEnd(FileHash("dgarr.cvh", "042357515038994404595b90c943426d8521fa08"));
 	m_filehashes.PushEnd(FileHash("dgarr.mdl", "365862e02a0eec69a2a758e4f23aa8d7660f0f3e"));
@@ -1106,7 +1107,7 @@ FileHashTable::FileHashTable()
 	m_filehashes.PushEnd(FileHash("icfig.mdl", "ab48625a03d74c9e95803bf9cbcaeb55c357fbc0"));
 	m_filehashes.PushEnd(FileHash("ic_flagplat.cvh", "c3b1a98d058991a2d42bdfe5e5314991548d5d53"));
 	m_filehashes.PushEnd(FileHash("ic_flagplat.mdl", "2b10c6f8e04ca0af4692d53efe8e4076f792fcdb"));
-	m_filehashes.PushEnd(FileHash("inputmap1.mdl", "434863cb182b998682598e39db0b0ec16e27c87c"));
+	m_filehashes.PushEnd(FileHash("inputmap1_load.mdl", "da39a3ee5e6b4b0d3255bfef95601890afd80709"));
 	m_filehashes.PushEnd(FileHash("inputmappane.mdl", "f566523af66836f78cc30fd2d85eb5c73e33cb9f"));
 	m_filehashes.PushEnd(FileHash("int01.cvh", "b7181ac0316d0eec80b477ab12cf8b61ff08b227"));
 	m_filehashes.PushEnd(FileHash("int01.mdl", "4300bd2cced3e8c19bbd4f3287c14daf9353d071"));
@@ -1319,6 +1320,7 @@ FileHashTable::FileHashTable()
 	m_filehashes.PushEnd(FileHash("pointertext.mdl", "bb09b610ef36259bfb7527a888aac8da6c8b762a"));
 	m_filehashes.PushEnd(FileHash("proxexpl.cvh", "e1db6e2d213e3c4026312ea9f7f4651034abb562"));
 	m_filehashes.PushEnd(FileHash("proxexpl.mdl", "fc918acfa5b2f90a834e6f86665e53fe832e7549"));
+	m_filehashes.PushEnd(FileHash("publicmessageoftheday.mdl", "57644670d362626c0b24877009326c2b22e5de64"));
 	m_filehashes.PushEnd(FileHash("pulse10.cvh", "af420119533895eae90d4fad4eedeaab73a96a3e"));
 	m_filehashes.PushEnd(FileHash("pulse10.mdl", "295420887faae3ee20e2cad4a13c20e659a4fa19"));
 	m_filehashes.PushEnd(FileHash("quickchat.mdl", "9b14214a74cc5566128b107d3fe526f6b5a54269"));
