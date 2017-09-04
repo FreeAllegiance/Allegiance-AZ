@@ -293,7 +293,7 @@ FileHashTable::FileHashTable()
 	m_filehashes.PushEnd(FileHash("debris.cvh", "c69e1d455c89b846fc06f2efecf0602bf86ec61f"));
 	m_filehashes.PushEnd(FileHash("debris.mdl", "be437270b306a1f00b01f41579c1b3910fdca9bb"));
 	m_filehashes.PushEnd(FileHash("defaultevents.mdl", "827c1ddf13ae7baaf6063f949b5e6b6efad00721"));
-	m_filehashes.PushEnd(FileHash("defaultinputmap.mdl", "434863cb182b998682598e39db0b0ec16e27c87c"));
+	m_filehashes.PushEnd(FileHash("defaultinputmap.mdl", "f928d87dc8e347a4dc5d280588485163c6dd9640"));
 	m_filehashes.PushEnd(FileHash("defaultinputmap.mdl.bak", "663104365d2f3996a9f05e24dfcf21cc40fe2c90"));
 	m_filehashes.PushEnd(FileHash("defaultloadout.mdl", "9027e84fefe1b2845ed777ffc0c9bbe3799f2b94"));
 	m_filehashes.PushEnd(FileHash("dgarr.cvh", "042357515038994404595b90c943426d8521fa08"));
@@ -1108,7 +1108,7 @@ FileHashTable::FileHashTable()
 	m_filehashes.PushEnd(FileHash("ic_flagplat.cvh", "c3b1a98d058991a2d42bdfe5e5314991548d5d53"));
 	m_filehashes.PushEnd(FileHash("ic_flagplat.mdl", "2b10c6f8e04ca0af4692d53efe8e4076f792fcdb"));
 	m_filehashes.PushEnd(FileHash("inputmap1_load.mdl", "da39a3ee5e6b4b0d3255bfef95601890afd80709"));
-	m_filehashes.PushEnd(FileHash("inputmappane.mdl", "f566523af66836f78cc30fd2d85eb5c73e33cb9f"));
+	m_filehashes.PushEnd(FileHash("inputmappane.mdl", "3e160325f5137e870e7fda4e1e2bf61b394c91e3"));
 	m_filehashes.PushEnd(FileHash("int01.cvh", "b7181ac0316d0eec80b477ab12cf8b61ff08b227"));
 	m_filehashes.PushEnd(FileHash("int01.mdl", "4300bd2cced3e8c19bbd4f3287c14daf9353d071"));
 	m_filehashes.PushEnd(FileHash("intro.avi", "83e1fc549c7e58e2a2189e3a8259391f584830ee"));

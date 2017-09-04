@@ -3086,6 +3086,9 @@ ZString WinTrekClient::GetAllegianceWebPage()
 	DWORD cbUrl = sizeof(szUrl);
 	szUrl[0] = '\0';
 
+#ifdef STEAM_APP_ID
+	strcpy(szUrl, "http://steamcommunity.com/games/700480");
+#else
 	if (ERROR_SUCCESS == RegOpenKeyEx(HKEY_LOCAL_MACHINE, ALLEGIANCE_REGISTRY_KEY_ROOT, 0, KEY_READ, &hKey))
 	{
 		RegQueryValueExA(hKey, "ManagementWebRoot", NULL, &dwType, (unsigned char*)&szUrl, &cbUrl);
@@ -3094,6 +3097,7 @@ ZString WinTrekClient::GetAllegianceWebPage()
 
 	if (!szUrl || strlen(szUrl) == 0)
 		strcpy(szUrl, "http://allegiancezone.com");
+#endif
 
 	return szUrl;
 }
