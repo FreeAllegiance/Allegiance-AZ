@@ -294,7 +294,6 @@ FileHashTable::FileHashTable()
 	m_filehashes.PushEnd(FileHash("debris.mdl", "be437270b306a1f00b01f41579c1b3910fdca9bb"));
 	m_filehashes.PushEnd(FileHash("defaultevents.mdl", "827c1ddf13ae7baaf6063f949b5e6b6efad00721"));
 	m_filehashes.PushEnd(FileHash("defaultinputmap.mdl", "f928d87dc8e347a4dc5d280588485163c6dd9640"));
-	m_filehashes.PushEnd(FileHash("defaultinputmap.mdl.bak", "663104365d2f3996a9f05e24dfcf21cc40fe2c90"));
 	m_filehashes.PushEnd(FileHash("defaultloadout.mdl", "9027e84fefe1b2845ed777ffc0c9bbe3799f2b94"));
 	m_filehashes.PushEnd(FileHash("dgarr.cvh", "042357515038994404595b90c943426d8521fa08"));
 	m_filehashes.PushEnd(FileHash("dgarr.mdl", "365862e02a0eec69a2a758e4f23aa8d7660f0f3e"));

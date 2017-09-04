@@ -11991,8 +11991,13 @@ void FedSrvSiteBase::KillAsteroidEvent(AsteroidID roid, SectorID soid, IsideIGC*
 
 	//Turkey #307 02/13
 	IasteroidIGC* pasteroid = m_pfsMission->GetIGCMission()->GetAsteroid(roid);
-	pasteroid->Kill(side->GetObjectID());
-	if (pasteroid->IsDead()) pasteroid->Terminate();
+
+	// BT - 9/17 Fixing server crash error linked to HoD nuking an aelph. 
+	if (pasteroid != nullptr)
+	{
+		pasteroid->Kill(side->GetObjectID());
+		if (pasteroid->IsDead()) pasteroid->Terminate();
+	}
 }
 
 void FedSrvSiteBase::DrainAsteroidEvent(IasteroidIGC* pasteroid)
