@@ -498,119 +498,139 @@ public:
         // keyboard mapping
         //
 
-        {
-            TRef<IObjectList> plist = pns->FindList("keyCommandMap");
+		{
+			TRef<IObjectList> plist = pns->FindList("keyCommandMap");
 
-            plist->GetFirst();
-            while (plist->GetCurrent() != NULL) {
-                TRef<IObjectPair> ppair; CastTo(ppair, plist->GetCurrent());
+			// BT - 9/17 - Guarding against inputmap1.mdl damage preventing allegiance client from starting.
+			// If the keyCommandMap is not present, then fall back to loading the default input map.
+			if (plist == nullptr)
+				return false;
 
-                int vk        = (int)GetNumber(ppair->GetNth(0)    );
-                int modifiers = (int)GetNumber(ppair->GetNth(1)    );
-                int tk        = (int)GetNumber(ppair->GetLastNth(2));
+			plist->GetFirst();
+			while (plist->GetCurrent() != NULL) {
+				TRef<IObjectPair> ppair; CastTo(ppair, plist->GetCurrent());
 
-                TArray<TrekKey, keyMax>* pptk;
+				int vk = (int)GetNumber(ppair->GetNth(0));
+				int modifiers = (int)GetNumber(ppair->GetNth(1));
+				int tk = (int)GetNumber(ppair->GetLastNth(2));
 
-                if (modifiers & ModifierShift) {
-                    if (modifiers & ModifierControl) {
-                        if (modifiers & ModifierAlt) {
-                            pptk = &m_ControlShiftAltKeyMap;
-                        } else {
-                            pptk = &m_ControlShiftKeyMap;
-                        }
-                    } else {
-                        if (modifiers & ModifierAlt) {
-                            pptk = &m_ShiftAltKeyMap;
-                        } else {
-                            pptk = &m_ShiftKeyMap;
-                        }
-                    }
-                } else {
-                    if (modifiers & ModifierControl) {
-                        if (modifiers & ModifierAlt) {
-                            pptk = &m_ControlAltKeyMap;
-                        } else {
-                            pptk = &m_ControlKeyMap;
-                        }
-                    } else {
-                        if (modifiers & ModifierAlt) {
-                            pptk = &m_AltKeyMap;
-                        } else {
-                            pptk = &m_KeyMap;
-                        }
-                    }
-                }
+				TArray<TrekKey, keyMax>* pptk;
 
-                ZAssert((*pptk)[vk] == -1);
-                (*pptk)[vk] = tk;
+				if (modifiers & ModifierShift) {
+					if (modifiers & ModifierControl) {
+						if (modifiers & ModifierAlt) {
+							pptk = &m_ControlShiftAltKeyMap;
+						}
+						else {
+							pptk = &m_ControlShiftKeyMap;
+						}
+					}
+					else {
+						if (modifiers & ModifierAlt) {
+							pptk = &m_ShiftAltKeyMap;
+						}
+						else {
+							pptk = &m_ShiftKeyMap;
+						}
+					}
+				}
+				else {
+					if (modifiers & ModifierControl) {
+						if (modifiers & ModifierAlt) {
+							pptk = &m_ControlAltKeyMap;
+						}
+						else {
+							pptk = &m_ControlKeyMap;
+						}
+					}
+					else {
+						if (modifiers & ModifierAlt) {
+							pptk = &m_AltKeyMap;
+						}
+						else {
+							pptk = &m_KeyMap;
+						}
+					}
+				}
 
-                //
-                // Boolean inputs, the key
-                //
+				ZAssert((*pptk)[vk] == -1);
+				(*pptk)[vk] = tk;
 
-                TRef<Boolean> pbool = GetKeyDown(vk);
+				//
+				// Boolean inputs, the key
+				//
 
-                //
-                // And with modifiers
-                //
+				TRef<Boolean> pbool = GetKeyDown(vk);
 
-                if (modifiers != ModifierAny) {
-                    TRef<Boolean> pboolModifier;
+				//
+				// And with modifiers
+				//
 
-                    if (modifiers & ModifierShift) {
-                        if (modifiers & ModifierControl) {
-                            if (modifiers & ModifierAlt) {
-                                pboolModifier = m_pboolJustControlShiftAlt;
-                            } else {
-                                pboolModifier = m_pboolJustControlShift;
-                            }
-                        } else {
-                            if (modifiers & ModifierAlt) {
-                                pboolModifier = m_pboolJustShiftAlt;
-                            } else {
-                                pboolModifier = m_pboolJustShift;
-                            }
-                        }
-                    } else {
-                        if (modifiers & ModifierControl) {
-                            if (modifiers & ModifierAlt) {
-                                pboolModifier = m_pboolJustControlAlt;
-                            } else {
-                                pboolModifier = m_pboolJustControl;
-                            }
-                        } else {
-                            if (modifiers & ModifierAlt) {
-                                pboolModifier = m_pboolJustAlt;
-                            } else {
-                                pboolModifier = m_pboolNone;
-                            }
-                        }
-                    }
+				if (modifiers != ModifierAny) {
+					TRef<Boolean> pboolModifier;
 
-                    pbool = And(pbool, pboolModifier);
-                }
+					if (modifiers & ModifierShift) {
+						if (modifiers & ModifierControl) {
+							if (modifiers & ModifierAlt) {
+								pboolModifier = m_pboolJustControlShiftAlt;
+							}
+							else {
+								pboolModifier = m_pboolJustControlShift;
+							}
+						}
+						else {
+							if (modifiers & ModifierAlt) {
+								pboolModifier = m_pboolJustShiftAlt;
+							}
+							else {
+								pboolModifier = m_pboolJustShift;
+							}
+						}
+					}
+					else {
+						if (modifiers & ModifierControl) {
+							if (modifiers & ModifierAlt) {
+								pboolModifier = m_pboolJustControlAlt;
+							}
+							else {
+								pboolModifier = m_pboolJustControl;
+							}
+						}
+						else {
+							if (modifiers & ModifierAlt) {
+								pboolModifier = m_pboolJustAlt;
+							}
+							else {
+								pboolModifier = m_pboolNone;
+							}
+						}
+					}
 
-                //
-                // Or all of the key combinations together
-                //
+					pbool = And(pbool, pboolModifier);
+				}
 
-                if (m_pboolTrekKeyDown[tk] == NULL) {
-                    m_pboolTrekKeyDown[tk] = pbool;
-                } else {
-                    m_pboolTrekKeyDown[tk] =
-                        Or(
-                            pbool,
-                            m_pboolTrekKeyDown[tk]
-                        );
-                }
+				//
+				// Or all of the key combinations together
+				//
 
-                //
-                // go to next mapping
-                //
+				if (m_pboolTrekKeyDown[tk] == NULL) {
+					m_pboolTrekKeyDown[tk] = pbool;
+				}
+				else {
+					m_pboolTrekKeyDown[tk] =
+						Or(
+							pbool,
+							m_pboolTrekKeyDown[tk]
+						);
+				}
 
-                plist->GetNext();
-            }
-        }
+				//
+				// go to next mapping
+				//
+
+				plist->GetNext();
+			}
+		}
 
         //
         // mouse button mapping
@@ -692,55 +712,61 @@ public:
         if (m_pinputEngine->GetJoystick(0) && m_pinputEngine->GetJoystick(0)->GetButtonCount()) { //Imago 8/18/09
             TRef<IObjectList> plist = pns->FindList("buttonCommandMap");
 
-            plist->GetFirst();
-            while (plist->GetCurrent() != NULL) {
-                TRef<IObjectPair> ppair; CastTo(ppair, plist->GetCurrent());
+			// BT - 9/17 - Guarding against inputmap1.mdl damage preventing allegiance client from starting.
+			if (plist != nullptr)
+			{
+				plist->GetFirst();
+				while (plist->GetCurrent() != NULL) {
+					TRef<IObjectPair> ppair; CastTo(ppair, plist->GetCurrent());
 
-                int indexJoystick = (int)GetNumber(ppair->GetNth(0)    );
-                int indexButton   = (int)GetNumber(ppair->GetNth(1)    );
-                int tk            = (int)GetNumber(ppair->GetLastNth(2));
+					int indexJoystick = (int)GetNumber(ppair->GetNth(0));
+					int indexButton = (int)GetNumber(ppair->GetNth(1));
+					int tk = (int)GetNumber(ppair->GetLastNth(2));
 
-                //
-                // Get the button
-                //
+					//
+					// Get the button
+					//
 
-                TRef<JoystickInputStream> pjoystick = m_pinputEngine->GetJoystick(indexJoystick);
-                TRef<Boolean>             pboolButton;
+					TRef<JoystickInputStream> pjoystick = m_pinputEngine->GetJoystick(indexJoystick);
+					TRef<Boolean>             pboolButton;
 
-                if (indexButton < 0) {
-                    //
-                    // It's a virtual hat button
-                    //
+					if (indexButton < 0) {
+						//
+						// It's a virtual hat button
+						//
 
-                    pboolButton = m_ppboolHatButton[-indexButton - 1];
-                } else {
-                    //
-                    // A joystick button
-                    //
+						pboolButton = m_ppboolHatButton[-indexButton - 1];
+					}
+					else {
+						//
+						// A joystick button
+						//
 
-                    if (pjoystick) {
-                        pboolButton = pjoystick->IsDown(indexButton);
-                    }
-                }
+						if (pjoystick) {
+							pboolButton = pjoystick->IsDown(indexButton);
+						}
+					}
 
-                if (pboolButton) {
-                    //
-                    // Or all of the key combinations together
-                    //
+					if (pboolButton) {
+						//
+						// Or all of the key combinations together
+						//
 
-                    if (m_ppboolTrekKeyButtonDown[tk] == NULL) {
-                        m_ppboolTrekKeyButtonDown[tk] = pboolButton;
-                    } else {
-                        m_ppboolTrekKeyButtonDown[tk] =
-                            Or(
-                                pboolButton,
-                                m_ppboolTrekKeyButtonDown[tk]
-                            );
-                    }
-                }
+						if (m_ppboolTrekKeyButtonDown[tk] == NULL) {
+							m_ppboolTrekKeyButtonDown[tk] = pboolButton;
+						}
+						else {
+							m_ppboolTrekKeyButtonDown[tk] =
+								Or(
+									pboolButton,
+									m_ppboolTrekKeyButtonDown[tk]
+								);
+						}
+					}
 
-                plist->GetNext();
-            }
+					plist->GetNext();
+				}
+			} // if (plist != nullptr)
         }
 
         //
@@ -2078,6 +2104,10 @@ public:
 
         {
             TRef<IObjectList> plist = pns->FindList("keyCommandMap");
+
+			// BT - 9/17 There should always be a keyCommandMap, or the entire keyboard will not work. If that happens, fall back to the default map.
+			if (plist == nullptr)
+				return false;
 
             plist->GetFirst();
             while (plist->GetCurrent() != NULL) {
