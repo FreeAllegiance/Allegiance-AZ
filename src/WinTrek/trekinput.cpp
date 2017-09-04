@@ -2348,7 +2348,7 @@ public:
         AddEventTarget(&InputMapPopup::OnButtonOK,      m_pbuttonOK->GetEventSource());
         AddEventTarget(&InputMapPopup::OnButtonCancel,  m_pbuttonCancel->GetEventSource());
         AddEventTarget(&InputMapPopup::OnButtonRestore, m_pbuttonRestore->GetEventSource());
-		AddEventTarget(&InputMapPopup::OnButtonLoad,	m_pbuttonLoad->GetEventSource()); //imago 10/14 (again)
+		//AddEventTarget(&InputMapPopup::OnButtonLoad,	m_pbuttonLoad->GetEventSource()); //imago 10/14 (again) // BT -9/17 - Removing this feature for now.
 
         //
         // details
