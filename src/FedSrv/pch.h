@@ -133,6 +133,8 @@ extern Global g;
 // BT - STEAM
 #include "CSteamValidation.h"
 #include "CSteamUserGroupStatus.h"
+#include "CSteamAchievements.h"
+
 
 /////////////////////////////////////////////////////////////////////////////
 // This is included very last since it conflicts with <atlwin.h>, included

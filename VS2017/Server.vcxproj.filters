@@ -101,6 +101,7 @@
     <ClCompile Include="..\src\FedSrv\sqlhelp.cpp" />
     <ClCompile Include="..\src\FedSrv\CSteamValidation.cpp" />
     <ClCompile Include="..\src\FedSrv\CSteamUserGroupStatus.cpp" />
+    <ClCompile Include="..\src\FedSrv\CSteamAchievements.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\src\FedSrv\FedSrv.RC">
@@ -167,6 +168,7 @@
     <ClInclude Include="..\src\FedSrv\fedsrvsql.h" />
     <ClInclude Include="..\src\FedSrv\CSteamValidation.h" />
     <ClInclude Include="..\src\FedSrv\CSteamUserGroupStatus.h" />
+    <ClInclude Include="..\src\FedSrv\CSteamAchievements.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\src\FedSrv\fedmsg.msg">

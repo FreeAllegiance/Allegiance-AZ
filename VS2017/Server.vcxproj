@@ -677,6 +677,7 @@ xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d /y</Command>
     <ClCompile Include="..\src\FedSrv\AdminUsers.cpp" />
     <ClCompile Include="..\src\FedSrv\allsrvmodule.cpp" />
     <ClCompile Include="..\src\FedSrv\BitArray.cpp" />
+    <ClCompile Include="..\src\FedSrv\CSteamAchievements.cpp" />
     <ClCompile Include="..\src\FedSrv\CSteamUserGroupStatus.cpp" />
     <ClCompile Include="..\src\FedSrv\CSteamValidation.cpp" />
     <ClCompile Include="..\src\FedSrv\FedSrv.CPP" />
@@ -734,6 +735,7 @@ xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d /y</Command>
     <ClInclude Include="..\src\FedSrv\allsrvmodule.h" />
     <ClInclude Include="..\src\FedSrv\BitArray.h" />
     <ClInclude Include="..\src\FedSrv\counters.h" />
+    <ClInclude Include="..\src\FedSrv\CSteamAchievements.h" />
     <ClInclude Include="..\src\FedSrv\CSteamUserGroupStatus.h" />
     <ClInclude Include="..\src\FedSrv\CSteamValidation.h" />
     <ClInclude Include="..\src\FedSrv\dbgutil.h" />

@@ -9953,8 +9953,6 @@ int __cdecl main(int argc, char *argv[])
 	SteamGameServer()->LogOnAnonymous();
 
 
-
-
 	_Module.SetCOMStarted(argc == 2 && !strcmpi("-Embedding", argv[1]));
 
 #if defined(ALLSRV_STANDALONE)
