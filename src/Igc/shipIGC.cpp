@@ -16,6 +16,7 @@
 #include "shipIGC.h"
 #include <math.h>
 #include <limits.h>
+#include <exception> // BT - 9/17 - Crash fix on IGC Site error.
 
 float   c_fRunAway = 0.75f;
 
@@ -394,12 +395,34 @@ void    CshipIGC::Update(Time now)
 				assert(m_fraction <= 1.0f);
 
 				if (m_fraction > 0.0f)
-					GetMyMission()->GetIgcSite()->DamageShipEvent(now, this, NULL, c_dmgidCollision, d, d, position, position * 2.0f);
+				{
+					// BT - 9/17 - Crash guards for IGC access denied errors.
+					try
+					{
+						GetMyMission()->GetIgcSite()->DamageShipEvent(now, this, NULL, c_dmgidCollision, d, d, position, position * 2.0f);
+					}
+					catch (std::exception &ex)
+					{
+						ZDebugOutput("An exception occurred in CshipIGC::Update()::DamageShipEvent: " + ZString(ex.what()) + "\n");
+					}
+				}
 				else
 				{
 					m_fraction = 0.0f;
 					if (oldFraction > 0.0f)  //Only send the death message once.
-						GetMyMission()->GetIgcSite()->KillShipEvent(now, this, NULL, d, position, position * 2.0f);
+					{
+						// BT - 9/17 - Crash guards for IGC access denied errors.
+						try
+						{
+							GetMyMission()->GetIgcSite()->KillShipEvent(now, this, NULL, d, position, position * 2.0f);
+						}
+						catch (std::exception &ex)
+						{
+							ZDebugOutput("An exception occurred in CshipIGC::Update()::KillShipEvent: " + ZString(ex.what()) + "\n");
+						}
+
+						
+					}
 				}
 				assert(m_fraction >= 0.0f);
 			}
@@ -1282,7 +1305,16 @@ DamageResult CshipIGC::ReceiveDamage(DamageTypeID            type,
 		{
 			if ((type & c_dmgidNoDebris) == 0)
 				GetThingSite()->AddDamage(position2 - position1, m_fraction);
-			GetMyMission()->GetIgcSite()->DamageShipEvent(timeCollision, this, launcher, type, amount, leakage, position1, position2);
+
+			// BT - 9/17 - Crash guards for IGC access denied errors.
+			try
+			{
+				GetMyMission()->GetIgcSite()->DamageShipEvent(timeCollision, this, launcher, type, amount, leakage, position1, position2);
+			}
+			catch (std::exception &ex)
+			{
+				ZDebugOutput("An exception occurred in CshipIGC::ReceiveDamage()::DamageShipEvent: " + ZString(ex.what()) + "\n");
+			}
 		}
 		else
 		{
@@ -1303,7 +1335,17 @@ DamageResult CshipIGC::ReceiveDamage(DamageTypeID            type,
 					}
 				}
 				// TE: end
-				GetMyMission()->GetIgcSite()->KillShipEvent(timeCollision, this, pcredit, amount, position1, position2);
+
+				// BT - 9/17 - Crash guards for IGC access denied errors.
+				try
+				{
+					GetMyMission()->GetIgcSite()->KillShipEvent(timeCollision, this, pcredit, amount, position1, position2);
+				}
+				catch (std::exception &ex)
+				{
+					ZDebugOutput("An exception occurred in CshipIGC::KillShipEvent()::KillShipEvent: " + ZString(ex.what()) + "\n");
+				}
+
 				dr = c_drKilled;
 			}
 		}

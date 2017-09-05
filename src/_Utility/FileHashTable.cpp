@@ -294,7 +294,6 @@ FileHashTable::FileHashTable()
 	m_filehashes.PushEnd(FileHash("debris.mdl", "be437270b306a1f00b01f41579c1b3910fdca9bb"));
 	m_filehashes.PushEnd(FileHash("defaultevents.mdl", "827c1ddf13ae7baaf6063f949b5e6b6efad00721"));
 	m_filehashes.PushEnd(FileHash("defaultinputmap.mdl", "f928d87dc8e347a4dc5d280588485163c6dd9640"));
-	m_filehashes.PushEnd(FileHash("defaultloadout.mdl", "9027e84fefe1b2845ed777ffc0c9bbe3799f2b94"));
 	m_filehashes.PushEnd(FileHash("dgarr.cvh", "042357515038994404595b90c943426d8521fa08"));
 	m_filehashes.PushEnd(FileHash("dgarr.mdl", "365862e02a0eec69a2a758e4f23aa8d7660f0f3e"));
 	m_filehashes.PushEnd(FileHash("dgexp.cvh", "aaa753138bfbe6480350bfd77c5405c510bfd8c1"));
@@ -628,7 +627,6 @@ FileHashTable::FileHashTable()
 	m_filehashes.PushEnd(FileHash("globetext.mdl", "cf49108f4ac0a9c99ca44413f1a84ee044741033"));
 	m_filehashes.PushEnd(FileHash("GoDII_04.igc", "a581ba79f80e0c0b7b63b23ec4dcafa5652653fe"));
 	m_filehashes.PushEnd(FileHash("GoDII_05.igc", "427d7e227ebfb5e57af47b66805e8f1bf1c4c93d"));
-	m_filehashes.PushEnd(FileHash("hangar.mdl", "59f26be8338e83cdaadb5ff071687a726a065d56"));
 	m_filehashes.PushEnd(FileHash("heavyexp.cvh", "e1db6e2d213e3c4026312ea9f7f4651034abb562"));
 	m_filehashes.PushEnd(FileHash("heavyexp.mdl", "f0a9b2a3215e3ff90f0dc6be822eef2422e8a85c"));
 	m_filehashes.PushEnd(FileHash("helm.cvh", "025c8504646170afcb7ee2e6aa5bb8bc238462a6"));
@@ -1101,7 +1099,6 @@ FileHashTable::FileHashTable()
 	m_filehashes.PushEnd(FileHash("hlpz1.mml", "61a5266126f7df1ef330e40703978459eb35b017"));
 	m_filehashes.PushEnd(FileHash("hlpz2.mml", "4ec20f2ec04f4bd97e3c75f5a1b6dae48f9472f1"));
 	m_filehashes.PushEnd(FileHash("hlpz3.mml", "130184f04884cd8bc028f8f63dcd5e470da3f6ff"));
-	m_filehashes.PushEnd(FileHash("hullinfo.mdl", "b0dd89b16fb4084201f1c3a639212d5e529ef81a"));
 	m_filehashes.PushEnd(FileHash("icfig.cvh", "66caf4925ff0d6f257f3e3174965b427ad284310"));
 	m_filehashes.PushEnd(FileHash("icfig.mdl", "ab48625a03d74c9e95803bf9cbcaeb55c357fbc0"));
 	m_filehashes.PushEnd(FileHash("ic_flagplat.cvh", "c3b1a98d058991a2d42bdfe5e5314991548d5d53"));
