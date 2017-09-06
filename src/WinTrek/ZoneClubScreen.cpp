@@ -265,8 +265,10 @@ public:
 #else
 			strcpy(m_szName, trekClient.GetSavedCharacterName());
 
-			// BT - Steam
-			bool isUserLoggedIntoSteam = SteamUser() != nullptr;
+			// BT - Steam - User is logged into steam, and has a steam profile name
+			// The steam reviewer was somehow launching the game with steam authorization but no persona name. If 
+			// there is an player name, then the server rejects the user as a hacker with a DPlay error. 
+			bool isUserLoggedIntoSteamWithValidPlayerName = SteamUser() != nullptr && strlen(m_szName) > 0;
 
 			//if (isUserLoggedIntoSteam == true)
 			//{
@@ -282,7 +284,7 @@ public:
 #endif
 			
 			// wlp - don't ask for callsign if it was on the command line //imago include m_szPWOrig 9/14 // BT - STEAM
-			if ((!g_bAskForCallSign && strlen(m_szPWOrig) > 1 ) || isUserLoggedIntoSteam == true)
+			if ((!g_bAskForCallSign && strlen(m_szPWOrig) > 1 ) || isUserLoggedIntoSteamWithValidPlayerName == true)
 			{
 				this->OnLogon(trekClient.GetSavedCharacterName(), m_szPWOrig, false);
 			} // wlp - end of dont ask for callsign

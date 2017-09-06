@@ -401,9 +401,9 @@ void    CshipIGC::Update(Time now)
 					{
 						GetMyMission()->GetIgcSite()->DamageShipEvent(now, this, NULL, c_dmgidCollision, d, d, position, position * 2.0f);
 					}
-					catch (std::exception &ex)
+					catch (...)
 					{
-						ZDebugOutput("An exception occurred in CshipIGC::Update()::DamageShipEvent: " + ZString(ex.what()) + "\n");
+						ZDebugOutput("An exception occurred in CshipIGC::Update()::DamageShipEvent: ignoring.\n");
 					}
 				}
 				else
@@ -416,9 +416,9 @@ void    CshipIGC::Update(Time now)
 						{
 							GetMyMission()->GetIgcSite()->KillShipEvent(now, this, NULL, d, position, position * 2.0f);
 						}
-						catch (std::exception &ex)
+						catch (...)
 						{
-							ZDebugOutput("An exception occurred in CshipIGC::Update()::KillShipEvent: " + ZString(ex.what()) + "\n");
+							ZDebugOutput("An exception occurred in CshipIGC::Update()::KillShipEvent: ignoring.\n");
 						}
 
 						
@@ -1313,7 +1313,7 @@ DamageResult CshipIGC::ReceiveDamage(DamageTypeID            type,
 			}
 			catch (std::exception &ex)
 			{
-				ZDebugOutput("An exception occurred in CshipIGC::ReceiveDamage()::DamageShipEvent: " + ZString(ex.what()) + "\n");
+				ZDebugOutput("An exception occurred in CshipIGC::ReceiveDamage()::DamageShipEvent: ignoring.\n");
 			}
 		}
 		else
@@ -1343,7 +1343,7 @@ DamageResult CshipIGC::ReceiveDamage(DamageTypeID            type,
 				}
 				catch (std::exception &ex)
 				{
-					ZDebugOutput("An exception occurred in CshipIGC::KillShipEvent()::KillShipEvent: " + ZString(ex.what()) + "\n");
+					ZDebugOutput("An exception occurred in CshipIGC::KillShipEvent()::KillShipEvent: ignoring.\n");
 				}
 
 				dr = c_drKilled;
