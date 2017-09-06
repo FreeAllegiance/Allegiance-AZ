@@ -976,8 +976,12 @@ const int c_cbGamePassword = 17;
 #define IGC_STATIC_CORE_FILENAME    "static_core"
 #define IGC_ENCRYPT_CORE_FILENAME   "zone_core"
 
-
+// BT - 9/17 - After 200+ mission launches... enough is enough. Let's light this candle! :)
+#ifdef SHORTCOUNTDOWN
+const float c_fMissionBriefingCountdown = 1.0f; // seconds
+#else
 const float c_fMissionBriefingCountdown = 15.0f; // seconds
+#endif
 
 const int c_cUnlimitedLives = 0x7fff;
 

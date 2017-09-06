@@ -236,7 +236,7 @@ xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d /y</Command>
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\src\lib\Steam;.\$(IntDir)..\Guids;.\;..\src\guids;..\src\zlib;..\src\_Utility;..\src\Igc;..\src\Inc;..\src\AGC;..\src\test\Inc;..\src\lobby;..\src\Zone;.\$(IntDir)..\Igc;.\$(IntDir)..\FedSrv;.\$(IntDir)..\AGC;.\$(IntDir)..\Guids;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>STEAM;DIRECT3D_VERSION=0x0900;_ITERATOR_DEBUG_LEVEL=0;ALLSRV_STANDALONE;FEDSRV;AGC_HOST;DEBUG;_DEBUG;_WIN32;_WINDOWS;_AFXDLL;_CONSOLE;_WIN32_WINNT=0x0403;WIN;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STEAM;-SHORTCOUNTDOWN;DIRECT3D_VERSION=0x0900;_ITERATOR_DEBUG_LEVEL=0;ALLSRV_STANDALONE;FEDSRV;AGC_HOST;DEBUG;_DEBUG;_WIN32;_WINDOWS;_AFXDLL;_CONSOLE;_WIN32_WINNT=0x0403;WIN;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -283,7 +283,7 @@ xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d /y</Command>
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\src\lib\Steam;.\$(IntDir)..\Guids;.\;..\src\guids;..\src\zlib;..\src\_Utility;..\src\Igc;..\src\Inc;..\src\AGC;..\src\test\Inc;..\src\lobby;..\src\Zone;.\$(IntDir)..\Igc;.\$(IntDir)..\FedSrv;.\$(IntDir)..\AGC;.\$(IntDir)..\Guids;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>STEAM;DIRECT3D_VERSION=0x0900;_ITERATOR_DEBUG_LEVEL=0;ALLSRV_STANDALONE;FEDSRV;AGC_HOST;DEBUG;_DEBUG;_WIN32;_WINDOWS;_AFXDLL;_CONSOLE;_WIN32_WINNT=0x0403;WIN;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STEAM;-SHORTCOUNTDOWN;DIRECT3D_VERSION=0x0900;_ITERATOR_DEBUG_LEVEL=0;ALLSRV_STANDALONE;FEDSRV;AGC_HOST;DEBUG;_DEBUG;_WIN32;_WINDOWS;_AFXDLL;_CONSOLE;_WIN32_WINNT=0x0403;WIN;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Async</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -427,7 +427,7 @@ xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d /y</Command>
     <ClCompile>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>..\src\Lib\Steam;.\$(IntDir)..\Guids;.\;..\src\guids;..\src\zlib;..\src\_Utility;..\src\Igc;..\src\Inc;..\src\AGC;..\src\test\Inc;..\src\lobby;..\src\Zone;.\$(IntDir)..\Igc;.\$(IntDir)..\FedSrv;.\$(IntDir)..\AGC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>STEAM;DIRECT3D_VERSION=0x0900;DEBUG;ALLSRV_STANDALONE;FEDSRV;AGC_HOST;SRVLOG;_WIN32;_WINDOWS;_AFXDLL;_CONSOLE;_WIN32_WINNT=0x0502;WIN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STEAM;-SHORTCOUNTDOWN;DIRECT3D_VERSION=0x0900;DEBUG;ALLSRV_STANDALONE;FEDSRV;AGC_HOST;SRVLOG;_WIN32;_WINDOWS;_AFXDLL;_CONSOLE;_WIN32_WINNT=0x0502;WIN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -478,7 +478,7 @@ xcopy $(ProjectDir)..\src\Inc\steam_appid.txt $(OutDir) /s /d /y</Command>
     <ClCompile>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>..\src\Lib\Steam;.\$(IntDir)..\Guids;.\;..\src\guids;..\src\zlib;..\src\_Utility;..\src\Igc;..\src\Inc;..\src\AGC;..\src\test\Inc;..\src\lobby;..\src\Zone;.\$(IntDir)..\Igc;.\$(IntDir)..\FedSrv;.\$(IntDir)..\AGC;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>STEAM;DIRECT3D_VERSION=0x0900;ALLSRV_STANDALONE;FEDSRV;AGC_HOST;_WIN32;_WINDOWS;_AFXDLL;_CONSOLE;_WIN32_WINNT=0x0502;WIN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>STEAM;-SHORTCOUNTDOWN;DIRECT3D_VERSION=0x0900;ALLSRV_STANDALONE;FEDSRV;AGC_HOST;_WIN32;_WINDOWS;_AFXDLL;_CONSOLE;_WIN32_WINNT=0x0502;WIN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>

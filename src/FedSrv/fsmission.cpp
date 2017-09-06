@@ -4003,7 +4003,9 @@ void CFSMission::SendMissionInfo(CFSPlayer * pfsPlayer, IsideIGC*   pside)
 		StationLinkIGC * pstnlink;
 		for (pstnlink = pstnlist->first(); pstnlink; pstnlink = pstnlink->next())
 		{
-			if (pstnlink->data()->GetKnownStationType(pside->GetObjectID()) != NULL || pstnlink->data()->SeenBySide(pside)) //Turkey included stations with a known type #307 02/31
+			//if (pstnlink->data()->GetKnownStationType(pside->GetObjectID()) != NULL || pstnlink->data()->SeenBySide(pside)) //Turkey included stations with a known type #307 02/31
+			// BT - 9/17 - Reverted back to previous logic, the above logic was causing a phantom ship yard to show up for team 2 instead of a garrison on game start. 
+			if(pstnlink->data()->SeenBySide(pside))
 			{
 				ExportObj(pstnlink->data(), OT_station, NULL);
 			}
