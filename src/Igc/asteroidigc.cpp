@@ -238,7 +238,9 @@ int IasteroidIGC::GetSpecialAsterioid(const MissionParams*  pmp, int index)
 int IasteroidIGC::GetRandomType(AsteroidAbilityBitMask aabm)
 {
 	int index;
-	srand(GetTickCount() + (int)time(NULL)); //imago 10/14, apparently this call in ZLib is out of scope.
+
+	// BT - 9/17 - If you reset the global rand() to the time clock, and then process randoms faster than the ticks increments (ticks at 1 per second), then your rands will not be very random!
+	//srand(GetTickCount() + (int)time(NULL)); //imago 10/14, apparently this call in ZLib is out of scope.
 	switch (aabm)
 	{
 		// Number of regular and he3 asteroids is also hardcoded here, see #92

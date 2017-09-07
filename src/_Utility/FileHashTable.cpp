@@ -1319,7 +1319,6 @@ FileHashTable::FileHashTable()
 	m_filehashes.PushEnd(FileHash("publicmessageoftheday.mdl", "57644670d362626c0b24877009326c2b22e5de64"));
 	m_filehashes.PushEnd(FileHash("pulse10.cvh", "af420119533895eae90d4fad4eedeaab73a96a3e"));
 	m_filehashes.PushEnd(FileHash("pulse10.mdl", "295420887faae3ee20e2cad4a13c20e659a4fa19"));
-	m_filehashes.PushEnd(FileHash("quickchat.mdl", "9b14214a74cc5566128b107d3fe526f6b5a54269"));
 	m_filehashes.PushEnd(FileHash("quickchatheader.mdl", "3342291c7f3650541b64171b954c702c7c4de0b7"));
 	m_filehashes.PushEnd(FileHash("quizbbr.cvh", "de8c47906a13f13a0ed83478f9a2237b7530dfff"));
 	m_filehashes.PushEnd(FileHash("quizbbr.mdl", "7ec8c89c7f0ae3e387d3cd7c31c2888134f88e16"));

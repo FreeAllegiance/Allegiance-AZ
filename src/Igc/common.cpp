@@ -2779,7 +2779,10 @@ void    CreateAsteroid(ImissionIGC*         pmission,
 		da.up = CrossProduct(da.forward, zAxis);
 	assert(da.up.LengthSquared() > 0.1f);
 	da.up.SetNormalize();
-	srand(GetTickCount() + (int)time(NULL)); //imago 10/14, apparently this call in ZLib is out of scope.
+	
+	// BT - 9/17 - If you reset the global rand() to the time clock, and then process randoms faster than the ticks increments (ticks at 1 per second), then your rands will not be very random!
+	//srand(GetTickCount() + (int)time(NULL)); //imago 10/14, apparently this call in ZLib is out of scope.
+
 	da.asteroidDef.radius = (short)randomInt(da.asteroidDef.radius, 2 * da.asteroidDef.radius);
 	da.signature = ((float)da.asteroidDef.radius) / 100.0f;
 
@@ -2991,6 +2994,12 @@ void        PopulateCluster(ImissionIGC*            pmission,
 			for (short i = 0; (i < nAsteroids); i++)
 			{
 				CreateAsteroid(pmission, pcluster, IasteroidIGC::GetRandomType(c_aabmBuildable), 0.0f);
+			}
+
+			for (AsteroidLinkIGC* pal = pmission->GetAsteroids()->first(); (pal != NULL); pal = pal->next())
+			{
+				Rotation testRotation = pal->data()->GetRotation();
+				ZDebugOutput("object: " + ZString(pal->data()->GetObjectID()) + ", Rotation: " + ZString(testRotation.angle()));
 			}
 		}
 	}

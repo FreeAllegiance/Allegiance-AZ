@@ -118,7 +118,9 @@ VOID CMapData::SetCluster(SectorID sID, IclusterIGC * pCluster, SideID sideID)
 
 VOID CMapData::GetNewClusterName(CHAR * szClusterName)
 {
-	srand(GetTickCount() + (int)time(NULL)); //imago 10/14, apparently this call in ZLib is out of scope.
+	// BT - 9/17 - If you reset the global rand() to the time clock, and then process randoms faster than the ticks increments (ticks at 1 per second), then your rands will not be very random!
+	//srand(GetTickCount() + (int)time(NULL)); //imago 10/14, apparently this call in ZLib is out of scope.
+
 	INT n = randomInt(0, mcClusterNamesLeft - 1);
 
 	strcpy(szClusterName, smszClusterName[mClusterNamesLeft[n]]);

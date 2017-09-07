@@ -53,7 +53,9 @@ HRESULT     CtreasureIGC::Initialize(ImissionIGC* pMission, Time now, const void
 
 			if (m_data.amount == NA)
 			{
-				srand(GetTickCount() + (int)time(NULL)); //imago 10/14, apparently this call in ZLib is out of scope.
+				// BT - 9/17 - If you reset the global rand() to the time clock, and then process randoms faster than the ticks increments (ticks at 1 per second), then your rands will not be very random!
+				//srand(GetTickCount() + (int)time(NULL)); //imago 10/14, apparently this call in ZLib is out of scope.
+
 				switch (pt->GetEquipmentType())
 				{
 				case ET_Dispenser:
