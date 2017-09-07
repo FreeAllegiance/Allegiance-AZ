@@ -14,6 +14,7 @@ TVector<ZString> GetWhiteList()
 	returnValue.PushEnd(ZString("defaultloadout.mdl"));
 	returnValue.PushEnd(ZString("hullinfo.mdl"));
 	returnValue.PushEnd(ZString("hangar.mdl"));
+	returnValue.PushEnd(ZString("quickchat.mdl"));
 
 	return returnValue;
 }

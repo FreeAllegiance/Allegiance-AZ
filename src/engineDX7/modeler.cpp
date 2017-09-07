@@ -2590,7 +2590,7 @@ public:
 				
 				// BT - STEAM - Do the security checksum  on the loaded file here. Steam DRM wrapper will ensure that the Allegiance exe is not
 				// tampered with, so basic checksums are all that is required.
-				if(m_fileHashTable.IsHashCorrect(strToOpen, pfile->GetSha1Hash()) == false)
+				if(m_fileHashTable.IsHashCorrect(strToOpen, pfile) == false)
 				{
 					// Cause the calls downward to fail out.
 					pfile = new ZFile("failsauce.nope"); 
