@@ -267,7 +267,7 @@ private:
     DDCaps                 m_ddcapsSW;
     DWORD                  m_dwTotalVideoMemory;
     TRef<PixelFormat>      m_ppfZBuffer;
-    TVector<Vector>			m_modes; // BT - 8/17 - Enable refresh rate to be passed to SetFullscreen
+    TVector<WinPoint>	   m_modes;
 
     //////////////////////////////////////////////////////////////////////////////
     //
@@ -304,11 +304,12 @@ private:
 			}
 		}
 
-		Vector screenProps(ddsd.Size().X(), ddsd.Size().Y(), ddsd.dwRefreshRate);
+		//Vector screenProps(ddsd.Size().X(), ddsd.Size().Y(), ddsd.dwRefreshRate);
+		WinPoint screenProps(ddsd.Size().X(), ddsd.Size().Y());
 
 		if (isValidMode == true && m_modes.Find(screenProps) < 0)
 		{
-			sprintf(msg, "Mode Added: %f x %f (%f)\n", screenProps.X(), screenProps.Y(), screenProps.Z());
+			sprintf(msg, "Mode Added: %f x %f\n", screenProps.X(), screenProps.Y());
 			OutputDebugString(msg);
 
 			m_modes.PushEnd(screenProps);
@@ -642,7 +643,7 @@ public:
         return m_strName;
     }
 
-    Vector NextMode(const WinPoint& size)
+    WinPoint NextMode(const WinPoint& size)
     {
         int count = m_modes.GetCount();
 
@@ -665,7 +666,7 @@ public:
 			return m_modes[currentModeIndex]; 
     }
 
-	Vector PreviousMode(const WinPoint& size)
+	WinPoint PreviousMode(const WinPoint& size)
     {
         int count = m_modes.GetCount();
 
@@ -688,7 +689,7 @@ public:
 			return m_modes[currentModeIndex]; 
     }
 
-	void EliminateModes(const Vector& size)
+	void EliminateModes(const WinPoint& size)
 	{
 
 		// BT - 8/17 - Resolution switch fixes.
@@ -707,7 +708,7 @@ public:
 	}
 
 	// BT - 8/17 - Resolution switch fixes.
-	Vector GetModeWithRefreshRate(const Vector& screenProps)
+	WinPoint GetModeWithRefreshRate(const WinPoint& screenProps)
 	{
 		int count = m_modes.GetCount();
 

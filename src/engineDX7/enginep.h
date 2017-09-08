@@ -188,11 +188,10 @@ public:
     virtual void               SetAllow3DAcceleration(bool bAllow3DAcceleration)    = 0;
 	virtual void			   SetMaxTextureSize(DWORD bMaxTextureSize)		= 0;// yp Your_Persona August 2 2006 : MaxTextureSize Patch
 
-	// BT - 8/17 - Resolution switch fixes.
-    virtual Vector				NextMode(const WinPoint& size)                       = 0;
-    virtual Vector				PreviousMode(const WinPoint& size)                   = 0;
-    virtual void				EliminateModes(const Vector& size)					= 0;
-	virtual Vector				GetModeWithRefreshRate(const Vector& screenProps)	= 0;
+    virtual WinPoint			NextMode(const WinPoint& size)                      = 0;
+    virtual WinPoint			PreviousMode(const WinPoint& size)                  = 0;
+    virtual void				EliminateModes(const WinPoint& size)				= 0;
+	virtual WinPoint			GetModeWithRefreshRate(const WinPoint& screenProps)	= 0;
 
     virtual int                GetTotalTextureMemory()                              = 0;
     virtual int                GetAvailableTextureMemory()                          = 0;

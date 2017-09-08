@@ -54,9 +54,9 @@ private:
     HWND                      m_hwndClip;
     WinPoint                  m_pointPrimary;
     HWND                      m_hwndFocus;
-    Vector                  m_pointFullscreen; // BT - 8/17 - Resolution switch fixes.
-	Vector                  m_pointFullscreenCurrent; // BT - 8/17 - Resolution switch fixes.
-	WinPoint				m_winpointFullscreen; // BT - 8/17 - Resolution switch fixes.
+	WinPoint                  m_pointFullscreen; 
+	WinPoint                  m_pointFullscreenCurrent; 
+	WinPoint				m_winpointFullscreen; 
     TRef<PrivateSurface>      m_psurfaceBack;
     TRef<IDirectDrawClipper>  m_pddClipper;
     float                     m_gamma;
@@ -143,8 +143,8 @@ public:
 	}
 
     EngineImpl(bool bAllow3DAcceleration, bool bAllowSecondary, DWORD dwBPP) :
-        m_pointFullscreen(800, 600, 0), // BT - 8/17 - Resolution switch fixes.
-        m_pointFullscreenCurrent(0, 0, 0), // BT - 8/17 - Resolution switch fixes.
+        m_pointFullscreen(800, 600), 
+        m_pointFullscreenCurrent(0, 0),
         m_bFullscreen(false),
         m_bAllow3DAcceleration(bAllow3DAcceleration),
         m_bAllowSecondary(bAllowSecondary),
@@ -495,7 +495,7 @@ private:
         //
 
         m_pdddevice              = m_pdddevicePrimary;
-        m_pointFullscreenCurrent = Vector(0, 0, 0); // BT - 8/17 - Resolution switch fixes.
+        m_pointFullscreenCurrent = WinPoint(0, 0); 
 
         //
         // Get the primary surface
@@ -718,12 +718,11 @@ private:
     //
     //////////////////////////////////////////////////////////////////////////////
 
-    bool SwitchToFullscreenDevice(DDDevice* pdddevice, const Vector& screenProps, bool& bError)
+    bool SwitchToFullscreenDevice(DDDevice* pdddevice, const WinPoint& screenProps, bool& bError)
     {
         bError = false;
 
-		// BT - 8/17 - Resolution switch fixes.
-		Vector newMode = pdddevice->GetModeWithRefreshRate(screenProps);
+		WinPoint newMode = pdddevice->GetModeWithRefreshRate(screenProps);
 
         if (g_bWindowLog) {
             ZDebugOutput(
@@ -792,7 +791,7 @@ private:
 				newMode.X(),
 				newMode.Y(),
                 m_dwBPP, // KGJV 32B - set as parameter
-				newMode.Z(), // BT - 8/17 - Add refresh rate to the display mode setting.
+				0, 
                 0
             );
 
@@ -910,9 +909,8 @@ private:
             // Didn't work goto to the next lower resolution
             //
 
-			// BT - 8/17 - Resolution switch fixes.
 			WinPoint point(m_pointFullscreen.X(), m_pointFullscreen.Y());
-            Vector pointNew = pdddevice->PreviousMode(point);
+			WinPoint pointNew = pdddevice->PreviousMode(point);
 
             if (pointNew == m_pointFullscreen) {
                 if (g_bWindowLog) {
@@ -993,7 +991,7 @@ private:
         }
     }
 
-    void SetFullscreenSize(const Vector& screenProps)
+    void SetFullscreenSize(const WinPoint& screenProps)
     {
         if (g_bWindowLog) {
             ZDebugOutput(ZString("Engine::SetFullscreenSize(" + ZString(screenProps.X()) + " x " + ZString(screenProps.Y()) + " " + ZString(screenProps.Z()) + "hz)\n"));
@@ -1012,13 +1010,13 @@ private:
 
     void ChangeFullscreenSize(bool bLarger)
     {
-        Vector point;
+        WinPoint point;
 
 		// BT - 8/17 - Resolution switch fixes.
         if (bLarger) {
-            point = m_pdddevice->NextMode(WinPoint(m_pointFullscreen.X(), m_pointFullscreen.Y()));
+            point = m_pdddevice->NextMode(m_pointFullscreen);
         } else {
-            point = m_pdddevice->PreviousMode(WinPoint(m_pointFullscreen.X(), m_pointFullscreen.Y()));
+            point = m_pdddevice->PreviousMode(m_pointFullscreen);
         }
 
         SetFullscreenSize(point);
@@ -1047,9 +1045,7 @@ private:
 
     const WinPoint& GetFullscreenSize()
     {
-		// BT - 8/17 - Resolution switch fixes.
-		m_winpointFullscreen = WinPoint(m_pointFullscreen.X(), m_pointFullscreen.Y());
-        return m_winpointFullscreen;
+        return m_pointFullscreen;
     }
 
     bool IsFullscreen()

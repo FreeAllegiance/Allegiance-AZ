@@ -94,7 +94,7 @@ public:
 	virtual void SetMaxTextureSize(DWORD bMaxTextureSize)		   = 0;// yp Your_Persona August 2 2006 : MaxTextureSize Patch
     virtual void Set3DAccelerationImportant(bool b3DAccelerationImportant) = 0;
     virtual void SetFullscreen(bool bFullscreen)                           = 0;
-    virtual void SetFullscreenSize(const Vector& point)                  = 0; // BT - 8/17 - Resolution switch fixes.
+    virtual void SetFullscreenSize(const WinPoint& point)                  = 0; 
     virtual void ChangeFullscreenSize(bool bLarger)                        = 0;
     virtual void SetGammaLevel(float value)                                = 0;
 
