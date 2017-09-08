@@ -586,11 +586,11 @@ public:
 		m_pthing = NULL;
 #endif
 
-//#ifdef USEAZ
+#ifdef USEAZ
         TRef<INameSpace> pns = pmodeler->GetNameSpace("introscreen");
-//#else
-//		TRef<INameSpace> pns = pmodeler->GetNameSpace("introscreen_fz");
-//#endif
+#else
+		TRef<INameSpace> pns = pmodeler->GetNameSpace("introscreen_fz");
+#endif
         CastTo(m_ppane, pns->FindMember("screen"));
         CastTo(m_pbuttonPlayLan,    pns->FindMember("playLanButtonPane"));
         CastTo(m_pbuttonPlayInt,    pns->FindMember("playIntButtonPane"));
@@ -657,8 +657,10 @@ public:
 		/*m_pbuttonZoneClub->SetEnabled(false);
         m_pbuttonPlayLan->SetEnabled(false);*/
 
-		// BT - Steam - Hiding these irrelevent buttons for now.
+		// BT - Steam - Hiding these irrelevant buttons for now.
+#ifdef USEAZ
 		m_pbuttonZoneClub->SetHidden(true);
+#endif
 		m_pbuttonPlayLan->SetHidden(true);
 
         m_pbuttonPlayInt->SetEnabled(true); //Imago 9/14
