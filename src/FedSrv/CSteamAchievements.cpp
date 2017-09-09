@@ -63,7 +63,7 @@ bool CSteamAchievements::SetAchievement(CSteamID &steamID, EAchievements achieve
 
 	SteamAPICall_t hSteamApiCall = SteamGameServerStats()->StoreUserStats(steamID);
 	m_UserStatsStoredCallResult.Set(hSteamApiCall, this, &CSteamAchievements::OnUserStatsStored);
-	
+
 	// Timeout after 10 seconds.
 	for (int i = 0; i < 600 && m_gotStatsStoredResponse == false; i++)
 	{
@@ -200,3 +200,9 @@ void CSteamAchievements::AwardBetaParticipation(CSteamID &steamID)
 	if (timev > startTime && timev < endTime)
 		SetAchievement(steamID, EAchievements::BETA_ACHIEVEMENT_1_0);
 }
+
+void CSteamAchievements::AwardMinerKillAchievement(CSteamID &steamID)
+{
+	SetAchievement(steamID, EAchievements::FIRST_MINER_KILL_1_1);
+}
+

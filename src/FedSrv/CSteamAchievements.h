@@ -4,12 +4,13 @@
 // or the Enum to string assignments will not line up, and you will be handing out wrong achievements!
 enum EAchievements
 {
-	BETA_ACHIEVEMENT_1_0 = 0
+	BETA_ACHIEVEMENT_1_0 = 0,
+	FIRST_MINER_KILL_1_1 = 1
 
 	// Don't forget to update g_nMaximumSteamAchievementCount!
 };
 
-const int g_nMaximumSteamAchievementCount = 1; // Always keep this in sync with the number of achievments in EAchievements!
+const int g_nMaximumSteamAchievementCount = 2; // Always keep this in sync with the number of achievments in EAchievements!
 
 // BT - STEAM
 
@@ -28,7 +29,8 @@ private:
 	const char * m_Achievements[g_nMaximumSteamAchievementCount] =
 	{
 		// Never remove an item from this list! (see note above).
-		"BETA_ACHIEVEMENT_1_0"
+		"BETA_ACHIEVEMENT_1_0",
+		"FIRST_MINER_KILL_1_1"
 	};
 
 	bool SetAchievement(CSteamID &steamID, EAchievements achievement);
@@ -36,7 +38,7 @@ private:
 	// Steam Callbacks
 	STEAM_GAMESERVER_CALLBACK(CSteamAchievements, OnUserStatsReceived, GSStatsReceived_t);
 
-	
+
 
 
 public:
@@ -45,10 +47,12 @@ public:
 	bool RemoveAchievement(char *szSteamID, EAchievements achievement);
 
 	void AwardBetaParticipation(CSteamID &steamID);
-	
+
+	void AwardMinerKillAchievement(CSteamID &steamID);
+
 	// Steam Call Results
 	void OnUserStatsStored(GSStatsStored_t *pCallback, bool bIOFailure);
-	
+
 };
 
 
