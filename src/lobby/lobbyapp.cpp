@@ -265,6 +265,12 @@ CLobbyApp::CLobbyApp(ILobbyAppSite * plas) :
 #endif
 {
   assert(m_plas);
+
+  // BT - STEAM
+  m_lastDrmHashUpdate.dwHighDateTime = 0;
+  m_lastDrmHashUpdate.dwLowDateTime = 0;
+  strcpy(m_szDrmHashFilename, "");
+
   m_plas->LogEvent(EVENTLOG_INFORMATION_TYPE, LE_Creating);
   m_logonCS = new CRITICAL_SECTION;
 #ifdef USECLUB
@@ -527,6 +533,72 @@ void CLobbyApp::RollCall()
     }
   }
 }
+
+// BT - STEAM
+void CLobbyApp::CheckAndUpdateDrmHashes(bool forceUpdate)
+{
+	if (strlen(m_szDrmHashFilename) == 0)
+	{
+		HKEY hKey;
+		char drmHashFilename[MAX_PATH];
+		char drmDownloadUrl[MAX_PATH];
+
+		if (ERROR_SUCCESS == ::RegOpenKeyEx(HKEY_LOCAL_MACHINE, HKLM_AllLobby, 0, KEY_READ, &hKey))
+		{
+			DWORD cbValue = MAX_PATH;
+
+			drmHashFilename[0] = '\0';
+			drmDownloadUrl[0] = '\0';
+
+			::RegQueryValueExA(hKey, "DrmHashFile", NULL, NULL, (LPBYTE)&drmHashFilename, &cbValue);
+
+			cbValue = MAX_PATH;
+			::RegQueryValueExA(hKey, "DrmDownloadUrl", NULL, NULL, (LPBYTE)&drmDownloadUrl, &cbValue);
+
+			if (strlen(drmHashFilename) == 0)
+			{
+				ZDebugOutput("The DrmHashFile entry is not set. Drm Hash Files will not be relayed to game servers correctly. If you are not using Steam integration, then it is safe to ignore the message.");
+				strcpy(drmHashFilename, "NOTSET");
+			}
+
+			if (strlen(drmDownloadUrl) == 0)
+			{
+				ZDebugOutput("The DrmDownloadUrl entry is not set. Drm Hash Files will not be relayed to game servers correctly. If you are not using Steam integration, then it is safe to ignore the message.");
+				strcpy(drmDownloadUrl, "NOTSET");
+			}
+
+			strcpy(m_szDrmHashFilename, drmHashFilename);
+			strcpy(m_szDrmDownloadUrly, drmDownloadUrl);
+		}
+	}
+
+	if (strcmp(m_szDrmHashFilename, "NOTSET") == 0)
+		return;
+
+	if (strcmp(m_szDrmDownloadUrly, "NOTSET") == 0)
+		return;
+
+	FILETIME lastModifiedTime = ZFile::GetMostRecentFileModificationTime(ZString(m_szDrmHashFilename));
+	if (CompareFileTime(&m_lastDrmHashUpdate, &lastModifiedTime) != 0 || forceUpdate == true)
+	{
+		// Push update message to all servers.
+		FedMessaging * pfm = &g_pLobbyApp->GetFMServers();
+		int count = pfm->GetConnectionCount();
+		ListConnections::Iterator iterCnxn(*pfm->GetConnections());
+		while (!iterCnxn.End()) {
+			BEGIN_PFM_CREATE(*pfm, pfmUpdateDrmHashes, L, UPDATE_DRM_HASHES)
+				FM_VAR_PARM(m_szDrmDownloadUrly, CB_ZTS)
+				END_PFM_CREATE
+
+			pfm->SendMessages(iterCnxn.Value(), FM_GUARANTEED, FM_FLUSH);
+			iterCnxn.Next();
+		}
+
+		m_lastDrmHashUpdate = lastModifiedTime;
+	}
+
+}
+
 //
 //extern "C" void __cdecl SteamAPIDebugTextHook(int nSeverity, const char *pchDebugText)
 //{
@@ -641,6 +713,7 @@ int CLobbyApp::Run()
       if (GetNow() - timeRollCall >= 5.0f)
       {
         RollCall();
+		CheckAndUpdateDrmHashes(false); // BT - STEAM
         timeRollCall = GetNow();
       }
     }

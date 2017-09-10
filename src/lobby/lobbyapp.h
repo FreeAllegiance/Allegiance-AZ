@@ -235,6 +235,9 @@ public:
 	  m_cStaticCoreInfo = 0;
   }
 
+  // BT - STEAM
+  void CheckAndUpdateDrmHashes(bool forceUpdate);
+
 private:
   const char *    SzFmMsgHeader(FedMessaging * pthis) {return IsFMServers(pthis) ? "Servers: " : "Clients: ";}
   void            SetNow()
@@ -255,6 +258,8 @@ private:
   void SendGameInfo();
   void UpdatePerfCounters();
   void RollCall();
+
+
 
   // *** player list stuff *** 
   void BootPlayersByName(const ZString& strName);
@@ -296,6 +301,11 @@ private:
   TRef<IZoneAuthServer> m_pzas;
 #endif
   Time              m_timeNow;
+
+  // BT - STEAM
+  FILETIME			m_lastDrmHashUpdate;
+  char				m_szDrmHashFilename[MAX_PATH];
+  char				m_szDrmDownloadUrly[MAX_PATH];
 
   //ZGameInstanceInfoMsg is important info ZGameServerInfoMsg is trivial wrapper
   //structure designed with variable size elements and variable number of ZGameInstanceInfoMsg

@@ -183,5 +183,10 @@ DEFINE_FEDMSG(S, GAME_COMPLETE, 217) // Tell the lobby that all player records h
 	char szGameGuid[100];
 END_FEDMSG
 
+// BT - STEAM
+DEFINE_FEDMSG(L, UPDATE_DRM_HASHES, 218) // Tell all the servers that the hash file has changed, and it's time to update.
+	FM_VAR_ITEM(DrmDownloadUrl);
+END_FEDMSG
+
 #endif // _MESSAGES_LS_H_
 
