@@ -12,16 +12,15 @@ public:
 	DrmChecker();
 	~DrmChecker();
 
-	void GetDrmWrapChecksum(char *szOutput, DWORD nOutputLen);
+	void GetDrmWrapChecksum(int initializingVector, char *szOutput, DWORD nOutputLen);
 };
 
 
 class DrmVerifier
 {
-public:
+public: 
 	DrmVerifier();
 	~DrmVerifier();
 
-	bool CheckDrm(char *drm);
+	bool CheckDrm(int initializingVector, char *drm);
 };
-

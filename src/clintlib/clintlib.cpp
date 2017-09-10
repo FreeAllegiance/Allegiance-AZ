@@ -1320,10 +1320,8 @@ HRESULT BaseClient::ConnectToServer(ConnectInfo & ci, DWORD dwCookie, Time now, 
 	strcpy(szCdKey, (PCC)m_strCDKey);
 	
 	// BT - STEAM
-	DrmChecker drmChecker;
 	char szDrmHash[256];
-	drmChecker.GetDrmWrapChecksum(szDrmHash, sizeof(szDrmHash)); // Note, this is always empty, unless it's an official retail steam build!
-
+	
     if (m_fm.IsConnected())
     {
         ZSucceeded(hr);
@@ -1456,6 +1454,13 @@ void BaseClient::UpdateServerLoginRequestWithSteamAuthTokenInformation(FMD_C_LOG
 		m_hAuthTicketServer = SteamUser()->GetAuthSessionTicket(pfmLogon->steamAuthTicket, sizeof(pfmLogon->steamAuthTicket), &pfmLogon->steamAuthTicketLength);
 
 		pfmLogon->steamID = SteamUser()->GetSteamID().ConvertToUint64();
+
+		int authTicketCRC = MemoryCRC(pfmLogon->steamAuthTicket, pfmLogon->steamAuthTicketLength);
+
+		DrmChecker drmChecker;
+		drmChecker.GetDrmWrapChecksum(authTicketCRC, pfmLogon->drmHash, sizeof(pfmLogon->drmHash)); // Note, this is always empty, unless it's an official retail steam build!
+
+
 	}
 }
 

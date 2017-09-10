@@ -35,7 +35,6 @@ DEFINE_FEDMSG(C, LOGONREQ, 1)   // First message the client sends to the server.
   FM_VAR_ITEM(CharacterName);   // Setting character name/pw to non-NULL implies 
   FM_VAR_ITEM(CDKey);           // Scrambled using CharacterName
   FM_VAR_ITEM(MissionPassword); // The password (if any) required for the mission.
-  FM_VAR_ITEM(DrmHash);			//BT - STEAM // The DRM Hash of the Allegiance client, if built for Steam. Otherwise, it will be empty when you are debugging locally.
   USHORT    fedsrvVer;
   Time      time;
   DWORD     dwCookie;
@@ -44,6 +43,7 @@ DEFINE_FEDMSG(C, LOGONREQ, 1)   // First message the client sends to the server.
   int8		steamAuthTicket[1024]; // BT - STEAM
   uint32	steamAuthTicketLength; // BT - STEAM
   uint64	steamID; // BT - STEAM
+  char		drmHash[50]; // BT - STEAM
 END_FEDMSG
 
 DEFINE_FEDMSG(S, LOGONACK, 2) // sent when the server recives FM_C_LOGONREQ
@@ -1031,5 +1031,6 @@ DEFINE_FEDMSG(CS, HIGHLIGHT_CLUSTER, 199)  //Xynth #208 Notify clients of sector
     SectorID            clusterID;	
 	bool				highlight;	
 END_FEDMSG
+
 
 #endif // _MESSAGES_ 
