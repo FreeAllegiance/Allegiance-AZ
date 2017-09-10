@@ -11470,21 +11470,8 @@ void FedSrvSiteBase::KillShipEvent(Time timeCollision, IshipIGC* pship, ImodelIG
 							CSteamID steamID(strtoull(pfsshipCredit->GetPlayer()->GetCDKey(), NULL, 0));
 							CSteamAchievements achievementsForPlayer;
 							PilotType pt = pship->GetPilotType();
-							switch (pt)
-							{
-							case c_ptBuilder:
-							{
-
-
-								break;
-							}
-							case c_ptMiner:
-							{
-								achievementsForPlayer.AwardMinerKillAchievement(steamID);
-
-								break;
-							}
-							};
+							if (!bLifepod)
+								achievementsForPlayer.AwardKillAchievement(steamID, pt);
 						}
 					}
 				}

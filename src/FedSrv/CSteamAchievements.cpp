@@ -201,8 +201,29 @@ void CSteamAchievements::AwardBetaParticipation(CSteamID &steamID)
 		SetAchievement(steamID, EAchievements::BETA_ACHIEVEMENT_1_0);
 }
 
-void CSteamAchievements::AwardMinerKillAchievement(CSteamID &steamID)
+void CSteamAchievements::AwardKillAchievement(CSteamID &steamID, PilotType pt)
 {
-	SetAchievement(steamID, EAchievements::FIRST_MINER_KILL_1_1);
+	switch (pt)
+	{
+	case c_ptBuilder:
+	{
+		SetAchievement(steamID, EAchievements::FIRST_CON_KILL_1_2);
+
+		break;
+	}
+	case c_ptMiner:
+	{
+		SetAchievement(steamID, EAchievements::FIRST_MINER_KILL_1_1);
+
+		break;
+	}
+	case c_ptPlayer:
+	{
+		SetAchievement(steamID, EAchievements::FIRST_FORCE_EJECT_1_3);
+
+		break;
+
+	}
+	};
 }
 

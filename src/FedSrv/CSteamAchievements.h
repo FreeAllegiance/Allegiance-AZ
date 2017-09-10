@@ -5,12 +5,16 @@
 enum EAchievements
 {
 	BETA_ACHIEVEMENT_1_0 = 0,
-	FIRST_MINER_KILL_1_1 = 1
+	FIRST_MINER_KILL_1_1 = 1,
+	FIRST_CON_KILL_1_2 = 2,
+	FIRST_FORCE_EJECT_1_3 = 3,
+	FIRST_BASE_KILL_1_4 = 4,
+	FIRST_BASE_CAP_1_5 = 5
 
 	// Don't forget to update g_nMaximumSteamAchievementCount!
 };
 
-const int g_nMaximumSteamAchievementCount = 2; // Always keep this in sync with the number of achievments in EAchievements!
+const int g_nMaximumSteamAchievementCount = 6; // Always keep this in sync with the number of achievments in EAchievements!
 
 // BT - STEAM
 
@@ -30,7 +34,11 @@ private:
 	{
 		// Never remove an item from this list! (see note above).
 		"BETA_ACHIEVEMENT_1_0",
-		"FIRST_MINER_KILL_1_1"
+		"FIRST_MINER_KILL_1_1",
+		"FIRST_CON_KILL_1_2",
+		"FIRST_FORCE_EJECT_1_3",
+		"FIRST_BASE_KILL_1_4",
+		"FIRST_BASE_CAP_1_5"
 	};
 
 	bool SetAchievement(CSteamID &steamID, EAchievements achievement);
@@ -48,8 +56,8 @@ public:
 
 	void AwardBetaParticipation(CSteamID &steamID);
 
-	void AwardMinerKillAchievement(CSteamID &steamID);
-
+	void AwardKillAchievement(CSteamID &steamID, PilotType pt);
+	
 	// Steam Call Results
 	void OnUserStatsStored(GSStatsStored_t *pCallback, bool bIOFailure);
 
