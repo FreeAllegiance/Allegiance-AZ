@@ -35,6 +35,7 @@ DEFINE_FEDMSG(C, LOGONREQ, 1)   // First message the client sends to the server.
   FM_VAR_ITEM(CharacterName);   // Setting character name/pw to non-NULL implies 
   FM_VAR_ITEM(CDKey);           // Scrambled using CharacterName
   FM_VAR_ITEM(MissionPassword); // The password (if any) required for the mission.
+  FM_VAR_ITEM(DrmHash);			//BT - STEAM // The DRM Hash of the Allegiance client, if built for Steam. Otherwise, it will be empty when you are debugging locally.
   USHORT    fedsrvVer;
   Time      time;
   DWORD     dwCookie;

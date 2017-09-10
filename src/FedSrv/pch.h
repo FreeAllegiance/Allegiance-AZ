@@ -44,6 +44,7 @@
 
 // BT - STEAM
 #include "steam_gameserver.h"
+#include "AllegianceSecurity.h"
 
 // ZLib Includes
 #if !defined(ALLSRV_STANDALONE)

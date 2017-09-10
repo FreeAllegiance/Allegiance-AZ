@@ -180,7 +180,7 @@
       <AdditionalIncludeDirectories>$(OutDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>$(OutDir)..\..\Test\TCLib\TCLib.lib;$(OutDir)..\..\Guids\AGCGuid.lib;$(OutDir)..\..\Guids\guids.lib;$(OutDir)..\..\ZLib\ZLib.lib;$(OutDir)..\..\Engine\Engine.lib;$(OutDir)..\..\_utility\Utility.lib;$(OutDir)..\..\igc\igc.lib;$(OutDir)..\..\clintlib\clintlib.lib;..\src\Lib\DirectPlay\dxguid.lib;wininet.lib;version.lib;Winmm.lib;dbghelp.lib;lz32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\src\Lib\AllegianceSecurity\AllegianceSecurityd.lib;$(OutDir)..\..\Test\TCLib\TCLib.lib;$(OutDir)..\..\Guids\AGCGuid.lib;$(OutDir)..\..\Guids\guids.lib;$(OutDir)..\..\ZLib\ZLib.lib;$(OutDir)..\..\Engine\Engine.lib;$(OutDir)..\..\_utility\Utility.lib;$(OutDir)..\..\igc\igc.lib;$(OutDir)..\..\clintlib\clintlib.lib;..\src\Lib\DirectPlay\dxguid.lib;wininet.lib;version.lib;Winmm.lib;dbghelp.lib;lz32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <SuppressStartupBanner>false</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -223,7 +223,7 @@
       <AdditionalIncludeDirectories>$(OutDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>..\src\Lib\Steam\steam_api.lib;$(OutDir)..\..\Test\TCLib\TCLib.lib;$(OutDir)..\..\Guids\AGCGuid.lib;$(OutDir)..\..\Guids\guids.lib;$(OutDir)..\..\ZLib\ZLib.lib;$(OutDir)..\..\Engine\Engine.lib;$(OutDir)..\..\_utility\Utility.lib;$(OutDir)..\..\igc\igc.lib;$(OutDir)..\..\clintlib\clintlib.lib;..\src\Lib\DirectPlay\dxguid.lib;wininet.lib;version.lib;Winmm.lib;dbghelp.lib;lz32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\src\Lib\AllegianceSecurity\AllegianceSecurityd.lib;..\src\Lib\Steam\steam_api.lib;$(OutDir)..\..\Test\TCLib\TCLib.lib;$(OutDir)..\..\Guids\AGCGuid.lib;$(OutDir)..\..\Guids\guids.lib;$(OutDir)..\..\ZLib\ZLib.lib;$(OutDir)..\..\Engine\Engine.lib;$(OutDir)..\..\_utility\Utility.lib;$(OutDir)..\..\igc\igc.lib;$(OutDir)..\..\clintlib\clintlib.lib;..\src\Lib\DirectPlay\dxguid.lib;wininet.lib;version.lib;Winmm.lib;dbghelp.lib;lz32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <SuppressStartupBanner>false</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -266,7 +266,7 @@
       <AdditionalIncludeDirectories>$(OutDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>..\src\Lib\Steam\steam_api.lib;$(OutDir)..\..\Test\TCLib\TCLib.lib;$(OutDir)..\..\Guids\AGCGuid.lib;$(OutDir)..\..\Guids\guids.lib;$(OutDir)..\..\ZLib\ZLib.lib;$(OutDir)..\..\Engine\Engine.lib;$(OutDir)..\..\_utility\Utility.lib;$(OutDir)..\..\igc\igc.lib;$(OutDir)..\..\clintlib\clintlib.lib;..\src\Lib\DirectPlay\dxguid.lib;wininet.lib;version.lib;Winmm.lib;dbghelp.lib;lz32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\src\Lib\AllegianceSecurity\AllegianceSecurityd.lib;..\src\Lib\Steam\steam_api.lib;$(OutDir)..\..\Test\TCLib\TCLib.lib;$(OutDir)..\..\Guids\AGCGuid.lib;$(OutDir)..\..\Guids\guids.lib;$(OutDir)..\..\ZLib\ZLib.lib;$(OutDir)..\..\Engine\Engine.lib;$(OutDir)..\..\_utility\Utility.lib;$(OutDir)..\..\igc\igc.lib;$(OutDir)..\..\clintlib\clintlib.lib;..\src\Lib\DirectPlay\dxguid.lib;wininet.lib;version.lib;Winmm.lib;dbghelp.lib;lz32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <SuppressStartupBanner>false</SuppressStartupBanner>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
@@ -303,7 +303,7 @@
       <AdditionalIncludeDirectories>$(OutDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>$(OutDir)..\..\Test\TCLib\TCLib.lib;$(OutDir)..\..\Guids\AGCGuid.lib;$(OutDir)..\..\Guids\guids.lib;$(OutDir)..\..\ZLib\ZLib.lib;$(OutDir)..\..\Engine\Engine.lib;$(OutDir)..\..\_utility\Utility.lib;$(OutDir)..\..\igc\igc.lib;$(OutDir)..\..\clintlib\clintlib.lib;..\src\Lib\DirectPlay\dxguid.lib;lz32.lib;wininet.lib;version.lib;Winmm.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\src\Lib\AllegianceSecurity\AllegianceSecurity.lib;$(OutDir)..\..\Test\TCLib\TCLib.lib;$(OutDir)..\..\Guids\AGCGuid.lib;$(OutDir)..\..\Guids\guids.lib;$(OutDir)..\..\ZLib\ZLib.lib;$(OutDir)..\..\Engine\Engine.lib;$(OutDir)..\..\_utility\Utility.lib;$(OutDir)..\..\igc\igc.lib;$(OutDir)..\..\clintlib\clintlib.lib;..\src\Lib\DirectPlay\dxguid.lib;lz32.lib;wininet.lib;version.lib;Winmm.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>false</SuppressStartupBanner>
       <ModuleDefinitionFile>..\src\Pigs\PigsLib\PigsLib.def</ModuleDefinitionFile>
       <TargetMachine>MachineX86</TargetMachine>
@@ -337,7 +337,7 @@
       <AdditionalIncludeDirectories>$(OutDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>..\src\Lib\Steam\steam_api.lib;$(OutDir)..\..\Test\TCLib\TCLib.lib;$(OutDir)..\..\Guids\AGCGuid.lib;$(OutDir)..\..\Guids\guids.lib;$(OutDir)..\..\ZLib\ZLib.lib;$(OutDir)..\..\Engine\Engine.lib;$(OutDir)..\..\_utility\Utility.lib;$(OutDir)..\..\igc\igc.lib;$(OutDir)..\..\clintlib\clintlib.lib;..\src\Lib\DirectPlay\dxguid.lib;lz32.lib;wininet.lib;version.lib;Winmm.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\src\Lib\AllegianceSecurity\AllegianceSecurity.lib;..\src\Lib\Steam\steam_api.lib;$(OutDir)..\..\Test\TCLib\TCLib.lib;$(OutDir)..\..\Guids\AGCGuid.lib;$(OutDir)..\..\Guids\guids.lib;$(OutDir)..\..\ZLib\ZLib.lib;$(OutDir)..\..\Engine\Engine.lib;$(OutDir)..\..\_utility\Utility.lib;$(OutDir)..\..\igc\igc.lib;$(OutDir)..\..\clintlib\clintlib.lib;..\src\Lib\DirectPlay\dxguid.lib;lz32.lib;wininet.lib;version.lib;Winmm.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>false</SuppressStartupBanner>
       <ModuleDefinitionFile>..\src\Pigs\PigsLib\PigsLib.def</ModuleDefinitionFile>
       <TargetMachine>MachineX86</TargetMachine>
@@ -371,7 +371,7 @@
       <AdditionalIncludeDirectories>$(OutDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>..\src\Lib\Steam\steam_api.lib;$(OutDir)..\..\Test\TCLib\TCLib.lib;$(OutDir)..\..\Guids\AGCGuid.lib;$(OutDir)..\..\Guids\guids.lib;$(OutDir)..\..\ZLib\ZLib.lib;$(OutDir)..\..\Engine\Engine.lib;$(OutDir)..\..\_utility\Utility.lib;$(OutDir)..\..\igc\igc.lib;$(OutDir)..\..\clintlib\clintlib.lib;..\src\Lib\DirectPlay\dxguid.lib;lz32.lib;wininet.lib;version.lib;Winmm.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\src\Lib\AllegianceSecurity\AllegianceSecurity.lib;..\src\Lib\Steam\steam_api.lib;$(OutDir)..\..\Test\TCLib\TCLib.lib;$(OutDir)..\..\Guids\AGCGuid.lib;$(OutDir)..\..\Guids\guids.lib;$(OutDir)..\..\ZLib\ZLib.lib;$(OutDir)..\..\Engine\Engine.lib;$(OutDir)..\..\_utility\Utility.lib;$(OutDir)..\..\igc\igc.lib;$(OutDir)..\..\clintlib\clintlib.lib;..\src\Lib\DirectPlay\dxguid.lib;lz32.lib;wininet.lib;version.lib;Winmm.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>false</SuppressStartupBanner>
       <ModuleDefinitionFile>..\src\Pigs\PigsLib\PigsLib.def</ModuleDefinitionFile>
       <TargetMachine>MachineX86</TargetMachine>

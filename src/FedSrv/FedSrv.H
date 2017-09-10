@@ -343,6 +343,9 @@ struct Global
 	int				  cMaxGames;	   // max games allowed, reg entry
 	ZString			  strLocation;     // Location, reg entry
 
+	// BT - STEAM
+	bool				bEnforceSteamDRM;
+
 	/* pkk May 6th: Disabled bandwidth patch
 	// w0dk4 Bandwidth Patch
 	unsigned int		  cMaxBandwidth;*/

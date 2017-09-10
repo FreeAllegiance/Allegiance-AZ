@@ -19,12 +19,99 @@ TVector<ZString> GetWhiteList()
 	return returnValue;
 }
 
-int main(int argc, char **argv)
+// https://stackoverflow.com/questions/27217063/how-to-read-filename-of-the-last-modified-file-in-a-directory
+FILETIME GetMostRecentFileModificationTime(ZString &filepath, ZString &searchPath)
 {
+	WIN32_FIND_DATAW ffd;
+	wchar_t currentFile[MAX_PATH], lastModifiedFilename[MAX_PATH];
+	FILETIME currentModifiedTime, lastModified;
+	HANDLE hFile;
+	bool first_file = true;
+
+	char szLocalDate[255], szLocalTime[255];
+
+	currentModifiedTime.dwHighDateTime = 0;
+	currentModifiedTime.dwLowDateTime = 0;
+
 	HANDLE hFind;
 	WIN32_FIND_DATAA findFileData;
 
-	TVector<ZString> whitelist = GetWhiteList();
+	hFind = FindFirstFileA(searchPath, &findFileData);
+
+	if (hFind == INVALID_HANDLE_VALUE)
+	{
+		//still have the default in the main directory
+		printf("Invalid handle value (%d)\n", GetLastError());
+		return currentModifiedTime;
+	}
+	do
+	{
+		if ((findFileData.dwFileAttributes | FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY)
+			continue;
+
+		if (strlen(findFileData.cFileName) > 0 && findFileData.cFileName[0] == '.')
+			continue;
+
+		if (first_file)
+		{
+			lastModified = findFileData.ftLastWriteTime;
+			first_file = false;
+		}
+		else
+		{
+			// First file time is earlier than second file time.
+			if (CompareFileTime(&lastModified, &findFileData.ftLastWriteTime) == -1)
+			{
+				
+				
+				/* You can uncomment these if you want to see what the actual times are.
+				SYSTEMTIME st;
+				FileTimeToLocalFileTime(&lastModified, &lastModified);
+				FileTimeToSystemTime(&lastModified, &st);
+				GetDateFormatA(LOCALE_USER_DEFAULT, DATE_LONGDATE, &st, NULL,
+					szLocalDate, 255);
+				GetTimeFormatA(LOCALE_USER_DEFAULT, 0, &st, NULL, szLocalTime, 255);
+				printf("%s %s - ", szLocalDate, szLocalTime);
+
+				FileTimeToLocalFileTime(&findFileData.ftLastWriteTime, &findFileData.ftLastWriteTime);
+				FileTimeToSystemTime(&findFileData.ftLastWriteTime, &st);
+				GetDateFormatA(LOCALE_USER_DEFAULT, DATE_LONGDATE, &st, NULL,
+					szLocalDate, 255);
+				GetTimeFormatA(LOCALE_USER_DEFAULT, 0, &st, NULL, szLocalTime, 255);
+				printf("%s %s\n", szLocalDate, szLocalTime);
+				*/
+
+
+				lastModified = findFileData.ftLastWriteTime;
+			}
+		}
+		
+	} while (FindNextFileA(hFind, &findFileData));
+
+	FindClose(hFind);
+
+
+	return lastModified;
+}
+
+FILETIME GetLastRunMostRecentModifiedFile(char *lastrunFilename)
+{
+	ZFile lastRun(lastrunFilename);
+	char buffer[100];
+	int numRead = lastRun.Read(buffer, sizeof(buffer));
+	buffer[numRead] = 0;
+	FILETIME lastRunTime;
+	ZString strBuffer(buffer);
+
+	lastRunTime.dwHighDateTime = strtoul(strBuffer.LeftOf(":"), NULL, 10);
+	lastRunTime.dwLowDateTime = strtoul(strBuffer.RightOf(":"), NULL, 10);
+
+	return lastRunTime;
+}
+
+int main(int argc, char **argv)
+{
+	FILETIME lastRunMostRecentModifiedFileTime = GetLastRunMostRecentModifiedFile("artwork_hash_generator_lastrun.txt");
 
 
 	if (argc != 3)
@@ -44,6 +131,23 @@ int main(int argc, char **argv)
 
 	artworkSearchPath += "*.*";
 
+	FILETIME mostRecentFileModificationTime = GetMostRecentFileModificationTime(artworkPath, artworkSearchPath);
+
+	if (CompareFileTime(&mostRecentFileModificationTime, &lastRunMostRecentModifiedFileTime) == 0)
+	{
+		printf("No new modified files in the target directory. Nothing to do.\n");
+		return 0;
+	}
+	else
+	{
+		ZFile lastrunFile("artwork_hash_generator_lastrun.txt", OF_WRITE | OF_CREATE);
+		char buffer[256];
+		sprintf(buffer, "%u:%u", mostRecentFileModificationTime.dwHighDateTime, mostRecentFileModificationTime.dwLowDateTime);
+		
+		lastrunFile.WriteString(buffer);
+	}
+	
+
 	//printf("%s - %s\n", (PCC)artworkPath, (PCC)outputFilename);
 
 	ZFile outputFile(outputFilename, OF_WRITE | OF_CREATE);
@@ -56,7 +160,10 @@ FileHashTable::FileHashTable()						\n\
 {													\n\
 ");
 
+	HANDLE hFind;
+	WIN32_FIND_DATAA findFileData;
 
+	TVector<ZString> whitelist = GetWhiteList();
 
 	hFind = FindFirstFileA(artworkSearchPath, &findFileData);
 

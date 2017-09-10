@@ -193,3 +193,4 @@ src/Installer/Resources/Allegiance/Allegiance*.exe
 
 *.zip
 *.idb
+/src/ArtworkHashGenerator/artwork_hash_generator_lastrun.txt

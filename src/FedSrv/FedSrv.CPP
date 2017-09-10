@@ -5819,6 +5819,24 @@ HRESULT FedSrvSiteBase::OnAppMessage(FedMessaging * pthis, CFMConnection & cnxnF
 				{
 					
 #if STEAM
+					if (g.bEnforceSteamDRM == true)
+					{
+						Strcpy(pqd->szDrmHash, FM_VAR_REF(pfmLogon, DrmHash));
+						DrmVerifier drmVerifier;
+						if (drmVerifier.CheckDrm(pqd->szDrmHash) == false)
+						{
+							pqd->fValid = false;
+							szReason = "Your client has failed a DRM check. Please go back to your Steam app and reverify your installation. This action has been logged.";
+
+							pqd->fValid = false;
+							pqd->fRetry = false;
+							pqd->characterID = pfmLogon->CharacterID;
+							Strcpy(pqd->szReason, szReason);
+							PostThreadMessage(g.idReceiveThread, wm_sql_querydone, (WPARAM)NULL, (LPARAM)pquery);
+							break;
+						}
+					}
+
 					//BT - STEAM
 					// If we are connected to the lobby and using Steam authentication, then we are first going to make an async call to steam to validate that the client
 					// is correct, then, we are going to make an async call to the Lobby to get the player's rank, then the return from that call will finally trigger the 
@@ -9216,6 +9234,15 @@ void LoadSettings()
 		cbValue = sizeof(dwValue);
 		RegQueryValueExA(hKey, "MaxGames", NULL, &dwType, (unsigned char*)&g.cMaxGames, &cbValue);
 
+		// BT - STEAM - Enable a server to decide wheather or not it should allow only offical game clients to connect.
+		g.bEnforceSteamDRM = false;
+		DWORD dwEnforceSteamDRM;
+		DWORD cbEnforceSteamDRM = sizeof(dwEnforceSteamDRM);
+		RegQueryValueExA(hKey, "EnforceSteamDRM", NULL, &dwType, (unsigned char*)&dwEnforceSteamDRM, &cbEnforceSteamDRM);
+
+		if (dwEnforceSteamDRM > 0)
+			g.bEnforceSteamDRM = true;
+
 		/* pkk May 6th: Disabled bandwidth patch
 		// w0dk4 Bandwidth Patch
 		g.cMaxBandwidth = 32;
@@ -11687,20 +11714,27 @@ void FedSrvSiteBase::DamageShipEvent(Time now, IshipIGC* ship, ImodelIGC* launch
 							break;
 						}
 
-						//ChatTarget ct = (pside->GetAllies() == NA) ? CHAT_TEAM : CHAT_ALLIES; //ALLY imago 7/12/09 reverted 7/22/09
-						Color AllianceColors[3] = { Color::Green(), Color::Orange(), Color::Red() };
-						ZString strAllies = (pside->AlliedSides(pside, psideLauncher)) ? "\x81 " + ConvertColorToString(AllianceColors[pside->GetAllies()] * 0.75) + "(Ally)" + END_COLOR_STRING + " " : "";
+						// BT - 9/17 - The original damage notification. 
 						SendChatf(ship, CHAT_TEAM, ship->GetSide()->GetObjectID(),
-							underAttackSound, "Under attack by %s%s in %s",
-							(PCC)strAllies, GetModelName(launcher), ship->GetCluster()->GetName());
+							underAttackSound, "Under attack by %s in %s",
+							GetModelName(launcher), ship->GetCluster()->GetName());
 
-						//7/22/09 ALLY FF
-						CFSShip*    pfsLauncher = (CFSShip*)(((IshipIGC*)(launcher))->GetPrivateData());
-						if (pfsLauncher->IsPlayer() && pside->AlliedSides(pside, psideLauncher))
-						{
-							SendChat(ship, CHAT_INDIVIDUAL, launcher->GetObjectID(),
-								droneWatchFireSound, "Watch your fire");
-						}
+
+						// BT - 9/17 - Trying to find the mystery server crash on ship damage. Going to remove this for now, and replace with original code. 
+						////ChatTarget ct = (pside->GetAllies() == NA) ? CHAT_TEAM : CHAT_ALLIES; //ALLY imago 7/12/09 reverted 7/22/09
+						//Color AllianceColors[3] = { Color::Green(), Color::Orange(), Color::Red() };
+						//ZString strAllies = (pside->AlliedSides(pside, psideLauncher)) ? "\x81 " + ConvertColorToString(AllianceColors[pside->GetAllies()] * 0.75) + "(Ally)" + END_COLOR_STRING + " " : "";
+						//SendChatf(ship, CHAT_TEAM, ship->GetSide()->GetObjectID(),
+						//	underAttackSound, "Under attack by %s%s in %s",
+						//	(PCC)strAllies, GetModelName(launcher), ship->GetCluster()->GetName());
+
+						////7/22/09 ALLY FF
+						//CFSShip*    pfsLauncher = (CFSShip*)(((IshipIGC*)(launcher))->GetPrivateData());
+						//if (pfsLauncher->IsPlayer() && pside->AlliedSides(pside, psideLauncher))
+						//{
+						//	SendChat(ship, CHAT_INDIVIDUAL, launcher->GetObjectID(),
+						//		droneWatchFireSound, "Watch your fire");
+						//}
 					}
 					else if (launcher->GetObjectType() == OT_ship)
 					{
@@ -11714,20 +11748,22 @@ void FedSrvSiteBase::DamageShipEvent(Time now, IshipIGC* ship, ImodelIGC* launch
 					pd->SetLastDamageReport(now);
 				}
 			}
-			else { //Imago ally FF PvP 7/22/09
-				CFSPlayer*   pp = (CFSPlayer*)pcfs;
-				//Never report more than once every 10 seconds
-				if ((now - pp->GetLastDamageReport()) > 10.0f)
-				{
-					IsideIGC*   pside = ship->GetSide();
-					if (pside != psideLauncher && pside->AlliedSides(pside, psideLauncher)) {
-						SendChat(ship, CHAT_INDIVIDUAL, launcher->GetObjectID(),
-							droneWatchFireSound, "Watch your fire");
-						pp->SetLastDamageReport(now);
-					}
 
-				}
-			}
+			// BT - 9/17 - Trying to find the mystery server crash on ship damage. Going to remove this for now, and replace with original code. 
+			//else { //Imago ally FF PvP 7/22/09
+			//	CFSPlayer*   pp = (CFSPlayer*)pcfs;
+			//	//Never report more than once every 10 seconds
+			//	if ((now - pp->GetLastDamageReport()) > 10.0f)
+			//	{
+			//		IsideIGC*   pside = ship->GetSide();
+			//		if (pside != psideLauncher && pside->AlliedSides(pside, psideLauncher)) {
+			//			SendChat(ship, CHAT_INDIVIDUAL, launcher->GetObjectID(),
+			//				droneWatchFireSound, "Watch your fire");
+			//			pp->SetLastDamageReport(now);
+			//		}
+
+			//	}
+			//}
 		}
 	}
 }

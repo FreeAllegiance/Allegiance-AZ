@@ -23,6 +23,8 @@
 #include "ClubMessages.h" // KG changed location
 #include "AutoDownload.h"
 
+#include "AllegianceSecurity.h" // BT - STEAM
+
 #ifdef USEAUTH
 #include "zauth.h"
 #endif

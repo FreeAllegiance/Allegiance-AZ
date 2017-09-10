@@ -1318,6 +1318,11 @@ HRESULT BaseClient::ConnectToServer(ConnectInfo & ci, DWORD dwCookie, Time now, 
 
 	char szCdKey[c_cbCDKey];
 	strcpy(szCdKey, (PCC)m_strCDKey);
+	
+	// BT - STEAM
+	DrmChecker drmChecker;
+	char szDrmHash[256];
+	drmChecker.GetDrmWrapChecksum(szDrmHash, sizeof(szDrmHash)); // Note, this is always empty, unless it's an official retail steam build!
 
     if (m_fm.IsConnected())
     {
@@ -1328,6 +1333,7 @@ HRESULT BaseClient::ConnectToServer(ConnectInfo & ci, DWORD dwCookie, Time now, 
             FM_VAR_PARM(ci.szName, CB_ZTS)
             FM_VAR_PARM(szCdKey, CB_ZTS)
             FM_VAR_PARM(szPassword, CB_ZTS)
+			FM_VAR_PARM(szDrmHash, CB_ZTS) // BT - STEAM
         END_PFM_CREATE
         pfmLogon->fedsrvVer = MSGVER;
         pfmLogon->dwCookie = dwCookie;
